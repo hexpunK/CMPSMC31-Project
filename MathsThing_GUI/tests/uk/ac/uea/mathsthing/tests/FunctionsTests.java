@@ -4,12 +4,21 @@ import static org.junit.Assert.*;
 
 import java.security.InvalidParameterException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.ac.uea.mathsthing.Functions;
+import uk.ac.uea.mathsthing.tests.stubs.StubbedFormulaLexer;
+import uk.ac.uea.mathsthing.tests.stubs.StubbedFormulaParser;
 
 public class FunctionsTests {
 
+	@BeforeClass
+	public static void setupLexerParser() {		
+		Functions.setFormulaLexer(new StubbedFormulaLexer());
+		Functions.setFormulaParser(new StubbedFormulaParser());
+	}
+	
 	@Test
 	public final void testIsSupported() {
 		
@@ -33,18 +42,19 @@ public class FunctionsTests {
 		boolean op = false;
 		
 		try {
-			Functions.processFunction("", null);
-			assertEquals(0.0, Functions.processFunction("sin", "0.0"), 0.0);
+			Functions.processFunction("");
 		} catch (InvalidParameterException parEx) {
 			param = true;
 		} finally {
 			try {
-				Functions.processFunction("pow", "0.0");
+				Functions.processFunction("pow(0.0)");
 			}
 			catch (UnsupportedOperationException opEx) {
 				op = true;
 			}
 		}
+		
+		assertEquals(Math.sin(1.0), Functions.processFunction("sin(50.0)"), 0.0);
 		
 		assertTrue(param);
 		assertTrue(op);
