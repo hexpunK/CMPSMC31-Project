@@ -3,6 +3,7 @@
 	<name>MathsThing_Lib</name>
 	<comment></comment>
 	<projects>
+		<project>MathsThing_Lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

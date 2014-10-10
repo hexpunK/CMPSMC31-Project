@@ -96,12 +96,12 @@ public class Functions {
 	}
 	
 	/**
-	 * Calculates factorals. Can only be used for numbers that would return a 
+	 * Calculates factorials. Can only be used for numbers that would return a 
 	 * result that fits within a double. A minor limit, but it should be more 
 	 * than enough for our needs.
 	 * 
-	 * @param n The number to compute the factoral of as an integer.
-	 * @return The computed factoral as a double.
+	 * @param n The number to compute the factorial of as an integer.
+	 * @return The computed factorial as a double.
 	 * @since 0.1
 	 */
 	public static double fact(int n) {

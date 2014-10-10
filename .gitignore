@@ -18,6 +18,7 @@ hs_err_pid*
 *.slo
 *.lo
 *.o
+*.d
 *.obj
 
 # Precompiled Headers
@@ -42,7 +43,8 @@ hs_err_pid*
 *.exe
 *.out
 *.app
-
+*.mk
+makefile
 
 # IDE GitIgnore entries.
 # NetBeans.
@@ -86,6 +88,10 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# Output folders
+[Dd]ebug-*
+[Rr]elease-*
 
 
 # MonoDevelop
