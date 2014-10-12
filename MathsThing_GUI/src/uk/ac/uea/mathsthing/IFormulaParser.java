@@ -27,8 +27,10 @@ public interface IFormulaParser {
 	 * @param params A mapping of the parameter token names to their required 
 	 * values. A parameter can only be mapped in this set once.
 	 * @return A floating point value from the result of the computation.
+	 * @throws Exception Thrown if there is an error when evaluating the 
+	 * formula.
 	 */
-	public double getResult(HashMap<String, Double> params);
+	public double getResult(HashMap<String, Double> params) throws Exception;
 	
 	/**
 	 * Gets the first derivative of the stored formula.

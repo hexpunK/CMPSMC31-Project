@@ -82,14 +82,12 @@ public final class Functions {
 	 * 
 	 * @param function The function to process as a {@link String}.
 	 * @return Returns a double containing the result of the function.
-	 * @throws InvalidParameterException Thrown if an empty or null String is 
-	 * provided as a parameter.
-	 * @throws UnsupportedOperationException Thrown if a unsupported function  
-	 * is called.
+	 * @throws Exception Thrown if there is an error evaluating the 
+	 * formula this function works on.
 	 * @since 0.1
 	 */
 	public static final double processFunction(String function)
-			throws InvalidParameterException, UnsupportedOperationException {
+			throws Exception {
 		
 		if (function == null || function.isEmpty()) 
 			throw new InvalidParameterException("A function must be provided.");
@@ -104,8 +102,12 @@ public final class Functions {
 			throw new UnsupportedOperationException("Function not supported.");
 		
 		parser.setFormula(lexer.tokenize(parameter));
-		double result = parser.getResult(new HashMap<String, Double>());
-		
+		double result = 0.0;
+		try {
+			result = parser.getResult(new HashMap<String, Double>());
+		} catch (Exception e) {
+			throw e;
+		}
 		// Execute the function specified.
 		switch (funcName) {
 			case "sin":
