@@ -47,6 +47,13 @@ public final class Functions {
 		Functions.parser = newParser;
 	}
 	
+	/**
+	 * Returns an array of the supported mathematical functions.
+	 * 
+	 * @return An array of Strings representing the names of the supported 
+	 * functions.
+	 * @since 0.1
+	 */
 	public static final String[] getSupportedFunctions() {
 		return Functions.supportedFunctions;
 	}
@@ -86,7 +93,7 @@ public final class Functions {
 	 * formula this function works on.
 	 * @since 0.1
 	 */
-	public static final double processFunction(String function)
+	public static final double processFunction(String function, HashMap<String, Double> params)
 			throws Exception {
 		
 		if (function == null || function.isEmpty()) 
@@ -104,7 +111,7 @@ public final class Functions {
 		parser.setFormula(lexer.tokenize(parameter));
 		double result = 0.0;
 		try {
-			result = parser.getResult(new HashMap<String, Double>());
+			result = parser.getResult(params);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -147,7 +154,7 @@ public final class Functions {
 	public static final double fact(int n) {
 		
 		if (n <= 1) {
-			return 1;
+			return 1.0;
 		} else {
 			return n * fact (n - 1);
 		}

@@ -1,8 +1,12 @@
 package uk.ac.uea.mathsthing.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -10,6 +14,12 @@ import uk.ac.uea.mathsthing.Functions;
 
 public class FunctionsTests {
 
+	private static final HashMap<String, Double> params;
+	static {
+		params = new HashMap<>();
+		params.put("x", 5.0);
+	}
+	
 	@Test
 	public final void testIsSupported() {
 		
@@ -33,15 +43,15 @@ public class FunctionsTests {
 		boolean op = false;
 		
 		try {
-			Functions.processFunction("");
-			assertEquals(0.0, Functions.processFunction("sin(0)"), 0.0);
+			Functions.processFunction("", params);
+			assertEquals(0.0, Functions.processFunction("sin(0)", params), 0.0);
 		} catch (InvalidParameterException parEx) {
 			param = true;
 		} catch (Exception e) {
 			fail (e.getMessage());
 		} finally {
 			try {
-				Functions.processFunction("pow(0)");
+				Functions.processFunction("pow(0)", params);
 			}
 			catch (UnsupportedOperationException opEx) {
 				op = true;

@@ -14,8 +14,11 @@ import java.util.Iterator;
  */
 public class BinaryTree<E> implements Collection<E> {
 
+	/** The Object to store in this node. */
 	protected E item;
+	/** The left child for this node. */
 	protected BinaryTree<E> leftNode;
+	/** The right child for this node. */
 	protected BinaryTree<E> rightNode;
 	
 	public BinaryTree() {
