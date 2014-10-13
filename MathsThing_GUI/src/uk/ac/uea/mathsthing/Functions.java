@@ -12,7 +12,7 @@ import java.util.HashMap;
 public final class Functions {
 
 	/** A collection of the functions the class currently understands. */
-	protected static final String[] supportedFunctions = {
+	public static final String[] SUPPORTED_FUNCTIONS = {
 		"sin", "cos", "tan", 
 		"floor", "ceil", "round", 
 		"log", "ln", 
@@ -48,17 +48,6 @@ public final class Functions {
 	}
 	
 	/**
-	 * Returns an array of the supported mathematical functions.
-	 * 
-	 * @return An array of Strings representing the names of the supported 
-	 * functions.
-	 * @since 0.1
-	 */
-	public static final String[] getSupportedFunctions() {
-		return Functions.supportedFunctions;
-	}
-	
-	/**
 	 * Checks to see if the specified function is supported before it is 
 	 * processed.
 	 * 
@@ -74,7 +63,7 @@ public final class Functions {
 		if (funcName == null || funcName.isEmpty())
 			throw new InvalidParameterException("A function name must be provided.");
 		
-		for (String func : supportedFunctions) {
+		for (String func : SUPPORTED_FUNCTIONS) {
 			if (func.equals(funcName))
 				return true;
 		}
@@ -99,6 +88,7 @@ public final class Functions {
 		if (function == null || function.isEmpty()) 
 			throw new InvalidParameterException("A function must be provided.");
 		
+		// Extract the function parameter.
 		String funcName = function.substring(0, function.indexOf('('));
 		String parameter = function.substring(function.indexOf('(')+1, function.lastIndexOf(')'));
 		
@@ -108,6 +98,7 @@ public final class Functions {
 		if (!Functions.isSupported(funcName))
 			throw new UnsupportedOperationException("Function not supported.");
 		
+		// Handle the function parameter.
 		parser.setFormula(lexer.tokenize(parameter));
 		double result = 0.0;
 		try {

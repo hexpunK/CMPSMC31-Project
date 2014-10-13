@@ -18,10 +18,16 @@ import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
  */
 public class SimpleParser implements IFormulaParser {
 
+	/** The variable to assign the output to when evaluating. */
 	private String assignTo;
+	/** The infix and postfix notations. */
 	private Stack<String> inFix, postFix;
+	/** The evaluation tree. */
 	private BinaryEvaluationTree evalTree;
 	
+	/**
+	 * Sets up a new {@link SimpleParser} with empty infix and postfix stacks.
+	 */
 	public SimpleParser() {
 		
 		inFix = new Stack<>();
@@ -29,6 +35,13 @@ public class SimpleParser implements IFormulaParser {
 		evalTree = null;
 	}
 	
+	/**
+	 * Sets the formula this {@link SimpleParser} works on to the specified 
+	 * {@link String} array of tokens.
+	 * 
+	 * @param tokenised The {@link String} array containing the formula 
+	 * tokens.
+	 */
 	@Override
 	public void setFormula(String[] tokenised) {
 		
@@ -45,20 +58,25 @@ public class SimpleParser implements IFormulaParser {
 				break;
 			case ")":
 				try {
+					// Closing brackets just pop all items off until a opening 
+					// bracket is found in the stack.
 					while (!(tmpOp = opStack.pop()).equals("(")) {
 						postFix.push(tmpOp);
 					}
 				} catch (EmptyStackException e) {
-					break; 
+					break; // Nothing needs to be done if the stack is empty.
 				}
 				break;
 			case "^":
 				try {
+					// Pop items off the stack that have higher or equal 
+					// precedence.
 					while (opStack.peek().matches("[\\^=]")) {
 						postFix.push(opStack.pop());
 					}
 					opStack.push(token);
-				} catch (EmptyStackException e) { 
+				} catch (EmptyStackException e) {
+					// If the stack is empty, just add the current operator.
 					opStack.push(token);
 					break; 
 				}
@@ -119,6 +137,7 @@ public class SimpleParser implements IFormulaParser {
 				opStack.clear();				
 				break;
 			default:
+				// Handle non-operator tokens.
 				if (!negation) {
 					postFix.push(token);
 				} else {
@@ -126,11 +145,11 @@ public class SimpleParser implements IFormulaParser {
 					negation = false;
 				}
 			}
-			
+ 
 			if (!token.equals("="))
 				inFix.push(token);
 		}
-		
+		// Move the rest of the operators into postfix.
 		while (!opStack.empty() && (tmpOp = opStack.pop()) != null) {
 			postFix.push(tmpOp);
 		}
@@ -139,6 +158,7 @@ public class SimpleParser implements IFormulaParser {
 		Stack<BinaryEvaluationTree> tmpStack = new Stack<>();
 		postFix.copyInto(postFixArray);
 		
+		// Build the BinaryEvaluationTree.
 		for(String token : postFixArray) {
 			if (token.matches("[\\+\\*/\\-\\^]")) {
 				BinaryEvaluationTree rightNode = null;
@@ -159,6 +179,11 @@ public class SimpleParser implements IFormulaParser {
 		evalTree = tmpStack.pop();
 	}
 
+	/**
+	 * Process the formula stored in the evaluation tree.
+	 * 
+	 * @param params The mapping of variables to values as a {@link HashMap}.
+	 */
 	@Override
 	public double getResult(HashMap<String, Double> params) 
 			throws Exception {
@@ -171,7 +196,7 @@ public class SimpleParser implements IFormulaParser {
 			throw new Exception(err);
 		}
 	}
-
+	
 	@Override
 	public String getFirstDerivative() {
 		// TODO Auto-generated method stub
@@ -184,6 +209,7 @@ public class SimpleParser implements IFormulaParser {
 		return null;
 	}
 
+	// These are only here for testing purposes.
 	protected final String getAssignTo() {
 		return this.assignTo;
 	}
