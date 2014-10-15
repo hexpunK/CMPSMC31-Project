@@ -27,7 +27,8 @@ public final class Functions {
 	
 	/**
 	 * Set the {@link IFormulaLexer} to use when processing parameters that are
-	 *  passed to the {@link Functions#processFunction(String)} method.
+	 *  passed to the {@link Functions#processFunction(String, HashMap)} 
+	 *  method.
 	 * 
 	 * @param newLexer The lexer to use when processing formulae.
 	 * @since 0.1
@@ -38,7 +39,8 @@ public final class Functions {
 	
 	/**
 	 * Set the {@link IFormulaParser} to use when evaluating parameters that 
-	 * are passed to the {@link Functions#processFunction(String)} method.
+	 * are passed to the {@link Functions#processFunction(String, HashMap)} 
+	 * method.
 	 * 
 	 * @param newParser The parser to use when evaluating formulae.
 	 * @since 0.1
