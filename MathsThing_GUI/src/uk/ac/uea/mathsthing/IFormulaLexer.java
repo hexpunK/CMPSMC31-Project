@@ -12,7 +12,7 @@ public interface IFormulaLexer {
 
 	/**
 	 * Get the formula the user provided to this instance, as written before 
-	 * any processing was perofrmed.
+	 * any processing was performed.
 	 * 
 	 * @return The formula provided by the user as a String.
 	 */
