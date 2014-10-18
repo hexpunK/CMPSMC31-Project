@@ -5,6 +5,7 @@ public class Lexer implements IFormulaLexer{
 	
 	private String input;
 	private String userEquation;
+	private String[] tokens;
 	//add stuff for parameters later
 	private ArrayList<String> equation;
 	
@@ -12,6 +13,7 @@ public class Lexer implements IFormulaLexer{
 	{
 		input="";
 		userEquation = "";
+		tokens = new String[0];
 		equation = new ArrayList<>();
 	}
 	
@@ -19,35 +21,40 @@ public class Lexer implements IFormulaLexer{
 	{
 		input = in;
 		userEquation = "";
+		tokens = new String[0];
 		equation = new ArrayList<>();
 	}
 
-	/**
-	 * Get the formula the user provided to this instance, as written before 
-	 * any processing was performed.
-	 * 
-	 * @return The formula provided by the user as a String.
-	 */
 	@Override
 	public String getUserFormula() {
 		
 		int i = input.indexOf(",");
-		userEquation = input.substring(0, i);
+		if (i >= 0)
+			userEquation = input.substring(0, i);
+		else
+			userEquation = input;
 		return userEquation;
 	}
 
-	/**
-	 * Get the formula the user provided once it has been processed to include 
-	 * any extra operators that the parser will need (such as implied 
-	 * multiplications).
-	 * 
-	 * @return A String containing the processed formula.
-	 */
 	@Override
 	public String getProccessedFormula() {
-		String orig = this.userEquation;
+		
+		StringBuilder output = new StringBuilder();
+		
+		for(String token : tokens) {
+			output.append(token);
+		}
+		
+		return output.toString();
+	}
+
+	@Override
+	public String[] tokenize(String formula) {
+
+		this.input = formula;
+		String orig = getUserFormula();
 		orig.trim();
-		orig.replaceAll(" ", "");
+		orig = orig.replaceAll("\\s+", "");
 		
 		//remove the start (y=) from equation and add to ArrayList
 		int start = orig.indexOf("=")+1;
@@ -96,7 +103,8 @@ public class Lexer implements IFormulaLexer{
                         orig = orig.substring(1);
                     }
                 }
-            }else if (orig.startsWith("sin")) //function time
+            }
+            else if (orig.startsWith("sin")) //function time
             {
                 //deal with le functions here
                 System.out.println("function");
@@ -140,26 +148,15 @@ public class Lexer implements IFormulaLexer{
 
         }
 		
-		//put it all back together as a string
-		String finalEquation = "";
-		for(int i=0; i < equation.size(); i++)
-		{
-			finalEquation += equation.get(i);
-		}
-		return finalEquation;
+		this.tokens = equation.toArray(this.tokens);
+		
+		return this.tokens;
 	}
 
-	/**
-	 * Analyse and tokenise a provided formula. The tokens will contain 
-	 * constants, paramters, functions and operators.
-	 * 
-	 * @param formula The formula to tokenise.
-	 * @return A String array containing all the tokens found in the formula.
-	 */
 	@Override
-	public String[] tokenize(String formula) {
-		// TODO Auto-generated method stub
-		return null;
+	public String[] getTokens() {
+		
+		return this.tokens;
 	}
 	
 
