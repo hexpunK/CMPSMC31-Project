@@ -105,7 +105,7 @@ public class SimpleParser implements IFormulaParser {
 				break;
 			case "+":
 				try {
-					while (opStack.peek().matches("[\\^\\*/\\+=]")) {
+					while (opStack.peek().matches("[\\^\\*/\\+\\-=]")) {
 						postFix.push(opStack.pop());
 					}
 					opStack.push(token);
@@ -115,7 +115,7 @@ public class SimpleParser implements IFormulaParser {
 				}
 				break;
 			case "-":
-				if (inFix.isEmpty() || inFix.peek().matches("[(\\*\\-\\+/\\^=]")) {
+				if (inFix.isEmpty() || inFix.peek().matches("[(\\*\\+/\\^\\-=]")) {
 					negation = !negation;
 					break;
 				}

@@ -110,6 +110,7 @@ public class Graph extends JPanel {
         
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
+        renderer.setSeriesShapesVisible(0, false);
         plot.setRenderer(renderer);
 
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
