@@ -155,7 +155,7 @@ public class GUI extends JFrame {
         		HashMap<Double, Double> results = new HashMap<>();
         		
         		// It currently plots x between 0 and 10, so enter values of x to plot the graph.
-        		for (int i=0; i<11; i++) {
+        		for (int i=-10; i<11; i++) {
         			HashMap<String, Double> vals = new HashMap<>();
         			vals.put("x", (double)i);
         			

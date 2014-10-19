@@ -115,7 +115,7 @@ public class SimpleParser implements IFormulaParser {
 				}
 				break;
 			case "-":
-				if (inFix.peek().matches("[(\\*\\-\\+/\\^=]")) {
+				if (inFix.isEmpty() || inFix.peek().matches("[(\\*\\-\\+/\\^=]")) {
 					negation = !negation;
 					break;
 				}
@@ -141,7 +141,9 @@ public class SimpleParser implements IFormulaParser {
 				if (!negation) {
 					postFix.push(token);
 				} else {
-					postFix.push("-"+token);
+					postFix.push("0");
+					postFix.push(token);
+					postFix.push("-");
 					negation = false;
 				}
 			}
