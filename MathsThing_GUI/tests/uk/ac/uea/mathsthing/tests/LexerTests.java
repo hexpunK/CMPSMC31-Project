@@ -19,7 +19,6 @@ public class LexerTests {
 	public static final String outputString = "y=2*x+1";
 	public static final String[] tokens = {"y", "=", "2", "*", "x", "+", "1"};
 	
-	
 	@Test
 	public final void testGetUserFormula() {
 		
