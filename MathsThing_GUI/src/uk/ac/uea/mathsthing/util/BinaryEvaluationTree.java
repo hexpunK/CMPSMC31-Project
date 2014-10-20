@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing.util;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import uk.ac.uea.mathsthing.Functions;
@@ -59,11 +60,11 @@ public class BinaryEvaluationTree extends BinaryTree<String> {
 	 * incorrect formatting.
 	 * @since 0.1
 	 */
-	public double eval(HashMap<String, Double> values) 
+	public BigDecimal eval(HashMap<String, Double> values) 
 		throws Exception {
 		
-		double leftVal = 0.0;
-		double rightVal = 0.0;
+		BigDecimal leftVal = new BigDecimal(0.0);
+		BigDecimal rightVal = new BigDecimal(0.0);
 		
 		if (leftNode != null)
 			leftVal = ((BinaryEvaluationTree)leftNode).eval(values);
@@ -72,21 +73,21 @@ public class BinaryEvaluationTree extends BinaryTree<String> {
 		
 		switch(item) {
 		case "*":
-			return leftVal * rightVal;
+			return leftVal.multiply(rightVal);
 		case "+":
-			return leftVal + rightVal;
+			return leftVal.add(rightVal);
 		case "-":
-			return leftVal - rightVal;
+			return leftVal.subtract(rightVal);
 		case "/":
-			return leftVal / rightVal;
+			return leftVal.divide(rightVal);
 		case "^":
-			return Math.pow(leftVal, rightVal);
+			return leftVal.pow(rightVal.intValue());
 		default:
 			if (item.matches("[\\d]*")) {
-				return Double.parseDouble(item);
+				return new BigDecimal(item);
 			}
 			if (values.containsKey(item)) {
-				return values.get(item);
+				return new BigDecimal(values.get(item));
 			}
 			if (Functions.isSupported(item)) {
 				return Functions.processFunction(item, values);

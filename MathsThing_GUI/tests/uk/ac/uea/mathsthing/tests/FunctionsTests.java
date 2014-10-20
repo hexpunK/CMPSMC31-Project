@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
@@ -41,10 +42,11 @@ public class FunctionsTests {
 		
 		boolean param = false;
 		boolean op = false;
+		BigDecimal expec = new BigDecimal(0.0);
 		
 		try {
 			Functions.processFunction("", params);
-			assertEquals(0.0, Functions.processFunction("sin(0)", params), 0.0);
+			assertEquals(expec, Functions.processFunction("sin(0)", params));
 		} catch (InvalidParameterException parEx) {
 			param = true;
 		} catch (Exception e) {

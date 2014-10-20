@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
@@ -82,7 +83,7 @@ public final class Functions {
 	 * formula this function works on.
 	 * @since 0.1
 	 */
-	public static final double processFunction(String function, HashMap<String, Double> params)
+	public static final BigDecimal processFunction(String function, HashMap<String, Double> params)
 			throws Exception {
 		
 		if (function == null || function.isEmpty()) 
@@ -100,34 +101,40 @@ public final class Functions {
 		
 		// Handle the function parameter.
 		parser.setFormula(lexer.tokenize(parameter));
-		double result = 0.0;
+		BigDecimal result = new BigDecimal(0.0);
 		try {
 			result = parser.getResult(params);
 		} catch (Exception e) {
 			throw e;
 		}
+		double dResult = result.doubleValue();
+		
+		if (dResult >= Double.POSITIVE_INFINITY || dResult <= Double.NEGATIVE_INFINITY) {
+			throw new Exception("Provided value is too large to use in functions.");
+		}
+		
 		// Execute the function specified.
 		switch (funcName) {
 			case "sin":
-				return Math.sin(result);
+				return new BigDecimal(Math.sin(dResult));
 			case "cos":
-				return Math.cos(result);
+				return new BigDecimal(Math.cos(dResult));
 			case "tan":
-				return Math.tan(result);
+				return new BigDecimal(Math.tan(dResult));
 			case "floor":
-				return Math.floor(result);
+				return new BigDecimal(Math.floor(dResult));
 			case "ceil":
-				return Math.ceil(result);
+				return new BigDecimal(Math.ceil(dResult));
 			case "round":
-				return Math.round(result);
+				return new BigDecimal(Math.round(dResult));
 			case "log":
-				return Math.log10(result);
+				return new BigDecimal(Math.log10(dResult));
 			case "ln":
-				return Math.log(result);
+				return new BigDecimal(Math.log(dResult));
 			case "fact":
-				return Functions.fact((int)Math.round(result));
+				return new BigDecimal(Functions.fact((int)Math.round(dResult)));
 			case "sqrt":
-				return Math.sqrt(result);
+				return new BigDecimal(Math.sqrt(dResult));
 			default:
 				return result;
 		}

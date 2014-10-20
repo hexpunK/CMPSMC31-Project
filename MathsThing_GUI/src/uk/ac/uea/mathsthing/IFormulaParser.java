@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -30,7 +31,7 @@ public interface IFormulaParser {
 	 * @throws Exception Thrown if there is an error when evaluating the 
 	 * formula.
 	 */
-	public double getResult(HashMap<String, Double> params) throws Exception;
+	public BigDecimal getResult(HashMap<String, Double> params) throws Exception;
 	
 	/**
 	 * Gets the first derivative of the stored formula.

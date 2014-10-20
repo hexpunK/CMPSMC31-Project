@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing;
 
+import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
@@ -187,7 +188,7 @@ public class SimpleParser implements IFormulaParser {
 	 * @param params The mapping of variables to values as a {@link HashMap}.
 	 */
 	@Override
-	public double getResult(HashMap<String, Double> params) 
+	public BigDecimal getResult(HashMap<String, Double> params) 
 			throws Exception {
 		try {
 			return evalTree.eval(params);

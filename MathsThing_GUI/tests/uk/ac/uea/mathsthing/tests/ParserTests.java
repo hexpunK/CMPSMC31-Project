@@ -61,7 +61,7 @@ public class ParserTests extends SimpleParser {
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
 		try {
-			double result = this.getResult(vals);
+			double result = this.getResult(vals).doubleValue();
 			System.out.printf("Formula result: %2.2f\n", result);
 			assertEquals(11.0, result, 0.0);
 		} catch (Exception e) {

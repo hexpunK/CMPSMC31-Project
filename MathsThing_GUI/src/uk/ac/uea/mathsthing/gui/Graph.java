@@ -3,6 +3,7 @@ package uk.ac.uea.mathsthing.gui;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class Graph extends JPanel {
 	 */
     public Graph(final JFrame frame) {
     	
-        JFreeChart chart = createChart("", new HashMap<Double, Double>());
+        JFreeChart chart = createChart("", new HashMap<Double, BigDecimal>());
     	chartPanel = new ChartPanel(chart);
         
     	// Set the location of the chart and hide it until the user enters a formula.
@@ -50,7 +51,7 @@ public class Graph extends JPanel {
      * @param title The title of the chart - usually the formula.
      * @param results The results to display - the value of x and the value of y as a HashMap.
      */
-    public void updateChart(String title, HashMap<Double, Double> results) {
+    public void updateChart(String title, HashMap<Double, BigDecimal> results) {
     	
     	chartPanel.setVisible(true);
     	JFreeChart chart = createChart(title, results);
@@ -85,7 +86,7 @@ public class Graph extends JPanel {
      * @param results The results as a HashMap - containing values of x and values of y.
      * @return The JFreeChart object, the chart to draw.
      */
-    private JFreeChart createChart(String title, HashMap<Double, Double> results) {
+    private JFreeChart createChart(String title, HashMap<Double, BigDecimal> results) {
     	
     	XYDataset dataset = createDataset(results);
     	
@@ -123,12 +124,12 @@ public class Graph extends JPanel {
      * @param results The results to display as values of x and values of y
      * @return The dataset for the chart.
      */
-    private static XYDataset createDataset(HashMap<Double, Double> results) {
+    private static XYDataset createDataset(HashMap<Double, BigDecimal> results) {
         
         final XYSeries series = new XYSeries("x");
         
         // Loop through each of the values, adding it to the chart series.
-        for (Map.Entry<Double, Double> entry : results.entrySet()) {
+        for (Map.Entry<Double, BigDecimal> entry : results.entrySet()) {
             series.add(entry.getKey(), entry.getValue());
         }
 

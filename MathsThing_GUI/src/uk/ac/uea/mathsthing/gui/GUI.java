@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -152,17 +153,17 @@ public class GUI extends JFrame {
         			return;
         		}
         		
-        		HashMap<Double, Double> results = new HashMap<>();
+        		HashMap<Double, BigDecimal> results = new HashMap<>();
         		
         		// It currently plots x between 0 and 10, so enter values of x to plot the graph.
-        		for (int i=-10; i<11; i++) {
+        		for (double i=-10; i<=10; i+=0.25) {
         			HashMap<String, Double> vals = new HashMap<>();
-        			vals.put("x", (double)i);
+        			vals.put("x", i);
         			
         			// Get the result and add it to the hash map.
         			try {
-						double result = parser.getResult(vals);
-						results.put((double)i, result);
+						BigDecimal result = parser.getResult(vals);
+						results.put(i, result);
 					} catch (Exception e1) {
 						
 						e1.printStackTrace();
