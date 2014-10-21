@@ -5,7 +5,8 @@
  *      Author: Jordan
  */
 
-#include "NativeParser.h"
+#include "include/NativeParser.h"
+#include <iostream>
 
 namespace mathsthing {
 
@@ -15,3 +16,9 @@ NativeParser::NativeParser() {
 }
 
 } /* namespace mathsthing */
+
+int main() {
+
+	std::cout << "Nothing to see here" << std::endl;
+	return 0;
+}

@@ -12,10 +12,12 @@
 #include <vector>
 
 #if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BORLANDC__)
-#include <win32\jni_md.h>
+#include <win32/jni_md.h>
 #elif __APPLE__
-
+#include <apple/jni_md.h>
 #elif __linux__
+#include <linux/jni_md.h>
+#endif
 
 #ifdef _UNICODE
 #define tstring std::wstring
@@ -25,12 +27,12 @@
 
 namespace mathsthing {
 
-class NativeParser {
-private:
-	std::vector<tstring> toekns;
-public:
-	NativeParser();
-};
+	class NativeParser {
+	private:
+		std::vector<tstring> tokens;
+	public:
+		NativeParser();
+	};
 
 } /* namespace mathsthing */
 
