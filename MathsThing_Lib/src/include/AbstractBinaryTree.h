@@ -10,7 +10,7 @@
 
 namespace mathsthing {
 
-template <class E>
+template <class E, class T>
 class AbstractBinaryTree {
 protected:
 	E item;
@@ -65,6 +65,12 @@ public:
 			}
 		}
 	}
+
+	virtual T preorder() = 0;
+
+	virtual T inorder() = 0;
+
+	virtual T postorder() = 0;
 
 	virtual ~AbstractBinaryTree()
 	{

@@ -6,25 +6,29 @@
  */
 
 #include "include/BinaryExpressionTree.h"
-#include "include/AbstractBinaryTree.h"
+#include "include/JNIUtils.h"
+
+#include <cmath>
 
 namespace mathsthing {
 
 BinaryExpressionTree::BinaryExpressionTree()
 {
-	this->item = nullptr;
+	mathsthing::Token empty;
+	empty.type = mathsthing::EMPTY;
+	this->item = empty;
 	this->leftNode = nullptr;
 	this->rightNode = nullptr;
 }
 
-BinaryExpressionTree::BinaryExpressionTree(tchar *item)
+BinaryExpressionTree::BinaryExpressionTree(Token item)
 {
 	this->item = item;
 	this->leftNode = nullptr;
 	this->rightNode = nullptr;
 }
 
-void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<tchar*> *tree)
+void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<Token, double> *tree)
 {
 	if (leftNode == nullptr) {
 		leftNode = tree;
@@ -34,7 +38,7 @@ void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<tchar*> *tree)
 	leftNode->addLeftTree(tree);
 }
 
-void BinaryExpressionTree::addRightTree(AbstractBinaryTree<tchar*> *tree)
+void BinaryExpressionTree::addRightTree(AbstractBinaryTree<Token, double> *tree)
 {
 	if (rightNode == nullptr) {
 			rightNode = tree;
@@ -44,9 +48,9 @@ void BinaryExpressionTree::addRightTree(AbstractBinaryTree<tchar*> *tree)
 	rightNode->addLeftTree(tree);
 }
 
-bool BinaryExpressionTree::insert(tchar* item)
+bool BinaryExpressionTree::insert(Token item)
 {
-	if (&this->item == nullptr) {
+	if (this->item.type == mathsthing::EMPTY) {
 		this->item = item;
 		return true;
 	} else if (leftNode == nullptr) {
@@ -64,7 +68,7 @@ bool BinaryExpressionTree::insert(tchar* item)
 	}
 }
 
-bool BinaryExpressionTree::insert(AbstractBinaryTree<tchar*> *tree)
+bool BinaryExpressionTree::insert(AbstractBinaryTree<Token, double> *tree)
 {
 	if (leftNode == nullptr) {
 		leftNode = tree;
@@ -81,7 +85,7 @@ bool BinaryExpressionTree::insert(AbstractBinaryTree<tchar*> *tree)
 	}
 }
 
-bool BinaryExpressionTree::contains(tchar *item)
+bool BinaryExpressionTree::contains(Token item)
 {
 	if (this->item == item)
 		return true;
@@ -95,7 +99,7 @@ bool BinaryExpressionTree::contains(tchar *item)
 	return false;
 }
 
-void BinaryExpressionTree::remove(tchar *item)
+void BinaryExpressionTree::remove(Token item)
 {
 	if (this->item == item) {
 		this->~BinaryExpressionTree();
@@ -107,6 +111,50 @@ void BinaryExpressionTree::remove(tchar *item)
 	} else if (rightNode != nullptr) {
 		rightNode->remove(item);
 	}
+}
+
+double BinaryExpressionTree::postorder()
+{
+	double leftVal = 0.0;
+	double rightVal = 0.0;
+
+	if (leftNode != nullptr)
+		leftVal = leftNode->postorder();
+	if (rightNode != nullptr)
+		rightVal = rightNode->postorder();
+
+	switch(item.type)
+	{
+	case mathsthing::CONSTANT:
+		return atof(item.value);
+	case mathsthing::OPERAND:
+		return 0.0;
+	case mathsthing::OPERATOR:
+		switch(item.value[0])
+		{
+		case '*':
+			return rightVal * leftVal;
+		case '+':
+			return rightVal + leftVal;
+		case '-':
+			return rightVal - leftVal;
+		case '/':
+			return rightVal / leftVal;
+		case '^':
+			return std::pow(rightVal, leftVal);
+		default:
+			JNIEnv* env = mathsthing::GetEnv();
+			mathsthing::ThrowFormulaException(env, "Unknown operator found in formula.");
+		}
+		break;
+	case mathsthing::FUNCTION:
+		return 0.0;
+	default:
+		JNIEnv* env = mathsthing::GetEnv();
+		mathsthing::ThrowFormulaException(env, "Incorrectly structured formula.");
+	}
+
+	return 0.0;
 }
 
 } /* namespace mathsthing */

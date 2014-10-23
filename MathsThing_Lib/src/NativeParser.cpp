@@ -21,7 +21,7 @@ double NativeParser::getResult(std::map<tchar*, double> params)
 
 tchar * NativeParser::getDerivative()
 {
-	return nullptr;
+	return "Not implemented";
 }
 
 NativeParser::~NativeParser()

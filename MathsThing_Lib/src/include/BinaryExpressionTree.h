@@ -9,29 +9,33 @@
 #define BINARYEXPRESSIONTREE_H_
 
 #include "AbstractBinaryTree.h"
-#include "CoreDefines.h"
-
-#include <string>
+#include "Token.h"
 
 namespace mathsthing {
 
-class BinaryExpressionTree: public AbstractBinaryTree<tchar*> {
+class BinaryExpressionTree: public AbstractBinaryTree<Token, double> {
 public:
 	BinaryExpressionTree();
 
-	BinaryExpressionTree(tchar *item);
+	BinaryExpressionTree(Token item);
 
-	void addLeftTree(AbstractBinaryTree<tchar*> *tree);
+	void addLeftTree(AbstractBinaryTree<Token, double> *tree);
 
-	void addRightTree(AbstractBinaryTree<tchar*> *tree);
+	void addRightTree(AbstractBinaryTree<Token, double> *tree);
 
-	bool insert(tchar* item);
+	bool insert(Token item);
 
-	bool insert(AbstractBinaryTree<tchar*> *tree);
+	bool insert(AbstractBinaryTree<Token, double> *tree);
 
-	bool contains(tchar *item);
+	bool contains(Token item);
 
-	void remove(tchar *item);
+	void remove(Token item);
+
+	double preorder() { return 0.0; }
+
+	double inorder() { return 0.0; }
+
+	double postorder();
 
 	~BinaryExpressionTree() {}
 };

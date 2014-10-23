@@ -14,7 +14,6 @@
 #include <iostream>
 
 #include "BinaryExpressionTree.h"
-#include "uk_ac_uea_mathsthing_NativeParser.h"
 #include "CoreDefines.h"
 
 namespace mathsthing {

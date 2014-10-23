@@ -16,4 +16,4 @@
 #define tout std::cout
 #endif
 
-#endif
+#endif /* CORE_DEFINES_H */

@@ -10,7 +10,7 @@ JNIEXPORT jlong JNICALL Java_uk_ac_uea_mathsthing_NativeParser_create
 	tout << "Creating NativeParser" << std::endl;
 #endif
 	// Check for an existing parser.
-	mathsthing::NativeParser *parser = mathsthing::GetPointer<mathsthing::NativeParser>(env, thisObj);
+	mathsthing::NativeParser *parser = mathsthing::GetPointer(env, thisObj);
 	// Create a new NativeParser if there isn't one stored in the Java class.
 	if (parser == nullptr) {
 #ifdef _DEBUG
@@ -32,7 +32,7 @@ JNIEXPORT jlong JNICALL Java_uk_ac_uea_mathsthing_NativeParser_create
 JNIEXPORT void JNICALL Java_uk_ac_uea_mathsthing_NativeParser_setFormulaNative
 	(JNIEnv *env, jobject thisObj, jint size, jobjectArray tokens)
 {
-	mathsthing::NativeParser *parser = mathsthing::GetPointer<mathsthing::NativeParser>(env, thisObj);
+	mathsthing::NativeParser *parser = mathsthing::GetPointer(env, thisObj);
 	if (parser == nullptr) {
 		mathsthing::ThrowNullPointerException(env, "Could not locate NativeParser");
 		return;
@@ -61,16 +61,19 @@ JNIEXPORT jdouble JNICALL Java_uk_ac_uea_mathsthing_NativeParser_getResultNative
 		jstring jKey = (jstring)env->GetObjectArrayElement(keys, i);
 
 		const tchar *key = (tchar*)env->GetStringUTFChars(jKey, JNI_FALSE);
+#ifdef _DEBUG
+		tout << key << std::endl;
+#endif
 		double value = valArr[i];
-		env->ReleaseStringUTFChars(jKey, key);
 
 #ifdef _DEBUG
 		tout << "Param pair: " << key << "-" << value << std::endl;
 #endif
 		params.insert(std::pair<tchar*, double>(const_cast<tchar*>(key), value));
+		env->ReleaseStringUTFChars(jKey, key);
 	}
 
-	mathsthing::NativeParser *parser = mathsthing::GetPointer<mathsthing::NativeParser>(env, thisObj);
+	mathsthing::NativeParser *parser = mathsthing::GetPointer(env, thisObj);
 	if (parser == nullptr) {
 		return mathsthing::ThrowNullPointerException(env, "Could not locate NativeParser");
 	}
@@ -84,7 +87,7 @@ JNIEXPORT jstring JNICALL Java_uk_ac_uea_mathsthing_NativeParser_getFirstDerivat
 #ifdef _DEBUG
 		tout << "Calculating derivative." << std::endl;
 #endif
-	mathsthing::NativeParser *parser = mathsthing::GetPointer<mathsthing::NativeParser>(env, thisObj);
+		mathsthing::NativeParser *parser = mathsthing::GetPointer(env, thisObj);
 	if (parser == nullptr)
 		mathsthing::ThrowNullPointerException(env, "Could not locate NativeParser");
 		return env->NewStringUTF("");
