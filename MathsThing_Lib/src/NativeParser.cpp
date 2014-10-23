@@ -9,7 +9,7 @@
 
 namespace mathsthing {
 
-void NativeParser::setFormula(unsigned int tokenCount, tchar *forumla)
+void NativeParser::setFormula(std::vector<tchar*> tokens)
 {
 
 }

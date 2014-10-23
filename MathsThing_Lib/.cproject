@@ -106,6 +106,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.809912120" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.153337822" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.466816602" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug">
@@ -119,6 +120,8 @@
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1227207758" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 								</option>
+								<option id="gnu.c.compiler.option.misc.other.1617631263" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.pic.836860776" superClass="gnu.c.compiler.option.misc.pic" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.193634115" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.so.debug.1694547312" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.so.debug">
@@ -181,6 +184,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1533018314" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.213199003" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.release.975150285" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.release">
@@ -192,6 +196,8 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.495911289" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols"/>
+								<option id="gnu.c.compiler.option.misc.other.1372037523" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.pic.1158471343" superClass="gnu.c.compiler.option.misc.pic" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.670512592" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.so.release.170550727" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.so.release">
@@ -275,7 +281,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.macosx.exe.debug.option.optimization.level.46420592" name="Optimization Level" superClass="gnu.c.compiler.macosx.exe.debug.option.optimization.level" valueType="enumerated"/>
 								<option id="gnu.c.compiler.macosx.exe.debug.option.debugging.level.995880024" name="Debug Level" superClass="gnu.c.compiler.macosx.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.dialect.std.629170307" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" value="gnu.c.compiler.dialect.c11" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1897937868" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1897937868" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1205817316" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
@@ -452,6 +458,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.1826996937" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1412808459" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1982035026" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug">
@@ -465,6 +472,8 @@
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.18444378" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 								</option>
+								<option id="gnu.c.compiler.option.misc.pic.230173931" name="Position Independent Code (-fPIC)" superClass="gnu.c.compiler.option.misc.pic" value="true" valueType="boolean"/>
+								<option id="gnu.c.compiler.option.misc.other.827529697" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.873467533" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.so.debug.783754739" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.so.debug">
@@ -524,6 +533,7 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include"/>
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.other.other.31694738" superClass="gnu.cpp.compiler.option.other.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.405838042" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.release.1090671094" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.release">
@@ -535,6 +545,8 @@
 									<listOptionValue builtIn="false" value="/usr/lib/jvm/java/include/linux"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.317811630" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols"/>
+								<option id="gnu.c.compiler.option.misc.other.846174118" name="Other flags" superClass="gnu.c.compiler.option.misc.other" value="-c -fmessage-length=0 -Wno-write-strings" valueType="string"/>
+								<option id="gnu.c.compiler.option.misc.pic.1835939100" name="Position Independent Code (-fPIC)" superClass="gnu.c.compiler.option.misc.pic" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.495470131" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.so.release.1031586061" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.so.release">
