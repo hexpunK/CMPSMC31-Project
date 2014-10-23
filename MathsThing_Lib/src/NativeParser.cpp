@@ -9,7 +9,7 @@
 
 namespace mathsthing {
 
-void NativeParser::setFormula(unsigned int tokenCount, tchar **forumla)
+void NativeParser::setFormula(unsigned int tokenCount, tchar *forumla)
 {
 
 }
@@ -19,9 +19,9 @@ double NativeParser::getResult(std::map<tchar*, double> params)
 	return 0.0;
 }
 
-tchar* NativeParser::getDerivative()
+tchar * NativeParser::getDerivative()
 {
-	return _T("ffff");
+	return nullptr;
 }
 
 NativeParser::~NativeParser()

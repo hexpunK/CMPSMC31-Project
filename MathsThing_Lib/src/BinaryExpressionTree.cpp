@@ -17,14 +17,14 @@ BinaryExpressionTree::BinaryExpressionTree()
 	this->rightNode = nullptr;
 }
 
-BinaryExpressionTree::BinaryExpressionTree(tstring* item)
+BinaryExpressionTree::BinaryExpressionTree(tchar *item)
 {
 	this->item = item;
 	this->leftNode = nullptr;
 	this->rightNode = nullptr;
 }
 
-void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<tstring*> *tree)
+void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<tchar*> *tree)
 {
 	if (leftNode == nullptr) {
 		leftNode = tree;
@@ -34,7 +34,7 @@ void BinaryExpressionTree::addLeftTree(AbstractBinaryTree<tstring*> *tree)
 	leftNode->addLeftTree(tree);
 }
 
-void BinaryExpressionTree::addRightTree(AbstractBinaryTree<tstring*> *tree)
+void BinaryExpressionTree::addRightTree(AbstractBinaryTree<tchar*> *tree)
 {
 	if (rightNode == nullptr) {
 			rightNode = tree;
@@ -44,7 +44,7 @@ void BinaryExpressionTree::addRightTree(AbstractBinaryTree<tstring*> *tree)
 	rightNode->addLeftTree(tree);
 }
 
-bool BinaryExpressionTree::insert(tstring* item)
+bool BinaryExpressionTree::insert(tchar* item)
 {
 	if (&this->item == nullptr) {
 		this->item = item;
@@ -64,7 +64,7 @@ bool BinaryExpressionTree::insert(tstring* item)
 	}
 }
 
-bool BinaryExpressionTree::insert(AbstractBinaryTree<tstring*> *tree)
+bool BinaryExpressionTree::insert(AbstractBinaryTree<tchar*> *tree)
 {
 	if (leftNode == nullptr) {
 		leftNode = tree;
@@ -81,7 +81,7 @@ bool BinaryExpressionTree::insert(AbstractBinaryTree<tstring*> *tree)
 	}
 }
 
-bool BinaryExpressionTree::contains(tstring* item)
+bool BinaryExpressionTree::contains(tchar *item)
 {
 	if (this->item == item)
 		return true;
@@ -95,7 +95,7 @@ bool BinaryExpressionTree::contains(tstring* item)
 	return false;
 }
 
-void BinaryExpressionTree::remove(tstring* item)
+void BinaryExpressionTree::remove(tchar *item)
 {
 	if (this->item == item) {
 		this->~BinaryExpressionTree();

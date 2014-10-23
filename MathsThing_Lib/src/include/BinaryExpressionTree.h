@@ -9,38 +9,29 @@
 #define BINARYEXPRESSIONTREE_H_
 
 #include "AbstractBinaryTree.h"
+#include "CoreDefines.h"
 
 #include <string>
 
-#ifdef _UNICODE
-#define tstring std::wstring
-#define tchar wchar_t
-#define _T(x) L#x
-#else
-#define tstring std::string
-#define tchar char
-#define _T(x) #x
-#endif
-
 namespace mathsthing {
 
-class BinaryExpressionTree: public AbstractBinaryTree<tstring*> {
+class BinaryExpressionTree: public AbstractBinaryTree<tchar*> {
 public:
 	BinaryExpressionTree();
 
-	BinaryExpressionTree(tstring* item);
+	BinaryExpressionTree(tchar *item);
 
-	void addLeftTree(AbstractBinaryTree<tstring*> *tree);
+	void addLeftTree(AbstractBinaryTree<tchar*> *tree);
 
-	void addRightTree(AbstractBinaryTree<tstring*> *tree);
+	void addRightTree(AbstractBinaryTree<tchar*> *tree);
 
-	bool insert(tstring* item);
+	bool insert(tchar* item);
 
-	bool insert(AbstractBinaryTree<tstring*> *tree);
+	bool insert(AbstractBinaryTree<tchar*> *tree);
 
-	bool contains(tstring* item);
+	bool contains(tchar *item);
 
-	void remove(tstring* item);
+	void remove(tchar *item);
 
 	~BinaryExpressionTree() {}
 };
