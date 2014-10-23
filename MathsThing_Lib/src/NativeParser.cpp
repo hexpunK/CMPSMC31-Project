@@ -5,12 +5,27 @@
  *      Author: Jordan
  */
 
-#include "NativeParser.h"
+#include "include/NativeParser.h"
 
 namespace mathsthing {
 
-NativeParser::NativeParser() {
-	// TODO Auto-generated constructor stub
+void NativeParser::setFormula(unsigned int tokenCount, tchar **forumla)
+{
+
+}
+
+double NativeParser::getResult(std::map<tchar*, double> params)
+{
+	return 0.0;
+}
+
+tchar* NativeParser::getDerivative()
+{
+	return _T("ffff");
+}
+
+NativeParser::~NativeParser()
+{
 
 }
 

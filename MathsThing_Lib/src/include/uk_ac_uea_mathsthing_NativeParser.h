@@ -9,19 +9,27 @@ extern "C" {
 #endif
 /*
  * Class:     uk_ac_uea_mathsthing_NativeParser
+ * Method:    create
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_uk_ac_uea_mathsthing_NativeParser_create
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     uk_ac_uea_mathsthing_NativeParser
  * Method:    setFormulaNative
- * Signature: ([Ljava/lang/String;)V
+ * Signature: (I[Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_uk_ac_uea_mathsthing_NativeParser_setFormulaNative
-  (JNIEnv *, jobject, jobjectArray);
+  (JNIEnv *, jobject, jint, jobjectArray);
 
 /*
  * Class:     uk_ac_uea_mathsthing_NativeParser
  * Method:    getResultNative
- * Signature: (Ljava/util/HashMap;)D
+ * Signature: ([Ljava/lang/String;[D)D
  */
 JNIEXPORT jdouble JNICALL Java_uk_ac_uea_mathsthing_NativeParser_getResultNative
-  (JNIEnv *, jobject, jobject);
+  (JNIEnv *, jobject, jobjectArray, jdoubleArray);
 
 /*
  * Class:     uk_ac_uea_mathsthing_NativeParser
@@ -33,10 +41,10 @@ JNIEXPORT jstring JNICALL Java_uk_ac_uea_mathsthing_NativeParser_getFirstDerivat
 
 /*
  * Class:     uk_ac_uea_mathsthing_NativeParser
- * Method:    getSecondDerivativeNative
- * Signature: ()Ljava/lang/String;
+ * Method:    destroy
+ * Signature: ()V
  */
-JNIEXPORT jstring JNICALL Java_uk_ac_uea_mathsthing_NativeParser_getSecondDerivativeNative
+JNIEXPORT void JNICALL Java_uk_ac_uea_mathsthing_NativeParser_destroy
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

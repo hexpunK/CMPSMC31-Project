@@ -6,8 +6,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing_Lib"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing_Lib/Debug"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing/Debug-win32"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing_Lib" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -16,7 +19,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="dll" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="Windows debug build." id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473" name="Debug-win32" parent="cdt.managedbuild.config.gnu.mingw.so.debug">
+				<configuration artifactExtension="dll" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="Windows debug build." id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473" name="Debug-win32" parent="cdt.managedbuild.config.gnu.mingw.so.debug" preannouncebuildStep="Sets up the 32-bit build environment." prebuildStep="cmd /c &quot;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat&quot; x86">
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.msvc.toolchain.dll.debug.2092373399" name="Microsoft Visual C++" superClass="org.eclipse.cdt.msvc.toolchain.dll.debug">
 							<targetPlatform id="org.eclipse.cdt.msvc.targetPlatform.dll.debug.1116673325" superClass="org.eclipse.cdt.msvc.targetPlatform.dll.debug"/>
@@ -24,18 +27,28 @@
 							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="org.eclipse.cdt.msvc.cl.c.dll.debug.1489248436" name="C Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.c.dll.debug">
 								<option id="org.eclipse.cdt.msvc.cl.option.optimization.734063865" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization" value="org.eclipse.cdt.msvc.cl.option.optimization.default" valueType="enumerated"/>
 								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.1232817417" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat" value="org.eclipse.cdt.msvc.cl.option.debugFormat.complete" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.1221061330" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.1388476020" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.runtime.2101462801" name="Run-Time Library" superClass="org.eclipse.cdt.msvc.cl.option.runtime" value="org.eclipse.cdt.msvc.cl.option.runtime.mdd" valueType="enumerated"/>
 								<inputType id="org.eclipse.cdt.msvc.cl.inputType.c.497581941" superClass="org.eclipse.cdt.msvc.cl.inputType.c"/>
 							</tool>
 							<tool id="org.eclipse.cdt.msvc.cl.dll.debug.1718751066" name="C++ Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.dll.debug">
 								<option id="org.eclipse.cdt.msvc.cl.option.optimization.1385449037" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization" value="org.eclipse.cdt.msvc.cl.option.optimization.default" valueType="enumerated"/>
 								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.668128274" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat" value="org.eclipse.cdt.msvc.cl.option.debugFormat.complete" valueType="enumerated"/>
 								<option id="org.eclipse.cdt.msvc.cl.option.includes.1089218360" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
 								</option>
-								<option id="org.eclipse.cdt.msvc.cl.option.macros.1303195231" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.1303195231" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_DEBUG"/>
 									<listOptionValue builtIn="false" value="_UNICODE"/>
 								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.runtime.253543713" name="Run-Time Library" superClass="org.eclipse.cdt.msvc.cl.option.runtime" value="org.eclipse.cdt.msvc.cl.option.runtime.mdd" valueType="enumerated"/>
 								<inputType id="org.eclipse.cdt.msvc.cl.inputType.1860632301" superClass="org.eclipse.cdt.msvc.cl.inputType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.msvc.rc.dll.debug.675075484" name="Resource Compiler (rc)" superClass="org.eclipse.cdt.msvc.rc.dll.debug">
@@ -49,11 +62,17 @@
 									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
 								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.libraries.1297117586" name="Libraries" superClass="org.eclipse.cdt.msvc.link.option.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\Kernel32.Lib"/>
+								</option>
 								<inputType id="org.eclipse.cdt.msvc.link.inputType.1580618072" superClass="org.eclipse.cdt.msvc.link.inputType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.msvc.lib.1611429596" name="Library Manager (lib)" superClass="org.eclipse.cdt.msvc.lib"/>
 						</toolChain>
 					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -63,8 +82,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing_Lib"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing_Lib/Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing/Release-win32"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing_Lib" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -73,33 +95,47 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="dll" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="Windows release build." id="cdt.managedbuild.config.gnu.mingw.so.release.39221304" name="Release-win32" parent="cdt.managedbuild.config.gnu.mingw.so.release">
+				<configuration artifactExtension="dll" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="Windows release build." errorParsers="org.eclipse.cdt.core.VCErrorParser" id="cdt.managedbuild.config.gnu.mingw.so.release.39221304" name="Release-win32" parent="cdt.managedbuild.config.gnu.mingw.so.release" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="Sets up the 32-bit build environment." prebuildStep="cmd /c &quot;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat&quot; x86">
 					<folderInfo id="cdt.managedbuild.config.gnu.mingw.so.release.39221304." name="/" resourcePath="">
-						<toolChain id="org.eclipse.cdt.msvc.toolchain.dll.debug.614398871" name="Microsoft Visual C++" superClass="org.eclipse.cdt.msvc.toolchain.dll.debug">
-							<targetPlatform id="org.eclipse.cdt.msvc.targetPlatform.dll.debug.463922987" superClass="org.eclipse.cdt.msvc.targetPlatform.dll.debug"/>
-							<builder buildPath="${workspace_loc:/MathsThing}/Release-win32" id="org.eclipse.cdt.msvc.builder.447831358" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.msvc.builder"/>
-							<tool id="org.eclipse.cdt.msvc.cl.c.dll.debug.288038454" name="C Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.c.dll.debug">
+						<toolChain errorParsers="" id="org.eclipse.cdt.msvc.toolchain.dll.debug.614398871" name="Microsoft Visual C++" superClass="org.eclipse.cdt.msvc.toolchain.dll.debug">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="org.eclipse.cdt.msvc.targetPlatform.dll.debug.463922987" superClass="org.eclipse.cdt.msvc.targetPlatform.dll.debug"/>
+							<builder buildPath="${workspace_loc:/MathsThing}/Release-win32" errorParsers="" id="org.eclipse.cdt.msvc.builder.447831358" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.msvc.builder"/>
+							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.cl.c.dll.debug.288038454" name="C Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.c.dll.debug">
 								<option id="org.eclipse.cdt.msvc.cl.option.optimization.1688610800" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization"/>
 								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.1831315900" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.1109378925" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.2048076209" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+								</option>
 								<inputType id="org.eclipse.cdt.msvc.cl.inputType.c.1317542580" superClass="org.eclipse.cdt.msvc.cl.inputType.c"/>
 							</tool>
-							<tool id="org.eclipse.cdt.msvc.cl.dll.debug.106585162" name="C++ Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.dll.debug">
+							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.cl.dll.debug.106585162" name="C++ Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.dll.debug">
 								<option id="org.eclipse.cdt.msvc.cl.option.includes.1306790471" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
 								</option>
 								<option id="org.eclipse.cdt.msvc.cl.option.optimization.676154908" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization"/>
 								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.550049215" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat"/>
-								<option id="org.eclipse.cdt.msvc.cl.option.macros.1172552231" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.1172552231" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_UNICODE"/>
 								</option>
 								<inputType id="org.eclipse.cdt.msvc.cl.inputType.176170982" superClass="org.eclipse.cdt.msvc.cl.inputType"/>
 							</tool>
-							<tool id="org.eclipse.cdt.msvc.rc.dll.debug.457286493" name="Resource Compiler (rc)" superClass="org.eclipse.cdt.msvc.rc.dll.debug">
+							<tool command="rc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.rc.dll.debug.457286493" name="Resource Compiler (rc)" superClass="org.eclipse.cdt.msvc.rc.dll.debug">
 								<inputType id="org.eclipse.cdt.msvc.rc.inputType.61094448" superClass="org.eclipse.cdt.msvc.rc.inputType"/>
 							</tool>
-							<tool id="org.eclipse.cdt.msvc.link.dll.debug.1414950538" name="Linker (link)" superClass="org.eclipse.cdt.msvc.link.dll.debug">
+							<tool command="link" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.link.dll.debug.1414950538" name="Linker (link)" superClass="org.eclipse.cdt.msvc.link.dll.debug">
 								<option defaultValue="true" id="org.eclipse.cdt.msvc.link.option.dll.1225683062" name="Build a DLL" superClass="org.eclipse.cdt.msvc.link.option.dll" valueType="boolean"/>
+								<option id="org.eclipse.cdt.msvc.link.option.libpath.1129604361" name="Additional Libpath (/libpath)" superClass="org.eclipse.cdt.msvc.link.option.libpath" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.libraries.1727774991" name="Libraries" superClass="org.eclipse.cdt.msvc.link.option.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\Kernel32.Lib"/>
+								</option>
 								<inputType id="org.eclipse.cdt.msvc.link.inputType.435910876" superClass="org.eclipse.cdt.msvc.link.inputType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.msvc.lib.1944860642" name="Library Manager (lib)" superClass="org.eclipse.cdt.msvc.lib"/>
@@ -141,6 +177,9 @@
 								<option id="gnu.cpp.compiler.option.other.pic.345638383" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.warnings.extrawarn.762231530" name="Extra warnings (-Wextra)" superClass="gnu.cpp.compiler.option.warnings.extrawarn" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.include.files.1287505689" name="Include files (-include)" superClass="gnu.cpp.compiler.option.include.files"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.531134004" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_DEBUG"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.153337822" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.466816602" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug">
@@ -273,6 +312,9 @@
 								<option id="gnu.cpp.compilermacosx.exe.debug.option.optimization.level.655321331" name="Optimization Level" superClass="gnu.cpp.compilermacosx.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.macosx.exe.debug.option.debugging.level.1910522251" name="Debug Level" superClass="gnu.cpp.compiler.macosx.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.dialect.std.916786642" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1958917853" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_DEBUG"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.2113265035" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug.1559190894" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.macosx.exe.debug">
@@ -345,6 +387,152 @@
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
+		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032" moduleId="org.eclipse.cdt.core.settings" name="Release-win64">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing/Release-win64"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing64" srcPrefixMapping="" srcRootPath=""/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="dll" artifactName="${ProjName}64" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="Release build for 64-bit Windows." errorParsers="org.eclipse.cdt.core.VCErrorParser" id="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032" name="Release-win64" parent="cdt.managedbuild.config.gnu.mingw.so.release" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="Sets up the 64-bit build environment." prebuildStep="cmd /c &quot;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat&quot; x64">
+					<folderInfo id="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032." name="/" resourcePath="">
+						<toolChain errorParsers="" id="org.eclipse.cdt.msvc.toolchain.dll.debug.671289712" name="Microsoft Visual C++" superClass="org.eclipse.cdt.msvc.toolchain.dll.debug">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.PE" id="org.eclipse.cdt.msvc.targetPlatform.dll.debug.621037589" superClass="org.eclipse.cdt.msvc.targetPlatform.dll.debug"/>
+							<builder buildPath="${workspace_loc:/MathsThing}/Release-win32" errorParsers="" id="org.eclipse.cdt.msvc.builder.1952759986" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="org.eclipse.cdt.msvc.builder"/>
+							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.cl.c.dll.debug.1731496313" name="C Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.c.dll.debug">
+								<option id="org.eclipse.cdt.msvc.cl.option.optimization.915382087" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.2096063489" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.1979284196" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.664590645" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.others.1114695500" name="Other Options" superClass="org.eclipse.cdt.msvc.cl.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.cl.inputType.c.1970607953" superClass="org.eclipse.cdt.msvc.cl.inputType.c"/>
+							</tool>
+							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.cl.dll.debug.1969672225" name="C++ Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.dll.debug">
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.689545250" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.optimization.1319315309" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.611384481" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.1214648896" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.others.178925983" name="Other Options" superClass="org.eclipse.cdt.msvc.cl.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.cl.inputType.930775414" superClass="org.eclipse.cdt.msvc.cl.inputType"/>
+							</tool>
+							<tool command="rc" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.rc.dll.debug.339199817" name="Resource Compiler (rc)" superClass="org.eclipse.cdt.msvc.rc.dll.debug">
+								<inputType id="org.eclipse.cdt.msvc.rc.inputType.235397809" superClass="org.eclipse.cdt.msvc.rc.inputType"/>
+							</tool>
+							<tool command="link" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.VCErrorParser" id="org.eclipse.cdt.msvc.link.dll.debug.1491003798" name="Linker (link)" superClass="org.eclipse.cdt.msvc.link.dll.debug">
+								<option defaultValue="true" id="org.eclipse.cdt.msvc.link.option.dll.1853051301" name="Build a DLL" superClass="org.eclipse.cdt.msvc.link.option.dll" valueType="boolean"/>
+								<option id="org.eclipse.cdt.msvc.link.option.libpath.1313234945" name="Additional Libpath (/libpath)" superClass="org.eclipse.cdt.msvc.link.option.libpath" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.libraries.2130626431" name="Libraries" superClass="org.eclipse.cdt.msvc.link.option.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\Kernel32.Lib"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.others.1715571593" name="Other Options" superClass="org.eclipse.cdt.msvc.link.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.link.inputType.569507980" superClass="org.eclipse.cdt.msvc.link.inputType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.msvc.lib.1032521280" name="Library Manager (lib)" superClass="org.eclipse.cdt.msvc.lib"/>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234" moduleId="org.eclipse.cdt.core.settings" name="Debug-win64">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/MathsThing"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/MathsThing/Debug-win64"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="MathsThing64" srcPrefixMapping="" srcRootPath=""/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="dll" artifactName="${ProjName}64" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="Debug build for 64-bit Windows." id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234" name="Debug-win64" parent="cdt.managedbuild.config.gnu.mingw.so.debug" preannouncebuildStep="Sets up the 64-bit build environment." prebuildStep="cmd /c &quot;C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat&quot; x64">
+					<folderInfo id="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234." name="/" resourcePath="">
+						<toolChain id="org.eclipse.cdt.msvc.toolchain.dll.debug.151030351" name="Microsoft Visual C++" superClass="org.eclipse.cdt.msvc.toolchain.dll.debug">
+							<targetPlatform id="org.eclipse.cdt.msvc.targetPlatform.dll.debug.2046952627" superClass="org.eclipse.cdt.msvc.targetPlatform.dll.debug"/>
+							<builder buildPath="${workspace_loc:/MathsThing}/Debug-win64" id="org.eclipse.cdt.build.core.internal.builder.1083615081" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="org.eclipse.cdt.build.core.internal.builder"/>
+							<tool command="cl /c" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="org.eclipse.cdt.msvc.cl.c.dll.debug.678724406" name="C Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.c.dll.debug">
+								<option id="org.eclipse.cdt.msvc.cl.option.optimization.1475106178" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization" value="org.eclipse.cdt.msvc.cl.option.optimization.default" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.977894169" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat" value="org.eclipse.cdt.msvc.cl.option.debugFormat.complete" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.1535045385" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.452079636" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.runtime.1433856849" name="Run-Time Library" superClass="org.eclipse.cdt.msvc.cl.option.runtime" value="org.eclipse.cdt.msvc.cl.option.runtime.mdd" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.others.566074508" name="Other Options" superClass="org.eclipse.cdt.msvc.cl.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.cl.inputType.c.821098198" superClass="org.eclipse.cdt.msvc.cl.inputType.c"/>
+							</tool>
+							<tool id="org.eclipse.cdt.msvc.cl.dll.debug.677075811" name="C++ Compiler (cl)" superClass="org.eclipse.cdt.msvc.cl.dll.debug">
+								<option id="org.eclipse.cdt.msvc.cl.option.optimization.351550194" name="Optimization" superClass="org.eclipse.cdt.msvc.cl.option.optimization" value="org.eclipse.cdt.msvc.cl.option.optimization.default" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.debugFormat.1662631223" name="Debug Information Format" superClass="org.eclipse.cdt.msvc.cl.option.debugFormat" value="org.eclipse.cdt.msvc.cl.option.debugFormat.complete" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.includes.1184032033" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.cl.option.includes" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.macros.59796216" name="Defines (/D)" superClass="org.eclipse.cdt.msvc.cl.option.macros" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_UNICODE"/>
+									<listOptionValue builtIn="false" value="_DEBUG"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.cl.option.runtime.2050909902" name="Run-Time Library" superClass="org.eclipse.cdt.msvc.cl.option.runtime" value="org.eclipse.cdt.msvc.cl.option.runtime.mdd" valueType="enumerated"/>
+								<option id="org.eclipse.cdt.msvc.cl.option.others.1378204746" name="Other Options" superClass="org.eclipse.cdt.msvc.cl.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.cl.inputType.536613240" superClass="org.eclipse.cdt.msvc.cl.inputType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.msvc.rc.dll.debug.1614679035" name="Resource Compiler (rc)" superClass="org.eclipse.cdt.msvc.rc.dll.debug">
+								<option id="org.eclipse.cdt.msvc.rc.option.includes.568070875" name="Include Path (/I)" superClass="org.eclipse.cdt.msvc.rc.option.includes"/>
+								<inputType id="org.eclipse.cdt.msvc.rc.inputType.725776618" superClass="org.eclipse.cdt.msvc.rc.inputType"/>
+							</tool>
+							<tool command="link" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" id="org.eclipse.cdt.msvc.link.dll.debug.1619743553" name="Linker (link)" superClass="org.eclipse.cdt.msvc.link.dll.debug">
+								<option defaultValue="true" id="org.eclipse.cdt.msvc.link.option.dll.570297641" name="Build a DLL" superClass="org.eclipse.cdt.msvc.link.option.dll" valueType="boolean"/>
+								<option id="org.eclipse.cdt.msvc.link.option.debug.2070245977" name="Generate Debug Info (/debug)" superClass="org.eclipse.cdt.msvc.link.option.debug" value="true" valueType="boolean"/>
+								<option id="org.eclipse.cdt.msvc.link.option.libpath.1120728717" name="Additional Libpath (/libpath)" superClass="org.eclipse.cdt.msvc.link.option.libpath" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${JAVA_HOME}\include\win32&quot;"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.libraries.1764419298" name="Libraries" superClass="org.eclipse.cdt.msvc.link.option.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\Kernel32.Lib"/>
+									<listOptionValue builtIn="false" value="C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\Kernel32.Lib"/>
+								</option>
+								<option id="org.eclipse.cdt.msvc.link.option.others.1924580835" name="Other Options" superClass="org.eclipse.cdt.msvc.link.option.others" valueType="stringList"/>
+								<inputType id="org.eclipse.cdt.msvc.link.inputType.900023015" superClass="org.eclipse.cdt.msvc.link.inputType"/>
+								<outputType id="org.eclipse.cdt.msvc.link.outputType.1456321962" outputPrefix="" superClass="org.eclipse.cdt.msvc.link.outputType"/>
+							</tool>
+							<tool id="org.eclipse.cdt.msvc.lib.1036106077" name="Library Manager (lib)" superClass="org.eclipse.cdt.msvc.lib"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="MathsThing_Lib.cdt.managedbuild.target.gnu.mingw.so.1017964655" name="Shared Library" projectType="cdt.managedbuild.target.gnu.mingw.so"/>
@@ -372,20 +560,26 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/MathsThing_Lib"/>
 		</configuration>
+		<configuration configurationName="Debug-win64">
+			<resource resourceType="PROJECT" workspacePath="/MathsThing"/>
+		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-		<buildTargets/>
-	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473;cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.;cdt.managedbuild.tool.gnu.c.compiler.mingw.so.debug.1004571785;cdt.managedbuild.tool.gnu.c.compiler.input.79140902">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304;cdt.managedbuild.config.gnu.mingw.so.release.39221304.;org.eclipse.cdt.msvc.cl.c.dll.debug.288038454;org.eclipse.cdt.msvc.cl.inputType.c.1317542580">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.macosx.exe.debug.1560477449;cdt.managedbuild.config.gnu.macosx.exe.debug.1560477449.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.exe.debug.1410097210;cdt.managedbuild.tool.gnu.cpp.compiler.input.2113265035">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473;cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.;org.eclipse.cdt.msvc.cl.c.dll.debug.1489248436;org.eclipse.cdt.msvc.cl.inputType.c.497581941">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234;cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234.;org.eclipse.cdt.msvc.cl.c.dll.debug.678724406;org.eclipse.cdt.msvc.cl.inputType.c.821098198">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473;cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.;org.eclipse.cdt.msvc.cl.dll.debug.1718751066;org.eclipse.cdt.msvc.cl.inputType.1860632301">
@@ -421,8 +615,17 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.so.release.310311725;cdt.managedbuild.config.gnu.so.release.310311725.;cdt.managedbuild.tool.gnu.cpp.compiler.so.release.371350384;cdt.managedbuild.tool.gnu.cpp.compiler.input.213199003">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032;cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032.;org.eclipse.cdt.msvc.cl.dll.debug.1969672225;org.eclipse.cdt.msvc.cl.inputType.930775414">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.macosx.so.release.1687777090;cdt.managedbuild.config.macosx.so.release.1687777090.;cdt.managedbuild.tool.gnu.cpp.compiler.macosx.so.release.1629736987;cdt.managedbuild.tool.gnu.cpp.compiler.input.1965858947">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234;cdt.managedbuild.config.gnu.mingw.so.debug.1912899473.10998234.;org.eclipse.cdt.msvc.cl.dll.debug.677075811;org.eclipse.cdt.msvc.cl.inputType.536613240">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304;cdt.managedbuild.config.gnu.mingw.so.release.39221304.;org.eclipse.cdt.msvc.cl.dll.debug.106585162;org.eclipse.cdt.msvc.cl.inputType.176170982">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.so.debug.146897279;cdt.managedbuild.config.gnu.so.debug.146897279.;cdt.managedbuild.tool.gnu.cpp.compiler.so.debug.585671508;cdt.managedbuild.tool.gnu.cpp.compiler.input.153337822">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -442,6 +645,9 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304;cdt.managedbuild.config.gnu.mingw.so.release.39221304.;cdt.managedbuild.tool.gnu.cpp.compiler.mingw.so.release.1745521845;cdt.managedbuild.tool.gnu.cpp.compiler.input.511808069">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032;cdt.managedbuild.config.gnu.mingw.so.release.39221304.1902344032.;org.eclipse.cdt.msvc.cl.c.dll.debug.1731496313;org.eclipse.cdt.msvc.cl.inputType.c.1970607953">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
+		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304;cdt.managedbuild.config.gnu.mingw.so.release.39221304.;cdt.managedbuild.tool.gnu.c.compiler.mingw.so.release.427918451;cdt.managedbuild.tool.gnu.c.compiler.input.1824977848">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
@@ -451,5 +657,8 @@
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.mingw.so.release.39221304;cdt.managedbuild.config.gnu.mingw.so.release.39221304.;org.eclipse.cdt.msvc.cl.dll.debug.197802786;org.eclipse.cdt.msvc.cl.inputType.609625857">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.msw.build.clScannerInfo"/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets/>
 	</storageModule>
 </cproject>
