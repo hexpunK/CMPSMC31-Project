@@ -12,7 +12,7 @@ public interface IFormulaLexer {
 
 	/**
 	 * Get the formula the user provided to this instance, as written before 
-	 * any processing was perofrmed.
+	 * any processing was performed.
 	 * 
 	 * @return The formula provided by the user as a String.
 	 */
@@ -35,4 +35,13 @@ public interface IFormulaLexer {
 	 * @return A String array containing all the tokens found in the formula.
 	 */
 	public String[] tokenize(String formula);
+	
+	/**
+	 * Returns the tokens created by this lexer if they exist. The tokens will 
+	 * contain constants, paramters, functions and operators.
+	 * 
+	 * @return Returns a {@link String} array containing the tokens of a 
+	 * processed formula.
+	 */
+	public String[] getTokens();
 }

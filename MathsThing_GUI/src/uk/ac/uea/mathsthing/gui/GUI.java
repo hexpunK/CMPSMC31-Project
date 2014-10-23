@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,7 +34,7 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	/** Text field used to enter the formula. */
-	final JTextField inputField;
+	final JTextField inputField, fromField, toField, incrementField;
 	/** The enter button to process the formula. */
     final JButton enterButton;
     /** The reset button to reset the formula. */
@@ -43,7 +44,7 @@ public class GUI extends JFrame {
     /** Reference to the window so we can use it in the menu bar. */
     final JFrame frame;
     /** Reference to the save graph menu item so we can enable/disable it. */
-    JMenuItem saveGraphItem;
+    JMenuItem saveGraphItem, productHelpItem, aboutItem;
 	
     /**
 	 * Sets up the GUI for the application.
@@ -54,7 +55,7 @@ public class GUI extends JFrame {
 		
 		// Sets the window size to be 700 x 500
 		final Dimension screenSize = new Dimension();
-		screenSize.height = 500;
+		screenSize.height = 600;
 		screenSize.width = 700;
         
 		setTitle("Rudy Lapeer's Mathematical Mathematicon");
@@ -71,6 +72,10 @@ public class GUI extends JFrame {
     	saveGraphItem = new JMenuItem("Save Graph");
     	saveGraphItem.setEnabled(false);
     	JMenuItem exitItem = new JMenuItem("Exit");
+    	
+    	JMenu help = new JMenu("Help");
+    	productHelpItem = new JMenuItem("Product Guide");
+    	aboutItem = new JMenuItem("About");
     	
     	saveGraphItem.addActionListener(new ActionListener(){
         	
@@ -108,26 +113,90 @@ public class GUI extends JFrame {
         	
         });
     	
+    	productHelpItem.addActionListener(new ActionListener(){
+        	
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		// Display the help guide when the product guide menu item has been clicked.
+        		Help help = new Help();
+        		help.display(frame);
+        	}
+        	
+        });
+    	
+    	aboutItem.addActionListener(new ActionListener(){
+        	
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		// Show an about window when the about menu item has been clicked.
+        		JOptionPane.showMessageDialog(frame, "Maths Thing v0.1 by Laura Goold, Jake Ruston and Jordan Woerner\nfor Advanced Programming Techniques (2014).", 
+        				"About", JOptionPane.INFORMATION_MESSAGE);
+        	}
+        	
+        });
+    	
     	// Add the menu items to the menu bar.
     	file.add(saveGraphItem);
     	file.add(exitItem);
+    	help.add(productHelpItem);
+    	help.add(aboutItem);
     	menuBar.add(file);
+    	menuBar.add(help);
     	setJMenuBar(menuBar);
 
     	// Add a text field near the top, taking up most of the horizontal space. Used for formula entry.
         inputField = new JTextField();
-        inputField.setBounds(10, 10, screenSize.width-200, 30);
+        inputField.setBounds(10, 10, screenSize.width-20, 30);
         inputField.setDragEnabled(true);
+        
+        // Add a label saying "Values", to tell the user they need to enter the "from" and "to" values to draw the graph.
+        JLabel fromLabel = new JLabel();
+        fromLabel.setText("Values:");
+    	fromLabel.setBounds(10, 50, 50, 30);
+    	add(fromLabel);
+        
+    	// Add a text field for the "from" value - where the graph will start plotting from.
+        fromField = new JTextField();
+        fromField.setBounds(60, 50, 60, 30);
+        fromField.setText("-10");
+        fromField.setDragEnabled(true);
+        
+        // Add a separator label between the "from" and "to" values.
+        JLabel separatorLabel = new JLabel();
+        separatorLabel.setText("-");
+        separatorLabel.setBounds(130, 50, 8, 30);
+    	add(separatorLabel);
+        
+    	// Add a text field for the "to" value - where the graph will finish plotting from.
+        toField = new JTextField();
+        toField.setBounds(148, 50, 60, 30);
+        toField.setText("10");
+        toField.setDragEnabled(true);
+        
+        // Add a label saying "Increment", to tell the user they need to enter the amount the graph will go up in.
+        JLabel incrementLabel = new JLabel();
+        incrementLabel.setText("Increment:");
+        incrementLabel.setBounds(218, 50, 80, 30);
+    	add(incrementLabel);
+        
+    	// Add a text field for the increment value.
+        incrementField = new JTextField();
+        incrementField.setBounds(290, 50, 60, 30);
+        incrementField.setText("1");
+        incrementField.setDragEnabled(true);
         
         // Add a button to enter the formula, to the right of the text field.
         enterButton = new JButton("Enter");
-        enterButton.setBounds(screenSize.width-190, 10, 90, 30);
+        enterButton.setBounds(screenSize.width-200, 50, 90, 30);
         
         // Add a button to reset the formula, to the right of the enter button.
         resetButton = new JButton("Reset");
-        resetButton.setBounds(screenSize.width-100, 10, 90, 30);
+        resetButton.setBounds(screenSize.width-100, 50, 90, 30);
 
         add(inputField);
+        add(fromField);
+        add(toField);
+        add(incrementField);
         add(enterButton);
         add(resetButton);
         
@@ -136,6 +205,39 @@ public class GUI extends JFrame {
         enterButton.addActionListener(new ActionListener(){
         	
         	public void actionPerformed(ActionEvent e) {
+        		
+        		double fromValue = 0.0, toValue = 0.0, incrementValue = 0.0;
+        		
+        		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
+        		try {
+        			fromValue = Double.parseDouble(fromField.getText());
+        			toValue = Double.parseDouble(toField.getText());
+        		} catch (Exception ex) {
+        			ex.printStackTrace();
+        			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+        			return;
+        		}
+        		
+        		// Attempt to parse the increment value. Exception is thrown if they aren't valid numbers.
+        		try {
+        			incrementValue = Double.parseDouble(incrementField.getText());
+        		} catch (Exception ex) {
+        			ex.printStackTrace();
+        			JOptionPane.showMessageDialog(frame, "The increment value must be a number.", "Invalid Increment!", JOptionPane.ERROR_MESSAGE);
+        			return;
+        		}
+        		
+        		// Throw an error if the from value is less than the to value.
+        		if (fromValue >= toValue) {
+        			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+        			return;
+        		}
+        		
+        		// If the increment value is below 0, throw an error.
+        		if (incrementValue <= 0) {
+        			JOptionPane.showMessageDialog(frame, "The increment value must be greater than 0.", "Invalid Increment!", JOptionPane.ERROR_MESSAGE);
+        			return;
+        		}
         		
         		// Tokenize the input from the user.
         		Lexer lexer = new Lexer(inputField.getText());
@@ -154,8 +256,7 @@ public class GUI extends JFrame {
         		
         		HashMap<Double, Double> results = new HashMap<>();
         		
-        		// It currently plots x between 0 and 10, so enter values of x to plot the graph.
-        		for (int i=-10; i<11; i++) {
+        		for (double i=fromValue; i<=toValue; i+=incrementValue) {
         			HashMap<String, Double> vals = new HashMap<>();
         			vals.put("x", (double)i);
         			
