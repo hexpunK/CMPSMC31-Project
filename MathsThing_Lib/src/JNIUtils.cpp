@@ -56,7 +56,7 @@ NativeParser* GetPointer(JNIEnv *env, jobject thisObj)
 		return nullptr;
 	}
 	if (ptrField == nullptr) {
-		ptrField = env->GetFieldID(thisCls, "ptrs", "J");
+		ptrField = env->GetFieldID(thisCls, "ptr", "J");
 		if (env->ExceptionOccurred()) {
 			return nullptr;
 		}

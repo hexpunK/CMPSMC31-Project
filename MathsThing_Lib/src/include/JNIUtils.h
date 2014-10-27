@@ -36,10 +36,8 @@ JNIEnv* GetEnv();
 /*
  * Gets the pointer for an object pointed to by the calling Java class. This
  * requires that the Java class has a long field named "ptr" to read from.
- * Type:
- * 	T - The class of the object to find a pointer for.
  * Returns:
- * 	T* - A pointer to the templated type.
+ * 	NativeParser* - A pointer to a new or found NativeParser instance.
  */
 NativeParser* GetPointer(JNIEnv *env, jobject thisObj);
 
