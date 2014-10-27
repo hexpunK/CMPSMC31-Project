@@ -14,6 +14,8 @@ public final class Functions {
 	/** A collection of the functions the class currently understands. */
 	public static final String[] SUPPORTED_FUNCTIONS = {
 		"sin", "cos", "tan", 
+		"sinh", "cosh", "tanh",
+		"asin", "acos", "atan",
 		"floor", "ceil", "round", 
 		"log", "ln", 
 		"fact", 
@@ -130,6 +132,18 @@ public final class Functions {
 				return Functions.fact((int)Math.round(result));
 			case "sqrt":
 				return Math.sqrt(result);
+			case "sinh":
+				return Math.sinh(result);
+			case "cosh":
+				return Math.cosh(result);
+			case "tanh":
+				return Math.tanh(result);
+			case "asin":
+				return Math.asin(result);
+			case "acos":
+				return Math.acos(result);
+			case "atan":
+				return Math.atan(result);
 			default:
 				return result;
 		}

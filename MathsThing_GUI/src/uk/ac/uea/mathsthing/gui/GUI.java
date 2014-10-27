@@ -255,7 +255,7 @@ public class GUI extends JFrame {
         		}
         		
         		HashMap<Double, Double> results = new HashMap<>();
-        		
+        	
         		for (double i=fromValue; i<=toValue; i+=incrementValue) {
         			HashMap<String, Double> vals = new HashMap<>();
         			vals.put("x", (double)i);

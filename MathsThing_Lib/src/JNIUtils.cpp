@@ -9,7 +9,10 @@
 
 namespace mathsthing {
 
-JNIEnv* GetEnv() {
+jfieldID ptrField = nullptr;
+
+JNIEnv* GetEnv()
+{
 	JNIEnv* env = nullptr;
 	JavaVM** vms = nullptr;
 	jsize vmCount;
@@ -17,9 +20,15 @@ JNIEnv* GetEnv() {
 	JNI_GetCreatedJavaVMs(vms, 0, &vmCount);
 	vms = new JavaVM*[vmCount];
 	JNI_GetCreatedJavaVMs(vms, vmCount, &vmCount);
+	if (env->ExceptionOccurred()) {
+		return nullptr;
+	}
 
 	for (int i = 0; i < vmCount; i++) {
 		int envStat = vms[i]->GetEnv((void**) env, JNI_VERSION_1_6);
+		if (env->ExceptionOccurred()) {
+			return nullptr;
+		}
 		if (envStat == JNI_EDETACHED) {
 #ifdef _DEBUG
 			tout << "No Java VM attached." << std::endl;
@@ -37,18 +46,30 @@ JNIEnv* GetEnv() {
 	return nullptr;
 }
 
-NativeParser* GetPointer(JNIEnv *env, jobject thisObj) {
+NativeParser* GetPointer(JNIEnv *env, jobject thisObj)
+{
 #ifdef _DEBUG
 	tout<< "Type: " << typeid(NativeParser).name() << std::endl;
 #endif
 	jclass thisCls = env->GetObjectClass(thisObj);
-	jfieldID fieldID = env->GetFieldID(thisCls, "ptr", "J");
+	if (env->ExceptionOccurred()) {
+		return nullptr;
+	}
+	if (ptrField == nullptr) {
+		ptrField = env->GetFieldID(thisCls, "ptrs", "J");
+		if (env->ExceptionOccurred()) {
+			return nullptr;
+		}
+	}
 #ifdef _DEBUG
-	tout << "FieldID: " << fieldID << std::endl;
+	tout << "FieldID: " << ptrField << std::endl;
 #endif
-	if (fieldID == nullptr) return 0;
+	if (ptrField == nullptr) return 0;
 
-	jlong ptrVal = env->GetLongField(thisObj, fieldID);
+	jlong ptrVal = env->GetLongField(thisObj, ptrField);
+	if (env->ExceptionOccurred()) {
+		return nullptr;
+	}
 	if (ptrVal <= 0) {
 #ifdef _DEBUG
 		tout << "Null pointer" << std::endl;
@@ -66,7 +87,8 @@ NativeParser* GetPointer(JNIEnv *env, jobject thisObj) {
 	return inst;
 }
 
-jint ThrowNoClassDefException(JNIEnv *env, tchar* msg) {
+jint ThrowNoClassDefException(JNIEnv *env, tchar* msg)
+{
 	jclass exClass;
 	tchar* className = "java/lang/NoClassDefFoundError";
 
@@ -78,11 +100,15 @@ jint ThrowNoClassDefException(JNIEnv *env, tchar* msg) {
 	return env->ThrowNew(exClass, msg);
 }
 
-jint ThrowException(JNIEnv *env, tchar* msg) {
+jint ThrowException(JNIEnv *env, tchar* msg)
+{
 	jclass exClass;
 	tchar* className = "java/lang/Exception";
 
 	exClass = env->FindClass(className);
+	if (env->ExceptionOccurred()) {
+		return -1;
+	}
 	if (exClass == nullptr) {
 		return ThrowNoClassDefException(env, msg);
 	}
@@ -90,11 +116,15 @@ jint ThrowException(JNIEnv *env, tchar* msg) {
 	return env->ThrowNew(exClass, msg);
 }
 
-jint ThrowNullPointerException(JNIEnv *env, tchar* msg) {
+jint ThrowNullPointerException(JNIEnv *env, tchar* msg)
+{
 	jclass exClass;
 	tchar* className = "java/lang/NullPointerException";
 
 	exClass = env->FindClass(className);
+	if (env->ExceptionOccurred()) {
+		return -1;
+	}
 	if (exClass == nullptr) {
 		return ThrowNoClassDefException(env, msg);
 	}
@@ -102,11 +132,15 @@ jint ThrowNullPointerException(JNIEnv *env, tchar* msg) {
 	return env->ThrowNew(exClass, msg);
 }
 
-jint ThrowFormulaException(JNIEnv *env, tchar* msg) {
+jint ThrowFormulaException(JNIEnv *env, tchar* msg)
+{
 	jclass exClass;
 	tchar* className = "uk/ac/uea/mathsthing/util/FormulaException";
 
 	exClass = env->FindClass(className);
+	if (env->ExceptionOccurred()) {
+		return -1;
+	}
 	if (exClass == nullptr) {
 		return ThrowNoClassDefException(env, msg);
 	}

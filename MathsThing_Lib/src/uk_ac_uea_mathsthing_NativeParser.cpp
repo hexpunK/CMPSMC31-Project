@@ -2,6 +2,7 @@
 #include "include/JNIUtils.h"
 #include "include/NativeParser.h"
 #include <iostream>
+#include <new>
 
 JNIEXPORT jlong JNICALL Java_uk_ac_uea_mathsthing_NativeParser_create
 	(JNIEnv *env, jobject thisObj)
@@ -16,14 +17,18 @@ JNIEXPORT jlong JNICALL Java_uk_ac_uea_mathsthing_NativeParser_create
 #ifdef _DEBUG
 	tout << "New NativeParser needed" << std::endl;
 #endif
-		parser = new mathsthing::NativeParser;
+		try {
+			parser = new mathsthing::NativeParser;
+		} catch (std::bad_alloc& ex) {
+			mathsthing::ThrowException(env, "Failed to allocate new NativeParser.");
+		}
 	}
 	if (parser == nullptr)
 		return mathsthing::ThrowNullPointerException(env, "Could not locate NativeParser");
 
 	jlong address = (jlong)&parser;
 #ifdef _DEBUG
-	tout << "Parser located at address:" << std::hex << address << std::endl;
+	tout << "Parser located at address: 0x" << std::hex << address << std::endl;
 #endif
 
 	return address; // Return the pointer address.
