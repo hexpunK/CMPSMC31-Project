@@ -2,7 +2,6 @@ package uk.ac.uea.mathsthing;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
 
 /**
  * Provides methods to handle mathematical functions in a provided formula.
@@ -21,31 +20,19 @@ public final class Functions {
 		"sqrt"
 	};
 	
-	/** The formula lexing implementation to use when processing parameters. */
-	protected static IFormulaLexer lexer = null;
-	/** The formula parser to use when evaluating parameters. */
-	protected static IFormulaParser parser = null;
+	public static final String functionRegex;
 	
-	/**
-	 * Set the {@link IFormulaLexer} to use when processing parameters that are
-	 *  passed to the {@link Functions#processFunction(String)} method.
-	 * 
-	 * @param newLexer The lexer to use when processing formulae.
-	 * @since 0.1
-	 */
-	public static final void setFormulaLexer(IFormulaLexer newLexer) {
-		Functions.lexer = newLexer;
-	}
-	
-	/**
-	 * Set the {@link IFormulaParser} to use when evaluating parameters that 
-	 * are passed to the {@link Functions#processFunction(String)} method.
-	 * 
-	 * @param newParser The parser to use when evaluating formulae.
-	 * @since 0.1
-	 */
-	public static final void setFormulaParser(IFormulaParser newParser) {
-		Functions.parser = newParser;
+	static {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\b");
+		for (int i = 0; i < Functions.SUPPORTED_FUNCTIONS.length; i++) {
+			sb.append(Functions.SUPPORTED_FUNCTIONS[i]);
+			if (i < Functions.SUPPORTED_FUNCTIONS.length - 1) {
+				sb.append("|");
+			}
+		}
+		sb.append("\b");
+		functionRegex = sb.toString();
 	}
 	
 	/**
@@ -56,7 +43,7 @@ public final class Functions {
 	 * @return Returns true if the function is supported, false otherwise.
 	 * @throws InvalidParameterException Thrown if an empty or null function 
 	 * name is passed.
-	 * @since 0.1
+	 * @since 1.0
 	 */
 	public static final boolean isSupported(String funcName) 
 			throws InvalidParameterException {
@@ -77,36 +64,16 @@ public final class Functions {
 	 * If the parameter is a formula itself rather than a constant or number it
 	 *  will be calculated before it is used.
 	 * 
-	 * @param function The function to process as a {@link String}.
+	 * @param funcName The name of the function to call as a String.
+	 * @param result The result from the evaluation tree to process.
 	 * @return Returns a double containing the result of the function.
 	 * @throws Exception Thrown if there is an error evaluating the 
 	 * formula this function works on.
-	 * @since 0.1
+	 * @since 1.0
 	 */
-	public static final BigDecimal processFunction(String function, HashMap<String, Double> params)
+	public static final BigDecimal processFunction(String funcName, BigDecimal result)
 			throws Exception {
 		
-		if (function == null || function.isEmpty()) 
-			throw new InvalidParameterException("A function must be provided.");
-		
-		// Extract the function parameter.
-		String funcName = function.substring(0, function.indexOf('('));
-		String parameter = function.substring(function.indexOf('(')+1, function.lastIndexOf(')'));
-		
-		if (parameter == null || parameter.isEmpty()) 
-			throw new InvalidParameterException("A paramter must be provided.");
-			
-		if (!Functions.isSupported(funcName))
-			throw new UnsupportedOperationException("Function not supported.");
-		
-		// Handle the function parameter.
-		parser.setFormula(lexer.tokenize(parameter));
-		BigDecimal result = new BigDecimal(0.0);
-		try {
-			result = parser.getResult(params);
-		} catch (Exception e) {
-			throw e;
-		}
 		double dResult = result.doubleValue();
 		
 		if (dResult >= Double.POSITIVE_INFINITY || dResult <= Double.NEGATIVE_INFINITY) {
@@ -147,7 +114,7 @@ public final class Functions {
 	 * 
 	 * @param n The number to compute the factorial of as an integer.
 	 * @return The computed factorial as a double.
-	 * @since 0.1
+	 * @since 1.0
 	 */
 	public static final double fact(int n) {
 		

@@ -45,15 +45,15 @@ public class FunctionsTests {
 		BigDecimal expec = new BigDecimal(0.0);
 		
 		try {
-			Functions.processFunction("", params);
-			assertEquals(expec, Functions.processFunction("sin(0)", params));
+			Functions.processFunction("", new BigDecimal(0.0));
+			assertEquals(expec, Functions.processFunction("sin", new BigDecimal(0.0)));
 		} catch (InvalidParameterException parEx) {
 			param = true;
 		} catch (Exception e) {
 			fail (e.getMessage());
 		} finally {
 			try {
-				Functions.processFunction("pow(0)", params);
+				Functions.processFunction("pow", new BigDecimal(0.0));
 			}
 			catch (UnsupportedOperationException opEx) {
 				op = true;

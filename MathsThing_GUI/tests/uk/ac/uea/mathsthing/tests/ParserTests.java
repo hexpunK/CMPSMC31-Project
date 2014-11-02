@@ -9,30 +9,77 @@ import java.util.Stack;
 import org.junit.Test;
 
 import uk.ac.uea.mathsthing.SimpleParser;
+import uk.ac.uea.mathsthing.Token;
+import uk.ac.uea.mathsthing.TokenType;
 
 public class ParserTests extends SimpleParser {
 
-	protected static final String[] formula = new String[] {"y", "=", "a", "*", "(", "b", "+", "c", "*", "d", ")", "+", "e"};
-	protected static final String[] formula2 = new String[] {"y", "=", "(", "10", "*", "x", "+", "5", ")", "/", "x"};
+	// y = a(b+cd)+a
+	protected static final Token[] testFormula = new Token[] {
+		new Token("y", TokenType.OPERAND),
+		new Token("=", TokenType.OPERATOR),
+		new Token("a", TokenType.OPERAND),
+		new Token("*", TokenType.OPERATOR),
+		new Token("(", TokenType.OPERATOR),
+		new Token("b", TokenType.OPERAND),
+		new Token("+", TokenType.OPERATOR),
+		new Token("c", TokenType.OPERAND),
+		new Token("*", TokenType.OPERATOR),
+		new Token("d", TokenType.OPERAND),
+		new Token(")", TokenType.OPERATOR),
+		new Token("+", TokenType.OPERATOR),
+		new Token("a", TokenType.OPERAND)
+	};
+	// y = (10x+5)/x
+	protected static final Token[] formula2 = new Token[] {
+		new Token("y", TokenType.OPERAND),
+		new Token("=", TokenType.OPERATOR),
+		new Token("(", TokenType.OPERATOR),
+		new Token("10", TokenType.CONSTANT),
+		new Token("*", TokenType.OPERATOR),
+		new Token("x", TokenType.OPERAND),
+		new Token("+", TokenType.OPERATOR),
+		new Token("5", TokenType.CONSTANT),
+		new Token(")", TokenType.OPERATOR),
+		new Token("/", TokenType.OPERATOR),
+		new Token("x", TokenType.OPERAND)
+	};
+	
+	// y = (--10x+5)/x
+	protected static final Token[] formula3 = new Token[] {
+		new Token("y", TokenType.OPERAND),
+		new Token("=", TokenType.OPERATOR),
+		new Token("(", TokenType.OPERATOR),
+		new Token("-", TokenType.OPERATOR),
+		new Token("-", TokenType.OPERATOR),
+		new Token("10", TokenType.CONSTANT),
+		new Token("*", TokenType.OPERATOR),
+		new Token("x", TokenType.OPERAND),
+		new Token("+", TokenType.OPERATOR),
+		new Token("5", TokenType.CONSTANT),
+		new Token(")", TokenType.OPERATOR),
+		new Token("/", TokenType.OPERATOR),
+		new Token("x", TokenType.OPERAND)
+	};
 	protected static final String assignTo = "y";
-	protected static final String inFix = "a*(b+c*d)+e";
-	protected static final String postFix = "abcd*+*e+";
+	protected static final String inFix = "a*(b+c*d)+a";
+	protected static final String postFix = "abcd*+*a+";
 	protected static final Double input = 5.0;
 	
 	@Test
 	public void testSetFormula() {
 		
 		System.out.println("\nTesting formula parsing...");
-		System.out.printf("Formula: %s\n", printArray(formula));
-		this.setFormula(ParserTests.formula);
+		System.out.printf("Formula: %s\n", printArray(testFormula));
+		this.setFormula(ParserTests.testFormula);
 		// Check the right variable is being assigned to.
 		assertEquals(ParserTests.assignTo, this.getAssignTo());
 		
 		assertEquals(5, this.getEvalTree().size());
 		
 		StringBuilder output = new StringBuilder();
-		Stack<String> inFix = this.getInFix();
-		Stack<String> postFix = this.getPostFix();
+		Stack<Token> inFix = this.getInFix();
+		Stack<Token> postFix = this.getPostFix();
 		
 		System.out.printf("Infix Stack:\t%s\n", printStack(inFix));
 		System.out.printf("Postfix Stack:\t%s\n", printStack(postFix));
@@ -55,9 +102,9 @@ public class ParserTests extends SimpleParser {
 	public void testGetResult() {
 		
 		System.out.println("\nTesting formula evaluation...");
-		System.out.printf("Formula: %s\n", printArray(formula2));
+		System.out.printf("Formula: %s\n", printArray(formula3));
 		System.out.printf("x = %2.2f\n", input);
-		this.setFormula(formula2);
+		this.setFormula(formula3);
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
 		try {

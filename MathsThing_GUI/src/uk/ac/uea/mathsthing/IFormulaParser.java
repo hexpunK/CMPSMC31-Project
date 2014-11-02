@@ -17,9 +17,9 @@ public interface IFormulaParser {
 	 * Sets the formula that this parser should work on to a specifed array of 
 	 * tokens.
 	 * 
-	 * @param tokenised A String array of the required formula tokens.
+	 * @param tokenised A {@link Token} array of the required formula tokens.
 	 */
-	public void setFormula(String[] tokenised);
+	public void setFormula(Token[] tokenised);
 	
 	/**
 	 * Gets the resulting number from using the stored formula with the 
