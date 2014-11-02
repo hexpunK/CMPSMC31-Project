@@ -20,6 +20,8 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import uk.ac.uea.mathsthing.IFormulaLexer;
+import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Lexer;
 import uk.ac.uea.mathsthing.SimpleParser;
 
@@ -139,10 +141,10 @@ public class GUI extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         		
         		// Tokenize the input from the user.
-        		Lexer lexer = new Lexer(inputField.getText());
+        		IFormulaLexer lexer = new Lexer(inputField.getText());
         		lexer.tokenize(lexer.getUserFormula());
         		
-        		SimpleParser parser = new SimpleParser();
+        		IFormulaParser parser = new SimpleParser();
         		
         		// Attempt to parse the formula from the tokens.
         		try {

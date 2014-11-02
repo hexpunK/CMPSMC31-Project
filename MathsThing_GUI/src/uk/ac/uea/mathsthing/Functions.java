@@ -14,6 +14,7 @@ public final class Functions {
 	/** A collection of the functions the class currently understands. */
 	public static final String[] SUPPORTED_FUNCTIONS = {
 		"sin", "cos", "tan", 
+		"sinh", "costh", "tanh",
 		"floor", "ceil", "round", 
 		"log", "ln", 
 		"fact", 
@@ -84,10 +85,16 @@ public final class Functions {
 		switch (funcName) {
 			case "sin":
 				return new BigDecimal(Math.sin(dResult));
+			case "sinh":
+				return new BigDecimal(Math.sinh(dResult));
 			case "cos":
 				return new BigDecimal(Math.cos(dResult));
+			case "cosh":
+				return new BigDecimal(Math.cosh(dResult));
 			case "tan":
 				return new BigDecimal(Math.tan(dResult));
+			case "tanh":
+				return new BigDecimal(Math.tanh(dResult));
 			case "floor":
 				return new BigDecimal(Math.floor(dResult));
 			case "ceil":
