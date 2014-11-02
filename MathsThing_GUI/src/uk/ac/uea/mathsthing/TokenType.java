@@ -10,14 +10,14 @@ package uk.ac.uea.mathsthing;
  */
 public enum TokenType {
 
+	/** Mathematical functions such as sin, cos, floor, etc. */
+	FUNCTION(Functions.functionRegex),
 	/** Mathematical operators such as addition, subtraction, etc. */
 	OPERATOR("([*|/|+|-|(|)|=|^])"),
 	/** Replaceable values such as x, y, s, t, etc. */
 	OPERAND("([a-z])"),
 	/** Numeric values. */
-	CONSTANT("([0-9]+\\.?[0-9]*)"),
-	/** Mathematical functions such as sin, cos, floor, etc. */
-	FUNCTION(Functions.functionRegex);
+	CONSTANT("([0-9]+\\.?[0-9]*)");
 	
 	/** The value this Token represents. */
 	private String pattern;

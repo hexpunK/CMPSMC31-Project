@@ -22,6 +22,12 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+/**
+ * Initializes a graph to be drawn to show the user the results of a mathematical function.
+ * 
+ * @author Jake Ruston
+ * @version 0.1
+ */
 public class Graph extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -39,9 +45,9 @@ public class Graph extends JPanel {
     	chartPanel = new ChartPanel(chart);
         
     	// Set the location of the chart and hide it until the user enters a formula.
-        chartPanel.setSize(frame.getWidth()-30, frame.getHeight()-110);
+        chartPanel.setSize(frame.getWidth()-30, frame.getHeight()-140);
         int centerX = (frame.getWidth() - chartPanel.getWidth()) / 2;
-        chartPanel.setLocation(centerX, 50);
+        chartPanel.setLocation(centerX, 90);
         chartPanel.setVisible(false);
         frame.add(chartPanel);
     }
@@ -111,6 +117,7 @@ public class Graph extends JPanel {
         
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
+        renderer.setSeriesShapesVisible(0, false);
         plot.setRenderer(renderer);
 
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();

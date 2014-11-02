@@ -63,14 +63,20 @@ public class Lexer implements IFormulaLexer{
 		orig = orig.replaceAll("\\s+", "");
 		
 		//create the patter to match
-		Pattern p1 = Pattern.compile(TokenType.OPERATOR.getToken() +
-				"|" + TokenType.OPERAND.getToken() + "|" + TokenType.CONSTANT.getToken() + "|" + TokenType.FUNCTION.getToken());
+		Pattern p1 = Pattern.compile(TokenType.FUNCTION.getToken() + "|" + TokenType.OPERATOR.getToken() +
+				"|" + TokenType.OPERAND.getToken() + "|" + TokenType.CONSTANT.getToken());
 		
 		//set up the matcher using the pattern created
 		Matcher mat = p1.matcher(orig);
 		
 		while(mat.find())
 		{
+			//function
+			if(mat.group(TokenType.FUNCTION.ordinal()+1) != null)
+			{
+				Token t = new Token(mat.group(TokenType.FUNCTION.ordinal()+1), TokenType.FUNCTION);
+				equation.add(t);
+			}
 			//operator
 			if(mat.group(TokenType.OPERATOR.ordinal()+1) != null)
 			{
@@ -87,12 +93,6 @@ public class Lexer implements IFormulaLexer{
 			if(mat.group(TokenType.CONSTANT.ordinal()+1) != null) //matcher indexes groups from 1
 			{
 				Token t = new Token(mat.group(TokenType.CONSTANT.ordinal()+1), TokenType.CONSTANT);
-				equation.add(t);
-			}
-			//function
-			if(mat.group(TokenType.FUNCTION.ordinal()+1) != null)
-			{
-				Token t = new Token(mat.group(TokenType.FUNCTION.ordinal()+1), TokenType.FUNCTION);
 				equation.add(t);
 			}
 		}
