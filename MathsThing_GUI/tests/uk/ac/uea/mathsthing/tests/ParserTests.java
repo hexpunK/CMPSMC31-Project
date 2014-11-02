@@ -54,7 +54,14 @@ public class ParserTests extends SimpleParser {
 		new Token("-", TokenType.OPERATOR),
 		new Token("10", TokenType.CONSTANT),
 		new Token("*", TokenType.OPERATOR),
+		new Token("floor", TokenType.FUNCTION),
+		new Token("(", TokenType.OPERATOR),
 		new Token("x", TokenType.OPERAND),
+		new Token("sin", TokenType.FUNCTION),
+		new Token("(", TokenType.OPERATOR),
+		new Token("x", TokenType.OPERAND),
+		new Token(")", TokenType.OPERATOR),
+		new Token(")", TokenType.OPERATOR),
 		new Token("+", TokenType.OPERATOR),
 		new Token("5", TokenType.CONSTANT),
 		new Token(")", TokenType.OPERATOR),
@@ -109,7 +116,7 @@ public class ParserTests extends SimpleParser {
 		vals.put("x", input);
 		try {
 			double result = this.getResult(vals).doubleValue();
-			System.out.printf("Formula result: %2.2f\n", result);
+			System.out.printf("Formula result: %2.10f\n", result);
 			assertEquals(11.0, result, 0.0);
 		} catch (Exception e) {
 			fail(e.getMessage());

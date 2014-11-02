@@ -44,7 +44,8 @@ public class SimpleParser implements IFormulaParser {
 	public void setFormula(Token[] tokenised) {
 
 		Stack<Token> opStack = new Stack<>();
-		Token tmpOp;
+		Token tmpOp = null;
+		Token funcOp = null;
 		String yAxis = null;
 		String xAxis = null;
 		HashMap<String, Integer> valCount = new HashMap<>();
@@ -52,7 +53,9 @@ public class SimpleParser implements IFormulaParser {
 		
 		for (Token token : tokenised) {
 
-			if (!inFix.empty() && inFix.peek().type != TokenType.OPERATOR
+			if (!inFix.empty() 
+					&& inFix.peek().type != TokenType.OPERATOR
+					&& inFix.peek().type != TokenType.FUNCTION
 					&& token.type != TokenType.OPERATOR) {
 				Token implied = new Token("*", TokenType.OPERATOR);
 				inFix.push(implied);
@@ -156,8 +159,15 @@ public class SimpleParser implements IFormulaParser {
 					int oldVal = valCount.get(token.val);
 					valCount.put(token.val, ++oldVal);
 				}
-			case CONSTANT:
+				postFix.push(token);
+				break;
 			case FUNCTION:
+				if (funcOp != null) {
+					opStack.push(funcOp);
+				}
+				funcOp = token;
+				break;
+			case CONSTANT:
 				if (!negation) {
 					postFix.push(token);
 				} else {
@@ -169,6 +179,11 @@ public class SimpleParser implements IFormulaParser {
 				break;
 			}
 
+			if (funcOp != null && funcOp != token) {
+				opStack.push(funcOp);
+				funcOp = null;
+			}
+			
 			if (!token.val.equals("="))
 				inFix.push(token);
 		}
@@ -183,13 +198,14 @@ public class SimpleParser implements IFormulaParser {
 
 		// Build the BinaryEvaluationTree.
 		for (Token token : postFixArray) {
-			if (token.type == TokenType.OPERATOR) {
+			if (token.type == TokenType.OPERATOR 
+					|| token.type == TokenType.FUNCTION) {
 				BinaryEvaluationTree rightNode = null;
 				BinaryEvaluationTree leftNode = null;
 
 				if (!tmpStack.empty())
 					rightNode = tmpStack.pop();
-				if (!tmpStack.empty())
+				if (!tmpStack.empty() && token.type != TokenType.FUNCTION)
 					leftNode = tmpStack.pop();
 
 				BinaryEvaluationTree newTree = new BinaryEvaluationTree(token,
