@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 /**
@@ -16,9 +17,9 @@ public interface IFormulaParser {
 	 * Sets the formula that this parser should work on to a specifed array of 
 	 * tokens.
 	 * 
-	 * @param tokenised A String array of the required formula tokens.
+	 * @param tokenised A {@link Token} array of the required formula tokens.
 	 */
-	public void setFormula(String[] tokenised);
+	public void setFormula(Token[] tokenised);
 	
 	/**
 	 * Gets the resulting number from using the stored formula with the 
@@ -27,8 +28,10 @@ public interface IFormulaParser {
 	 * @param params A mapping of the parameter token names to their required 
 	 * values. A parameter can only be mapped in this set once.
 	 * @return A floating point value from the result of the computation.
+	 * @throws Exception Thrown if there is an error when evaluating the 
+	 * formula.
 	 */
-	public double getResult(HashMap<String, Double> params);
+	public BigDecimal getResult(HashMap<String, Double> params) throws Exception;
 	
 	/**
 	 * Gets the first derivative of the stored formula.

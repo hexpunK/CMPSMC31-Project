@@ -1,22 +1,24 @@
 package uk.ac.uea.mathsthing.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.ac.uea.mathsthing.Functions;
-import uk.ac.uea.mathsthing.tests.stubs.StubbedFormulaLexer;
-import uk.ac.uea.mathsthing.tests.stubs.StubbedFormulaParser;
 
 public class FunctionsTests {
 
-	@BeforeClass
-	public static void setupLexerParser() {		
-		Functions.setFormulaLexer(new StubbedFormulaLexer());
-		Functions.setFormulaParser(new StubbedFormulaParser());
+	private static final HashMap<String, Double> params;
+	static {
+		params = new HashMap<>();
+		params.put("x", 5.0);
 	}
 	
 	@Test
@@ -40,21 +42,25 @@ public class FunctionsTests {
 		
 		boolean param = false;
 		boolean op = false;
+		BigDecimal expec = new BigDecimal(0.0);
 		
 		try {
-			Functions.processFunction("");
+			Functions.processFunction("", new BigDecimal(0.0));
+			assertEquals(expec, Functions.processFunction("sin", new BigDecimal(0.0)));
 		} catch (InvalidParameterException parEx) {
 			param = true;
+		} catch (Exception e) {
+			fail (e.getMessage());
 		} finally {
 			try {
-				Functions.processFunction("pow(0.0)");
+				Functions.processFunction("pow", new BigDecimal(0.0));
 			}
 			catch (UnsupportedOperationException opEx) {
 				op = true;
+			} catch (Exception e) {
+				fail (e.getMessage());
 			}
 		}
-		
-		assertEquals(Math.sin(1.0), Functions.processFunction("sin(50.0)"), 0.0);
 		
 		assertTrue(param);
 		assertTrue(op);

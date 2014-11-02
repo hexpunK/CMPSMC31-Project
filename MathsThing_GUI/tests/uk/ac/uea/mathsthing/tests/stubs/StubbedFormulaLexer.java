@@ -19,4 +19,9 @@ public class StubbedFormulaLexer implements IFormulaLexer {
 		return new String[] {"y", "=", "m", "*", "x", "^", "2"};
 	}
 
+	@Override
+	public String[] getTokens() {
+		return new String[] {"y", "=", "m", "*", "x", "^", "2"};
+	}
+
 }
