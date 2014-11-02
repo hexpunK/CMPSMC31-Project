@@ -24,14 +24,14 @@ public final class Functions {
 	
 	static {
 		StringBuilder sb = new StringBuilder();
-		sb.append("\b");
+		sb.append("(");
 		for (int i = 0; i < Functions.SUPPORTED_FUNCTIONS.length; i++) {
 			sb.append(Functions.SUPPORTED_FUNCTIONS[i]);
 			if (i < Functions.SUPPORTED_FUNCTIONS.length - 1) {
 				sb.append("|");
 			}
 		}
-		sb.append("\b");
+		sb.append(")");
 		functionRegex = sb.toString();
 	}
 	

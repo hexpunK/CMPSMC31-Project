@@ -1,21 +1,23 @@
 package uk.ac.uea.mathsthing;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class Lexer implements IFormulaLexer{
 	
 	private String input;
 	private String userEquation;
-	private String[] tokens;
+	private Token[] tokens; //change from String to Token in a bit
 	//add stuff for parameters later
-	private ArrayList<String> equation;
+	private ArrayList<Token> equation;
 	private HashMap<String, Integer> parameters;
 	
 	public Lexer()
 	{
 		input="";
 		userEquation = "";
-		tokens = new String[0];
+		tokens = new Token[0];
 		equation = new ArrayList<>();
 		parameters = new HashMap<String, Integer>();
 	}
@@ -24,7 +26,7 @@ public class Lexer implements IFormulaLexer{
 	{
 		input = in;
 		userEquation = "";
-		tokens = new String[0];
+		tokens = new Token[0];
 		equation = new ArrayList<>();
 		parameters = new HashMap<String, Integer>();
 	}
@@ -45,7 +47,7 @@ public class Lexer implements IFormulaLexer{
 		
 		StringBuilder output = new StringBuilder();
 		
-		for(String token : tokens) {
+		for(Token token : tokens) {
 			output.append(token);
 		}
 		
@@ -53,104 +55,47 @@ public class Lexer implements IFormulaLexer{
 	}
 
 	@Override
-	public String[] tokenize(String formula) {
+	public Token[] tokenize(String formula) {
 
 		this.input = formula;
 		String orig = getUserFormula();
 		orig.trim();
 		orig = orig.replaceAll("\\s+", "");
 		
-		//remove the start (y=) from equation and add to ArrayList
-		int start = orig.indexOf("=")+1;
-		equation.add("y");
-		equation.add("=");
-		orig = orig.substring(start);
+		//create the patter to match
+		Pattern p1 = Pattern.compile(TokenType.CONSTANT.getToken() + "|" + TokenType.OPERATOR.getToken() +
+				"|" + TokenType.OPERAND.getToken() + "|" + TokenType.FUNCTION.getToken());
 		
-		//work through string tokenising it
-		while(orig.length() >0)
+		//set up the matcher using the pattern created
+		Matcher mat = p1.matcher(orig);
+		
+		while(mat.find())
 		{
-			if(orig.matches("^[\\+\\-\\*\\^/\\(\\)].*$"))
-            {
-                equation.add(orig.substring(0, 1));
-                //System.out.println(orig.substring(0, 1));
-                orig = orig.substring(1);
-                
-            }else if(orig.matches("^\\d.*"))//checks if 1st character is a digit
-            {
-                String num = orig.substring(0, 1);
-                orig = orig.substring(1);
-                while(orig.matches("^\\d.*"))
-                {
-                    num += orig.substring(0,1);
-                    orig = orig.substring(1);
-                }
-                equation.add(num);
-                //System.out.println(num);
-                if (orig.startsWith("(")) {
-                    //implied multiplication
-                    equation.add("*");
-                    equation.add("(");
-                    //System.out.println("*(");
-                    orig = orig.substring(1);
-                } else if (orig.startsWith("sin")) {
-                    //implied multiplication
-                    equation.add("*");
-                    //System.out.println("* function");
-                    //deal with function
-                }else{
-                    while(orig.matches("^[a-z].*"))
-                    {
-                        equation.add("*");
-                        //System.out.println("*");
-                        equation.add(orig.substring(0,1)); //gets 1st letter
-                        //System.out.println(orig.substring(0,1));
-                        orig = orig.substring(1);
-                    }
-                }
-            }
-            else if (orig.startsWith("sin")) //function time
-            {
-                //deal with le functions here
-                System.out.println("function");
-            }//else if (orig.startsWith("x")) { //what if xz
-            else if(orig.matches("^[a-z].*"))
-            {
-                equation.add(orig.substring(0,1)); //gets 1st letter
-                //System.out.println(orig.substring(0,1));
-                orig = orig.substring(1);
-                //System.out.println("Current string: "+orig);
-                if (orig.startsWith("(")) {
-                    equation.add("*");
-                    equation.add("(");
-                    //System.out.println("*(");
-                    orig = orig.substring(1);
-                } else if (orig.startsWith("sin"))//function
-                {
-                    equation.add("*");
-                    //System.out.println("*function");
-                    //deal with function or could leave that for later
-                }else
-                {
-                    while(orig.matches("^[a-z].*"))
-                    {
-                        equation.add("*");
-                        //System.out.println("*");
-                        equation.add(orig.substring(0,1)); //gets 1st letter
-                        //System.out.println(orig.substring(0,1));
-                        orig = orig.substring(1);
-                    }
-                }
-            }else
-            {
-                //fucked up somewhere
-                equation.add(orig.substring(0,1));
-                //System.out.println("Loop bottom");
-                //System.out.println(orig.substring(0, 1));
-                System.out.println("damn");
-                orig = orig.substring(1);
-            }
-
-        }
+			//constant
+			if(mat.group(TokenType.CONSTANT.ordinal()+1) != null) //matcher indexes groups from 1
+			{
+				Token t = new Token(mat.group(TokenType.CONSTANT.ordinal()+1), TokenType.CONSTANT);
+				equation.add(t);
+			}
+			//operator
+			if(mat.group(TokenType.OPERATOR.ordinal()+1) != null)
+			{
+				Token t = new Token(mat.group(TokenType.OPERATOR.ordinal()+1), TokenType.OPERATOR);
+				equation.add(t);
+			}
+			//operand
+			if(mat.group(TokenType.OPERAND.ordinal()+1) != null)
+			{
+				Token t = new Token(mat.group(TokenType.OPERAND.ordinal()+1), TokenType.OPERAND);
+				equation.add(t);
+			}
+			//function
+			if(mat.group(TokenType.FUNCTION.ordinal()+1) != null)
+			{
+				Token t = new Token(mat.group(TokenType.FUNCTION.ordinal()+1), TokenType.FUNCTION);
+				equation.add(t);
+			}
+		}
 		
 		this.tokens = equation.toArray(this.tokens);
 		
@@ -158,7 +103,7 @@ public class Lexer implements IFormulaLexer{
 	}
 	
 	@Override
-	public String[] getTokens() {
+	public Token[] getTokens() {
 		
 		return this.tokens;
 	}

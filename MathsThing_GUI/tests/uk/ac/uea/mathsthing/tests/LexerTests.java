@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import uk.ac.uea.mathsthing.Lexer;
+import uk.ac.uea.mathsthing.Token;
 
 /**
  * Tests the {@link Lexer} class to ensure it works as intended. Makes sure the
@@ -16,8 +17,8 @@ import uk.ac.uea.mathsthing.Lexer;
 public class LexerTests {
 
 	public static final String input = "y = 2x + 1";
-	public static final String outputString = "y=2*x+1";
-	public static final String[] tokens = {"y", "=", "2", "*", "x", "+", "1"};
+	public static final String outputString = "y=2x+1";
+	public static final String[] tokens = {"y", "=", "2", "x", "+", "1"};
 	
 	@Test
 	public final void testGetUserFormula() {
@@ -40,7 +41,13 @@ public class LexerTests {
 	public final void testTokenize() {
 		
 		Lexer lex = new Lexer();
-		String[] output = lex.tokenize(input);
+		Token[] outputT = lex.tokenize(input);
+		
+		String[] output = new String[outputT.length];
+		for(int i=0; i< output.length; i++)
+		{
+			output[i] = outputT[i].toString();
+		}
 		
 		assertArrayEquals(tokens, output);
 	}

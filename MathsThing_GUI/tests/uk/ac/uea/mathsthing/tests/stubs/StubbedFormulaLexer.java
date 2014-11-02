@@ -1,6 +1,7 @@
 package uk.ac.uea.mathsthing.tests.stubs;
 
 import uk.ac.uea.mathsthing.IFormulaLexer;
+import uk.ac.uea.mathsthing.Token;
 
 public class StubbedFormulaLexer implements IFormulaLexer {
 
@@ -15,12 +16,12 @@ public class StubbedFormulaLexer implements IFormulaLexer {
 	}
 
 	@Override
-	public String[] tokenize(String formula) {
+	public Token[] tokenize(String formula) {
 		return new String[] {"y", "=", "m", "*", "x", "^", "2"};
 	}
 
 	@Override
-	public String[] getTokens() {
+	public Token[] getTokens() {
 		return new String[] {"y", "=", "m", "*", "x", "^", "2"};
 	}
 

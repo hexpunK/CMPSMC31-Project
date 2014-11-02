@@ -11,11 +11,11 @@ package uk.ac.uea.mathsthing;
 public enum TokenType {
 
 	/** Mathematical operators such as addition, subtraction, etc. */
-	OPERATOR("[*|/|+|-|(|)|=|^]"),
+	OPERATOR("([*|/|+|-|(|)|=|^])"),
 	/** Replaceable values such as x, y, s, t, etc. */
-	OPERAND("[a-z]"),
+	OPERAND("([a-z])"),
 	/** Numeric values. */
-	CONSTANT("[0-9]+\\.?[0-9]*"),
+	CONSTANT("([0-9]+\\.?[0-9]*)"),
 	/** Mathematical functions such as sin, cos, floor, etc. */
 	FUNCTION(Functions.functionRegex);
 	

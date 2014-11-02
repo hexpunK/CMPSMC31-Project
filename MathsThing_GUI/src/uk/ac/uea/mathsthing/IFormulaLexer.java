@@ -34,7 +34,7 @@ public interface IFormulaLexer {
 	 * @param formula The formula to tokenise.
 	 * @return A String array containing all the tokens found in the formula.
 	 */
-	public String[] tokenize(String formula);
+	public Token[] tokenize(String formula);
 	
 	/**
 	 * Returns the tokens created by this lexer if they exist. The tokens will 
@@ -43,5 +43,5 @@ public interface IFormulaLexer {
 	 * @return Returns a {@link String} array containing the tokens of a 
 	 * processed formula.
 	 */
-	public String[] getTokens();
+	public Token[] getTokens();
 }
