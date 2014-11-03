@@ -13,7 +13,7 @@ public enum TokenType {
 	/** Mathematical functions such as sin, cos, floor, etc. */
 	FUNCTION(Functions.functionRegex),
 	/** Mathematical operators such as addition, subtraction, etc. */
-	OPERATOR("([*|/|+|-|(|)|=|^])"),
+	OPERATOR("([*|/|+|\\-|(|)|=|^])"),
 	/** Replaceable values such as x, y, s, t, etc. */
 	OPERAND("([a-z])"),
 	/** Numeric values. */

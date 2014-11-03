@@ -27,6 +27,8 @@ public class SimpleParser implements IFormulaParser {
 
 	/**
 	 * Sets up a new {@link SimpleParser} with empty infix and postfix stacks.
+	 * 
+	 * @since 1.0
 	 */
 	public SimpleParser() {
 
@@ -39,9 +41,10 @@ public class SimpleParser implements IFormulaParser {
 	 * {@link Token} array of tokens.
 	 * 
 	 * @param tokenised The {@link Token} array containing the formula tokens.
+	 * @since 1.0
 	 */
 	@Override
-	public void setFormula(Token[] tokenised) {
+	public Formula setFormula(Token[] tokenised) {
 
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
@@ -159,7 +162,14 @@ public class SimpleParser implements IFormulaParser {
 					int oldVal = valCount.get(token.val);
 					valCount.put(token.val, ++oldVal);
 				}
-				postFix.push(token);
+				if (!negation) {
+					postFix.push(token);
+				} else {
+					postFix.push(new Token("0", TokenType.CONSTANT));
+					postFix.push(token);
+					postFix.push(new Token("-", TokenType.OPERATOR));
+					negation = false;
+				}
 				break;
 			case FUNCTION:
 				if (funcOp != null) {
@@ -226,13 +236,14 @@ public class SimpleParser implements IFormulaParser {
 		}
 		
 		this.formula = new Formula(yAxis, xAxis, tokenised, tmpStack.pop());
+		return this.formula;
 	}
 
 	/**
 	 * Process the formula stored in the evaluation tree.
 	 * 
-	 * @param params
-	 *            The mapping of variables to values as a {@link HashMap}.
+	 * @param params The mapping of variables to values as a {@link HashMap}.
+	 * @since 1.0
 	 */
 	@Override
 	public BigDecimal getResult(HashMap<String, Double> params)

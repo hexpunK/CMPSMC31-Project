@@ -3,13 +3,14 @@ package uk.ac.uea.mathsthing.tests.stubs;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.Formula;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Token;
 
 public class StubbedFormulaParser implements IFormulaParser {
 
-	public void setFormula(Token[] tokenised) {
-		// Doesn't do anything in this example.
+	public Formula setFormula(Token[] tokenised) {
+		return null;
 	}
 	
 	@Override

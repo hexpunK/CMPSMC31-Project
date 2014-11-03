@@ -2,28 +2,40 @@ package uk.ac.uea.mathsthing;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.regex.Matcher;
 
 /**
  * Provides methods to handle mathematical functions in a provided formula.
  * 
  * @author Jordan Woerner
- * @version 0.1
+ * @version 1.0
  */
 public final class Functions {
 
-	/** A collection of the functions the class currently understands. */
+	/** 
+	 * A collection of the functions the class currently understands.
+	 * 
+	 * @since 1.0
+	 */
 	public static final String[] SUPPORTED_FUNCTIONS = {
-		"sin", "cos", "tan", 
-		"sinh", "costh", "tanh",
+		"sinh", "cosh", "tanh",
+		"sin", "cos", "tan",
 		"floor", "ceil", "round", 
 		"log", "ln", 
 		"fact", 
 		"sqrt"
 	};
 	
+	/** 
+	 * A {@link String} containing a Regex pattern of all supported 
+	 * functions. Allows for known functions to be captured by {@link Matcher}.
+	 * 
+	 *  @since 1.0
+	 */
 	public static final String functionRegex;
 	
 	static {
+		// Initialise the regex.
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");
 		for (int i = 0; i < Functions.SUPPORTED_FUNCTIONS.length; i++) {
@@ -104,8 +116,12 @@ public final class Functions {
 			case "log":
 				return new BigDecimal(Math.log10(dResult));
 			case "ln":
+				if (dResult <= 0 || dResult == Double.NaN)
+					throw new Exception("ln only accepts positive numbers.");
 				return new BigDecimal(Math.log(dResult));
 			case "fact":
+				if (dResult <= 0 || dResult == Double.NaN)
+					throw new Exception("fact only accepts positive numbers.");
 				return new BigDecimal(Functions.fact((int)Math.round(dResult)));
 			case "sqrt":
 				return new BigDecimal(Math.sqrt(dResult));

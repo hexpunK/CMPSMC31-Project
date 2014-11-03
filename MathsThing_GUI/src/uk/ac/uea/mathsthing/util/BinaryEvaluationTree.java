@@ -1,6 +1,8 @@
 package uk.ac.uea.mathsthing.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 
 import uk.ac.uea.mathsthing.Functions;
@@ -64,8 +66,9 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	public BigDecimal eval(HashMap<String, Double> values) 
 		throws Exception {
 		
-		BigDecimal leftVal = new BigDecimal(0);
-		BigDecimal rightVal = new BigDecimal(0);
+		MathContext mc=new MathContext(32, RoundingMode.HALF_EVEN);
+		BigDecimal leftVal = new BigDecimal(0, mc);
+		BigDecimal rightVal = new BigDecimal(0, mc);
 		
 		if (leftNode != null)
 			leftVal = ((BinaryEvaluationTree)leftNode).eval(values);
@@ -75,6 +78,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 		String msg; // Exception message for use later.
 		
 		switch(item.type) {
+		// Constants just need converting to BigDecimal. Invalid tokens will
+		// throw an exception.
 		case CONSTANT:
 			try {
 				return new BigDecimal(item.getToken());
@@ -83,6 +88,7 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 						item.getToken());
 				throw new Exception(msg);
 			}
+		// Operands will be replaced at evaluation time.
 		case OPERAND:
 			if (values.containsKey(item.getToken())) {
 				return new BigDecimal(values.get(item.getToken()));
@@ -91,33 +97,41 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 					"Could not find matching parameter for operand '%s'", 
 					item.getToken());
 			throw new Exception(msg);
+		// Operators work on the left and right child results. As these are 0.0
+		// by default, null children aren't really a problem.
 		case OPERATOR:
 			switch(item.getToken()) {
 			case "*":
-				return leftVal.multiply(rightVal);
+				return leftVal.multiply(rightVal, mc);
 			case "+":
-				return leftVal.add(rightVal);
+				return leftVal.add(rightVal, mc);
 			case "-":
-				return leftVal.subtract(rightVal);
+				return leftVal.subtract(rightVal, mc);
 			case "/":
-				return leftVal.divide(rightVal);
+				return leftVal.divide(rightVal, mc);
 			case "^":
-				return leftVal.pow(rightVal.intValue());
+				return leftVal.pow(rightVal.intValue(), mc);
 			default:
 				msg = String.format(
 						"Unknown operator found '%s'", item.getToken());
 				throw new Exception();
 			}
+		// Functions will be called as needed, if something goes wrong inside 
+		// the function call an exception will be thrown.
 		case FUNCTION:
 			if (Functions.isSupported(item.getToken())) {
-				return Functions.processFunction(item.getToken(), rightVal);
+				try {
+					return Functions.processFunction(item.getToken(), rightVal);
+				} catch (Exception e) {
+					throw e;
+				}
 			}
 			msg = String.format("Unsupported function '%s' found.", 
 					item.getToken());
 			throw new Exception(msg);
-		default:
-			msg = String.format("Unknown token found '%s'", item);
-			throw new Exception(msg);
 		}
+		// If an unknown token type is encountered, throw this.
+		msg = String.format("Unknown token found '%s'", item);
+		throw new Exception(msg);
 	}
 }

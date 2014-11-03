@@ -11,7 +11,7 @@ public class Lexer implements IFormulaLexer{
 	private Token[] tokens; //change from String to Token in a bit
 	//add stuff for parameters later
 	private ArrayList<Token> equation;
-	private HashMap<String, Integer> parameters;
+	private HashMap<String, Double> parameters;
 	
 	public Lexer()
 	{
@@ -19,7 +19,7 @@ public class Lexer implements IFormulaLexer{
 		userEquation = "";
 		tokens = new Token[0];
 		equation = new ArrayList<>();
-		parameters = new HashMap<String, Integer>();
+		parameters = new HashMap<>();
 	}
 	
 	public Lexer(String in)
@@ -28,7 +28,7 @@ public class Lexer implements IFormulaLexer{
 		userEquation = "";
 		tokens = new Token[0];
 		equation = new ArrayList<>();
-		parameters = new HashMap<String, Integer>();
+		parameters = new HashMap<>();
 	}
 
 	@Override
@@ -103,10 +103,12 @@ public class Lexer implements IFormulaLexer{
 	}
 	
 	@Override
-	public Token[] getTokens() {
-		
+	public Token[] getTokens() {		
 		return this.tokens;
 	}
-	
 
+	@Override
+	public HashMap<String, Double> getParameters() {
+		return this.parameters;
+	}
 }
