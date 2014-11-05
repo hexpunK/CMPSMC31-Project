@@ -1,5 +1,6 @@
 package uk.ac.uea.mathsthing.gui;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -193,6 +194,7 @@ public class GUI extends JFrame {
         add(toField);
         add(enterButton);
         add(resetButton);
+        getRootPane().setDefaultButton(enterButton);
         
         chart = new Graph(this);
         
@@ -200,65 +202,72 @@ public class GUI extends JFrame {
         	
         	public void actionPerformed(ActionEvent e) {
         		
-        		double fromValue = 0.0, toValue = 0.0;
-        		
-        		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
         		try {
-        			fromValue = Double.parseDouble(fromField.getText());
-        			toValue = Double.parseDouble(toField.getText());
-        		} catch (Exception ex) {
-        			ex.printStackTrace();
-        			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-        			return;
+        			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        			  
+        			double fromValue = 0.0, toValue = 0.0;
+              		
+              		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
+              		try {
+              			fromValue = Double.parseDouble(fromField.getText());
+              			toValue = Double.parseDouble(toField.getText());
+              		} catch (Exception ex) {
+              			ex.printStackTrace();
+              			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+              			return;
+              		}
+              		
+              		// Throw an error if the from value is less than the to value.
+              		if (fromValue >= toValue) {
+              			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+              			return;
+              		}
+              		
+              		if (fromValue < -10000 || toValue > 10000) {
+              			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+              			return;
+              		}
+              		
+              		// Tokenize the input from the user.
+              		IFormulaLexer lexer = new Lexer(inputField.getText());
+              		lexer.tokenize(lexer.getUserFormula());
+              		
+              		IFormulaParser parser = new SimpleParser();
+              		
+              		// Attempt to parse the formula from the tokens.
+              		try {
+              			parser.setFormula(lexer.getTokens());
+              		} catch (Exception ex) {
+              			ex.printStackTrace();
+              			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
+              			return;
+              		}
+              		
+              		HashMap<Double, BigDecimal> results = new HashMap<>();
+             
+              		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
+              			HashMap<String, Double> vals = new HashMap<>();
+              			vals.put("x", i);
+              			
+              			// Get the result and add it to the hash map.
+              			try {
+      						BigDecimal result = parser.getResult(vals);
+      						results.put(i, result);
+      					} catch (Exception e1) {
+      						
+      						e1.printStackTrace();
+      						JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
+      						return;
+      					}
+              		}
+              		
+              		// Update the chart and allow the graph to be saved as a PNG.
+              		chart.updateChart(inputField.getText(), results);
+              		saveGraphItem.setEnabled(true);
+              		
+        		} finally {
+        			  setCursor(Cursor.getDefaultCursor());
         		}
-        		
-        		// Throw an error if the from value is less than the to value.
-        		if (fromValue >= toValue) {
-        			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-        			return;
-        		}
-        		
-        		if (fromValue < -10000 || toValue > 10000) {
-        			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-        			return;
-        		}
-        		
-        		// Tokenize the input from the user.
-        		IFormulaLexer lexer = new Lexer(inputField.getText());
-        		lexer.tokenize(lexer.getUserFormula());
-        		
-        		IFormulaParser parser = new SimpleParser();
-        		
-        		// Attempt to parse the formula from the tokens.
-        		try {
-        			parser.setFormula(lexer.getTokens());
-        		} catch (Exception ex) {
-        			ex.printStackTrace();
-        			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
-        			return;
-        		}
-        		
-        		HashMap<Double, BigDecimal> results = new HashMap<>();
-       
-        		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
-        			HashMap<String, Double> vals = new HashMap<>();
-        			vals.put("x", i);
-        			
-        			// Get the result and add it to the hash map.
-        			try {
-						BigDecimal result = parser.getResult(vals);
-						results.put(i, result);
-					} catch (Exception e1) {
-						
-						e1.printStackTrace();
-						JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-        		}
-        		
-        		// Update the chart and allow the graph to be saved as a PNG.
-        		chart.updateChart(inputField.getText(), results);
-        		saveGraphItem.setEnabled(true);
         	}
         	
         });

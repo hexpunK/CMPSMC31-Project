@@ -114,6 +114,8 @@ public final class Functions {
 			case "round":
 				return new BigDecimal(Math.round(dResult));
 			case "log":
+				if (dResult <= 0 || dResult == Double.NaN)
+					throw new Exception("log only accepts positive numbers.");
 				return new BigDecimal(Math.log10(dResult));
 			case "ln":
 				if (dResult <= 0 || dResult == Double.NaN)
@@ -124,6 +126,8 @@ public final class Functions {
 					throw new Exception("fact only accepts positive numbers.");
 				return new BigDecimal(Functions.fact((int)Math.round(dResult)));
 			case "sqrt":
+				if (dResult <= 0 || dResult == Double.NaN)
+					throw new Exception("sqrt only accepts positive numbers.");
 				return new BigDecimal(Math.sqrt(dResult));
 			default:
 				return result;
