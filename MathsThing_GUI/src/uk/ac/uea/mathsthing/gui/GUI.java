@@ -209,19 +209,9 @@ public class GUI extends JFrame implements IObserver {
               		
               		// Tokenize the input from the user.
               		IFormulaLexer lexer = new Lexer(inputField.getText());
-              		lexer.tokenize(lexer.getUserFormula());
-              		
-              		IFormulaParser parser = new SimpleParser();
-              		parser.attach(GUI.this);
-              		// Attempt to parse the formula from the tokens.
-              		try {
-              			parser.setFormula(lexer.getTokens());
-              			new Thread((Runnable)parser).start();
-              		} catch (Exception ex) {
-              			ex.printStackTrace();
-              			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
-              			return;
-              		}              		
+              		lexer.setForumla(lexer.getUserFormula());
+              		lexer.attach(GUI.this);
+              		new Thread((Runnable)lexer).start();        		
         		} finally {
         			  setCursor(Cursor.getDefaultCursor());
         		}
@@ -267,9 +257,28 @@ public class GUI extends JFrame implements IObserver {
 	@Override
 	public void update(Object data) {
 		
-		double fromValue = 0.0, toValue = 0.0;
-		Formula formula = (Formula)data;
+		Formula formula;
 		
+		try {
+			formula = (Formula)data;
+		} catch (ClassCastException castEx) {
+			IFormulaLexer lexer = (IFormulaLexer)data;
+			IFormulaParser parser = new SimpleParser();
+      		parser.attach(GUI.this);
+      		// Attempt to parse the formula from the tokens.
+      		try {
+      			parser.setFormula(lexer.getTokens());
+      			new Thread((Runnable)parser).start();
+      		} catch (Exception ex) {
+      			ex.printStackTrace();
+      			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
+      			return;
+      		}
+      		
+      		return;
+		}
+		
+		double fromValue = 0.0, toValue = 0.0;
 		
 		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
   		try {

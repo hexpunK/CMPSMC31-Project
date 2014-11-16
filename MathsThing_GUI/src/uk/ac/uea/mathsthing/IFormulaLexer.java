@@ -2,6 +2,8 @@ package uk.ac.uea.mathsthing;
 
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.util.IObservable;
+
 /**
  * Provides methods that will allow a lexer to accept and tokenise a provided 
  * mathematical formula. Calling {@link IFormulaLexer#tokenize(String)} will 
@@ -10,7 +12,7 @@ import java.util.HashMap;
  * @author Jordan Woerner
  * @version 1.0
  */
-public interface IFormulaLexer {
+public interface IFormulaLexer extends IObservable {
 
 	/**
 	 * Get the formula the user provided to this instance, as written before 
@@ -32,14 +34,21 @@ public interface IFormulaLexer {
 	public String getProccessedFormula();
 	
 	/**
+	 * Sets the formula to be tokenised.
+	 * 
+	 * @param formula A String representation of the formula.
+	 * @since 1.0
+	 */
+	public void setForumla(String formula);
+	
+	/**
 	 * Analyse and tokenise a provided formula. The tokens will contain 
 	 * constants, paramters, functions and operators.
 	 * 
-	 * @param formula The formula to tokenise.
 	 * @return A String array containing all the tokens found in the formula.
 	 * @since 1.0
 	 */
-	public Token[] tokenize(String formula);
+	public Token[] tokenize();
 	
 	/**
 	 * Returns the tokens created by this lexer if they exist. The tokens will 

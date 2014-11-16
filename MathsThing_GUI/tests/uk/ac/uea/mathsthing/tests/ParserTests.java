@@ -79,6 +79,7 @@ public class ParserTests extends SimpleParser {
 		System.out.println("\nTesting formula parsing...");
 		System.out.printf("Formula: %s\n", printArray(testFormula));
 		this.setFormula(ParserTests.testFormula);
+		this.parse();
 		// Check the right variable is being assigned to.
 		assertEquals(ParserTests.assignTo, this.getAssignTo());
 		
@@ -112,6 +113,7 @@ public class ParserTests extends SimpleParser {
 		System.out.printf("Formula: %s\n", printArray(formula2));
 		System.out.printf("x = %2.2f\n", input);
 		this.setFormula(formula2);
+		this.parse();
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
 		try {

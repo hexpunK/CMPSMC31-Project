@@ -5,6 +5,7 @@ import java.util.HashMap;
 import uk.ac.uea.mathsthing.IFormulaLexer;
 import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.TokenType;
+import uk.ac.uea.mathsthing.util.IObserver;
 
 public class StubbedFormulaLexer implements IFormulaLexer {
 
@@ -19,7 +20,10 @@ public class StubbedFormulaLexer implements IFormulaLexer {
 	}
 
 	@Override
-	public Token[] tokenize(String formula) {
+	public void setForumla(String formula) { }
+	
+	@Override
+	public Token[] tokenize() {
 		return new Token[] {
 				new Token("y", TokenType.OPERAND), 
 				new Token("=", TokenType.OPERATOR), 
@@ -48,5 +52,14 @@ public class StubbedFormulaLexer implements IFormulaLexer {
 	public HashMap<String, Double> getParameters() {
 		return new HashMap<>();
 	}
+
+	@Override
+	public void attach(IObserver observable) { }
+
+	@Override
+	public void detach(IObserver observable) { }
+
+	@Override
+	public void update() { }
 
 }

@@ -1,10 +1,12 @@
 package uk.ac.uea.mathsthing;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Lexer implements IFormulaLexer{
+import uk.ac.uea.mathsthing.util.IObserver;
+
+public class Lexer implements IFormulaLexer, Runnable {
 	
 	private String input;
 	private String userEquation;
@@ -12,6 +14,7 @@ public class Lexer implements IFormulaLexer{
 	//add stuff for parameters later
 	private ArrayList<Token> equation;
 	private HashMap<String, Double> parameters;
+	private IObserver observed;
 	
 	public Lexer()
 	{
@@ -55,9 +58,13 @@ public class Lexer implements IFormulaLexer{
 	}
 
 	@Override
-	public Token[] tokenize(String formula) {
-
+	public void setForumla(String formula) {
 		this.input = formula;
+	}
+	
+	@Override
+	public Token[] tokenize() {
+
 		String orig = getUserFormula();
 		orig.trim();
 		orig = orig.replaceAll("\\s+", "");
@@ -110,5 +117,26 @@ public class Lexer implements IFormulaLexer{
 	@Override
 	public HashMap<String, Double> getParameters() {
 		return this.parameters;
+	}
+
+	@Override
+	public void attach(IObserver observable) {
+		this.observed = observable;
+	}
+
+	@Override
+	public void detach(IObserver observable) {
+		this.observed = null;
+	}
+
+	@Override
+	public void update() {
+		observed.update(this);
+	}
+
+	@Override
+	public void run() {
+		tokenize();
+		update();
 	}
 }
