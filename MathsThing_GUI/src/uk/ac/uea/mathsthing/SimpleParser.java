@@ -226,8 +226,10 @@ public class SimpleParser implements IFormulaParser {
 			}
 		}
 
+		// Work out the most used operand, that's probably the x value.
 		int lastMax = 0;
 		for (String operand : valCount.keySet()) {
+			if (operand.equals(yAxis)) continue;
 			int curVal = valCount.get(operand);
 			if (curVal > lastMax) {
 				xAxis = operand;

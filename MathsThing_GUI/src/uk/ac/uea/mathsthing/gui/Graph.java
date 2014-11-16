@@ -41,7 +41,7 @@ public class Graph extends JPanel {
 	 */
     public Graph(final JFrame frame) {
     	
-        JFreeChart chart = createChart("", new HashMap<Double, BigDecimal>());
+        JFreeChart chart = createChart("", "", "", new HashMap<Double, BigDecimal>());
     	chartPanel = new ChartPanel(chart);
         
     	// Set the location of the chart and hide it until the user enters a formula.
@@ -55,12 +55,14 @@ public class Graph extends JPanel {
     /**
      * Re-draws the chart based on a new dataset.
      * @param title The title of the chart - usually the formula.
+     * @param xAxis The name of the x axis for the chart.
+     * @param yAxis The name of the y axis for the chart.
      * @param results The results to display - the value of x and the value of y as a HashMap.
      */
-    public void updateChart(String title, HashMap<Double, BigDecimal> results) {
+    public void updateChart(String title, String xAxis, String yAxis, HashMap<Double, BigDecimal> results) {
     	
     	chartPanel.setVisible(true);
-    	JFreeChart chart = createChart(title, results);
+    	JFreeChart chart = createChart(title, xAxis, yAxis, results);
     	chartPanel.setChart(chart);
     }
     
@@ -89,18 +91,20 @@ public class Graph extends JPanel {
     /**
      * Method to create a chart so it can be displayed in the window.
      * @param title The title of the chart.
+     * @param xAxis The name of the x axis for the chart.
+     * @param yAxis The name of the y axis for the chart.
      * @param results The results as a HashMap - containing values of x and values of y.
      * @return The JFreeChart object, the chart to draw.
      */
-    private JFreeChart createChart(String title, HashMap<Double, BigDecimal> results) {
+    private JFreeChart createChart(String title, String xAxis, String yAxis, HashMap<Double, BigDecimal> results) {
     	
     	XYDataset dataset = createDataset(results);
     	
     	// Create the chart
         JFreeChart chart = ChartFactory.createXYLineChart(
             title,
-            "x",
-            "y",
+            xAxis,
+            yAxis,
             dataset,
             PlotOrientation.VERTICAL,
             false,

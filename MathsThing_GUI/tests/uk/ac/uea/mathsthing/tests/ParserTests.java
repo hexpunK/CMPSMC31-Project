@@ -109,9 +109,9 @@ public class ParserTests extends SimpleParser {
 	public void testGetResult() {
 		
 		System.out.println("\nTesting formula evaluation...");
-		System.out.printf("Formula: %s\n", printArray(formula3));
+		System.out.printf("Formula: %s\n", printArray(formula2));
 		System.out.printf("x = %2.2f\n", input);
-		this.setFormula(formula3);
+		this.setFormula(formula2);
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
 		try {

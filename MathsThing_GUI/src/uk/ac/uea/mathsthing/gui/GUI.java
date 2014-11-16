@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import uk.ac.uea.mathsthing.Formula;
 import uk.ac.uea.mathsthing.IFormulaLexer;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Lexer;
@@ -232,11 +233,12 @@ public class GUI extends JFrame {
               		IFormulaLexer lexer = new Lexer(inputField.getText());
               		lexer.tokenize(lexer.getUserFormula());
               		
+              		// Parse the formula into a Formula object.
               		IFormulaParser parser = new SimpleParser();
-              		
+              		Formula formula = null;
               		// Attempt to parse the formula from the tokens.
               		try {
-              			parser.setFormula(lexer.getTokens());
+              			formula = parser.setFormula(lexer.getTokens());
               		} catch (Exception ex) {
               			ex.printStackTrace();
               			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
@@ -247,14 +249,13 @@ public class GUI extends JFrame {
              
               		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
               			HashMap<String, Double> vals = new HashMap<>();
-              			vals.put("x", i);
+              			vals.put(formula.getXAxis(), i);
               			
               			// Get the result and add it to the hash map.
               			try {
-      						BigDecimal result = parser.getResult(vals);
+      						BigDecimal result = formula.getResult(vals);
       						results.put(i, result);
-      					} catch (Exception e1) {
-      						
+      					} catch (Exception e1) {      						
       						e1.printStackTrace();
       						JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
       						return;
@@ -262,7 +263,7 @@ public class GUI extends JFrame {
               		}
               		
               		// Update the chart and allow the graph to be saved as a PNG.
-              		chart.updateChart(inputField.getText(), results);
+              		chart.updateChart(inputField.getText(), formula.getXAxis(), formula.getYAxis(), results);
               		saveGraphItem.setEnabled(true);
               		
         		} finally {
