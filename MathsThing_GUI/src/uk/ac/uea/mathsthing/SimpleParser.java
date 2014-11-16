@@ -5,7 +5,10 @@ import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
+import uk.ac.uea.mathsthing.gui.Graph;
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
+import uk.ac.uea.mathsthing.util.IObservable;
+import uk.ac.uea.mathsthing.util.IObserver;
 
 /**
  * A simplistic parser that converts a formula from infix notation to postfix.
@@ -18,12 +21,16 @@ import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
  * @author Jordan Woerner
  * @version 1.0
  */
-public class SimpleParser implements IFormulaParser {
+public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 
+	/** The {@link Token} objects of the formula being parsed. */
+	private Token[] tokens;
 	/** The infix and postfix notations. */
 	private Stack<Token> inFix, postFix;
 	/** The formula that has been processed. */
 	protected Formula formula;
+	/** The {@link Graph} to notify. */
+	protected IObserver observed;
 
 	/**
 	 * Sets up a new {@link SimpleParser} with empty infix and postfix stacks.
@@ -36,15 +43,13 @@ public class SimpleParser implements IFormulaParser {
 		postFix = new Stack<>();
 	}
 
-	/**
-	 * Sets the formula this {@link SimpleParser} works on to the specified
-	 * {@link Token} array of tokens.
-	 * 
-	 * @param tokenised The {@link Token} array containing the formula tokens.
-	 * @since 1.0
-	 */
 	@Override
-	public Formula setFormula(Token[] tokenised) {
+	public void setFormula(Token[] tokenised) {
+		this.tokens = tokenised;
+	}
+	
+	@Override
+	public Formula parse() {
 
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
@@ -54,7 +59,7 @@ public class SimpleParser implements IFormulaParser {
 		HashMap<String, Integer> valCount = new HashMap<>();
 		boolean negation = false;
 		
-		for (Token token : tokenised) {
+		for (Token token : tokens) {
 
 			if (!inFix.empty() 
 					&& inFix.peek().type != TokenType.OPERATOR
@@ -237,16 +242,10 @@ public class SimpleParser implements IFormulaParser {
 			}
 		}
 		
-		this.formula = new Formula(yAxis, xAxis, tokenised, tmpStack.pop());
+		this.formula = new Formula(yAxis, xAxis, tokens, tmpStack.pop());
 		return this.formula;
 	}
 
-	/**
-	 * Process the formula stored in the evaluation tree.
-	 * 
-	 * @param params The mapping of variables to values as a {@link HashMap}.
-	 * @since 1.0
-	 */
 	@Override
 	public BigDecimal getResult(HashMap<String, Double> params)
 			throws Exception {
@@ -285,5 +284,26 @@ public class SimpleParser implements IFormulaParser {
 
 	protected final BinaryEvaluationTree getEvalTree() {
 		return this.formula.getEvalTree();
+	}
+
+	@Override
+	public void attach(IObserver observable) {
+		this.observed = observable;
+	}
+
+	@Override
+	public void detach(IObserver observable) {
+		this.observed = null;
+	}
+
+	@Override
+	public void update() {
+		observed.update(this.formula);
+	}
+
+	@Override
+	public void run() {
+		parse();
+		update();
 	}
 }

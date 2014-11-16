@@ -6,11 +6,12 @@ import java.util.HashMap;
 import uk.ac.uea.mathsthing.Formula;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Token;
+import uk.ac.uea.mathsthing.util.IObserver;
 
 public class StubbedFormulaParser implements IFormulaParser {
 
-	public Formula setFormula(Token[] tokenised) {
-		return null;
+	public void setFormula(Token[] tokens) {
+		// Do nothing.
 	}
 	
 	@Override
@@ -26,6 +27,26 @@ public class StubbedFormulaParser implements IFormulaParser {
 	@Override
 	public String getSecondDerivative() {
 		return "y=x";
+	}
+
+	@Override
+	public Formula parse() {
+		return null;
+	}
+
+	@Override
+	public void attach(IObserver observable) {
+		
+	}
+
+	@Override
+	public void detach(IObserver observable) {
+		
+	}
+
+	@Override
+	public void update() {
+		
 	}
 
 }

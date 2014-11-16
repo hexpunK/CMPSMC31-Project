@@ -151,5 +151,4 @@ public class Graph extends JPanel {
         return dataset;
         
     }
-
 }

@@ -3,6 +3,8 @@ package uk.ac.uea.mathsthing;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.util.IObservable;
+
 /**
  * Provides methods to interact with the parser. Allows a tokenised formula to 
  * be provided to the parser, and lets the calling code retrieve various 
@@ -11,7 +13,7 @@ import java.util.HashMap;
  * @author Jordan Woerner
  * @version 1.0
  */
-public interface IFormulaParser {
+public interface IFormulaParser extends IObservable {
 
 	/**
 	 * Sets the formula that this parser should work on to a specified array of 
@@ -21,7 +23,15 @@ public interface IFormulaParser {
 	 * @return Returns the newly created {@link Formula}.
 	 * @since 1.0
 	 */
-	public Formula setFormula(Token[] tokenised);
+	public void setFormula(Token[] tokenised);
+	
+	/**
+	 * Parses the formula provided.
+	 * 
+	 * @return Returns the newly created {@link Formula}.
+	 * @since 1.0
+	 */
+	public Formula parse();
 	
 	/**
 	 * Gets the resulting number from using the stored formula with the 

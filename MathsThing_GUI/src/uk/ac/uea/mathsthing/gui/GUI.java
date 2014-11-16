@@ -28,14 +28,15 @@ import uk.ac.uea.mathsthing.IFormulaLexer;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Lexer;
 import uk.ac.uea.mathsthing.SimpleParser;
+import uk.ac.uea.mathsthing.util.IObserver;
 
 /**
- * Initializes the GUI for the application.
+ * Initialises the GUI for the application.
  * 
  * @author Jake Ruston
  * @version 0.1
  */
-public class GUI extends JFrame {
+public class GUI extends JFrame implements IObserver {
 	
 	private static final long serialVersionUID = 1L;
 	private static final double INCREMENTER_VALUE = 0.25;
@@ -199,73 +200,28 @@ public class GUI extends JFrame {
         
         chart = new Graph(this);
         
-        enterButton.addActionListener(new ActionListener(){
+        enterButton.addActionListener(new ActionListener() {
         	
         	public void actionPerformed(ActionEvent e) {
         		
         		try {
         			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        			  
-        			double fromValue = 0.0, toValue = 0.0;
-              		
-              		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
-              		try {
-              			fromValue = Double.parseDouble(fromField.getText());
-              			toValue = Double.parseDouble(toField.getText());
-              		} catch (Exception ex) {
-              			ex.printStackTrace();
-              			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-              			return;
-              		}
-              		
-              		// Throw an error if the from value is less than the to value.
-              		if (fromValue >= toValue) {
-              			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-              			return;
-              		}
-              		
-              		if (fromValue < -10000 || toValue > 10000) {
-              			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
-              			return;
-              		}
               		
               		// Tokenize the input from the user.
               		IFormulaLexer lexer = new Lexer(inputField.getText());
               		lexer.tokenize(lexer.getUserFormula());
               		
-              		// Parse the formula into a Formula object.
               		IFormulaParser parser = new SimpleParser();
-              		Formula formula = null;
+              		parser.attach(GUI.this);
               		// Attempt to parse the formula from the tokens.
               		try {
-              			formula = parser.setFormula(lexer.getTokens());
+              			parser.setFormula(lexer.getTokens());
+              			new Thread((Runnable)parser).start();
               		} catch (Exception ex) {
               			ex.printStackTrace();
               			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
               			return;
-              		}
-              		
-              		HashMap<Double, BigDecimal> results = new HashMap<>();
-             
-              		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
-              			HashMap<String, Double> vals = new HashMap<>();
-              			vals.put(formula.getXAxis(), i);
-              			
-              			// Get the result and add it to the hash map.
-              			try {
-      						BigDecimal result = formula.getResult(vals);
-      						results.put(i, result);
-      					} catch (Exception e1) {      						
-      						e1.printStackTrace();
-      						JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
-      						return;
-      					}
-              		}
-              		
-              		// Update the chart and allow the graph to be saved as a PNG.
-              		chart.updateChart(inputField.getText(), formula.getXAxis(), formula.getYAxis(), results);
-              		saveGraphItem.setEnabled(true);
-              		
+              		}              		
         		} finally {
         			  setCursor(Cursor.getDefaultCursor());
         		}
@@ -307,4 +263,53 @@ public class GUI extends JFrame {
             }
         });
     }
+	
+	@Override
+	public void update(Object data) {
+		
+		double fromValue = 0.0, toValue = 0.0;
+		Formula formula = (Formula)data;
+		
+		
+		// Attempt to parse the from and to values as numbers. Exception is thrown if they aren't valid numbers.
+  		try {
+  			fromValue = Double.parseDouble(fromField.getText());
+  			toValue = Double.parseDouble(toField.getText());
+  		} catch (Exception ex) {
+  			ex.printStackTrace();
+  			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+  			return;
+  		}
+  		
+  		// Throw an error if the from value is less than the to value.
+  		if (fromValue >= toValue) {
+  			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+  			return;
+  		}
+  		
+  		if (fromValue < -10000 || toValue > 10000) {
+  			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+  			return;
+  		}
+  		
+  		HashMap<Double, BigDecimal> results = new HashMap<>();
+  		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
+  			HashMap<String, Double> vals = new HashMap<>();
+  			vals.put(formula.getXAxis(), i);
+  			
+  			// Get the result and add it to the hash map.
+  			try {
+				BigDecimal result = formula.getResult(vals);
+				results.put(i, result);
+			} catch (Exception e1) {      						
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+  		}
+  		
+  		// Update the chart and allow the graph to be saved as a PNG.
+  		chart.updateChart(inputField.getText(), formula.getXAxis(), formula.getYAxis(), results);
+  		saveGraphItem.setEnabled(true);
+	}
 }
