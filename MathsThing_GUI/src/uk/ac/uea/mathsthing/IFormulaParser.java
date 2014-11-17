@@ -27,10 +27,10 @@ public interface IFormulaParser extends IObservable {
 	/**
 	 * Parses the formula provided.
 	 * 
-	 * @return Returns the newly created {@link Formula}.
+	 * @return Returns the newly created {@link IFormula}.
 	 * @since 1.0
 	 */
-	public Formula parse();
+	public IFormula parse();
 	
 	/**
 	 * Gets the resulting number from using the stored formula with the 
@@ -43,21 +43,24 @@ public interface IFormulaParser extends IObservable {
 	 * formula.
 	 * @since 1.0
 	 */
-	public BigDecimal getResult(HashMap<String, Double> params) throws Exception;
+	public BigDecimal getResult(HashMap<String, Double> params) 
+			throws Exception;
 	
 	/**
 	 * Gets the first derivative of the stored formula.
 	 * 
-	 * @return A String representing the first derivative of the formula.
+	 * @return A {@link IFormula} representing the first derivative of the 
+	 * formula.
 	 * @since 1.0
 	 */
-	public String getFirstDerivative();
+	public IFormula getFirstDerivative();
 	
 	/**
 	 * Gets the second derivative of the store formula.
 	 * 
-	 * @return A String representing the second derivative of the formula.
+	 * @return A {@link IFormula} representing the second derivative of the 
+	 * formula.
 	 * @since 1.0
 	 */
-	public String getSecondDerivative();
+	public IFormula getSecondDerivative();
 }

@@ -24,6 +24,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import uk.ac.uea.mathsthing.Formula;
+import uk.ac.uea.mathsthing.IFormula;
 import uk.ac.uea.mathsthing.IFormulaLexer;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Lexer;
@@ -261,7 +262,7 @@ public class GUI extends JFrame implements IObserver {
 	@Override
 	public void update(Object data) {
 		
-		Formula formula;
+		IFormula formula;
 		
 		// Attempt to cast the received object to a Formula.
 		try {
@@ -282,6 +283,12 @@ public class GUI extends JFrame implements IObserver {
       		}
       		
       		return;
+		}
+		
+		// There is a possibility that the returned formula won't actually exist.
+		if (formula == null) {
+			JOptionPane.showMessageDialog(frame, "No formula could be created from input.", "Invalid Formula", JOptionPane.ERROR_MESSAGE);
+  			return;
 		}
 		
 		double fromValue = 0.0, toValue = 0.0;

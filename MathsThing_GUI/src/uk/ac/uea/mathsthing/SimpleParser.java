@@ -28,7 +28,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	/** The infix and postfix notations. */
 	private Stack<Token> inFix, postFix;
 	/** The formula that has been processed. */
-	protected Formula formula;
+	protected IFormula formula;
 	/** The {@link Graph} to notify. */
 	protected IObserver observed;
 
@@ -49,7 +49,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	}
 	
 	@Override
-	public Formula parse() {
+	public IFormula parse() {
 
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
@@ -245,7 +245,9 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 			}
 		}
 		
-		this.formula = new Formula(yAxis, xAxis, tokens, tmpStack.pop());
+		if (!tmpStack.empty())			
+			this.formula = new Formula(yAxis, xAxis, tokens, tmpStack.pop());
+		
 		return this.formula;
 	}
 
@@ -263,13 +265,13 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	}
 
 	@Override
-	public String getFirstDerivative() {		
-		return formula.getDerivative().toString();
+	public IFormula getFirstDerivative() {		
+		return formula.getDerivative();
 	}
 
 	@Override
-	public String getSecondDerivative() {		
-		return formula.getDerivative().getDerivative().toString();
+	public IFormula getSecondDerivative() {		
+		return formula.getDerivative().getDerivative();
 	}
 
 	// These are only here for testing purposes.
@@ -286,7 +288,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	}
 
 	protected final BinaryEvaluationTree getEvalTree() {
-		return this.formula.getEvalTree();
+		return ((Formula)this.formula).getEvalTree();
 	}
 
 	@Override

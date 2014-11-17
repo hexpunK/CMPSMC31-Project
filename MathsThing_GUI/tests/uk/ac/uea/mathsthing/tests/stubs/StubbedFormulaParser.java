@@ -3,7 +3,7 @@ package uk.ac.uea.mathsthing.tests.stubs;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
-import uk.ac.uea.mathsthing.Formula;
+import uk.ac.uea.mathsthing.IFormula;
 import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.util.IObserver;
@@ -20,17 +20,17 @@ public class StubbedFormulaParser implements IFormulaParser {
 	}
 
 	@Override
-	public String getFirstDerivative() {
-		return "y=2*x";
+	public IFormula getFirstDerivative() {
+		return null;
 	}
 
 	@Override
-	public String getSecondDerivative() {
-		return "y=x";
+	public IFormula getSecondDerivative() {
+		return null;
 	}
 
 	@Override
-	public Formula parse() {
+	public IFormula parse() {
 		return null;
 	}
 

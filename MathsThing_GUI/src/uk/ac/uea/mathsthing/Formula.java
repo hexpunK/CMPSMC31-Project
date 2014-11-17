@@ -5,7 +5,14 @@ import java.util.HashMap;
 
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
 
-public class Formula {
+/**
+ * A simplistic implementation of a mathematical formula representation.
+ * This will be replaced with a native C/C++ version when possible.
+ * 
+ * @author Jordan Woerner
+ * @version 1.0
+ */
+public class Formula implements IFormula {
 
 	private String yAxis;
 	private String xAxis;
@@ -55,10 +62,7 @@ public class Formula {
 		return this.evalTree.eval(params);
 	}
 	
-	public Formula getDerivative()
-	{
-		return this.derivative;
-	}
+	public Formula getDerivative() { return this.derivative; }
 	
 	@Override
 	public String toString() {

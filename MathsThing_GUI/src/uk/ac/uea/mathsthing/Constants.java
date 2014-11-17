@@ -18,7 +18,7 @@ public class Constants {
 	 * @since 1.0
 	 */
 	public static final String[] SUPPORTED_CONSTANTS = {
-		"e", "pi"
+		"e", "pi", "tau", "hue"
 	};
 	
 	/** 
@@ -85,6 +85,10 @@ public class Constants {
 				return new BigDecimal(Math.E);
 			case "pi":
 				return new BigDecimal(Math.PI);
+			case "tau":
+				return new BigDecimal(Math.PI*2.0);
+			case "hue":
+				return new BigDecimal(9001);
 			default:
 				return new BigDecimal(0);
 		}
