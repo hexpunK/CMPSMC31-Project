@@ -12,6 +12,8 @@ public enum TokenType {
 
 	/** Mathematical functions such as sin, cos, floor, etc. */
 	FUNCTION(Functions.functionRegex),
+	/** Mathematical constants such as pi, e, etc. */
+	MAGICNUM(Constants.constantRegex),
 	/** Mathematical operators such as addition, subtraction, etc. */
 	OPERATOR("([*|/|+|\\-|(|)|=|^])"),
 	/** Replaceable values such as x, y, s, t, etc. */

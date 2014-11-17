@@ -5,6 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.Constants;
 import uk.ac.uea.mathsthing.Functions;
 import uk.ac.uea.mathsthing.Token;
 
@@ -127,6 +128,19 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 				}
 			}
 			msg = String.format("Unsupported function '%s' found.", 
+					item.getToken());
+			throw new Exception(msg);
+		// Mathematical constants such as pi will be evaluated here if they are
+		// supported. If not, an exception will be thrown.
+		case MAGICNUM:
+			if (Constants.isSupported(item.getToken())) {
+				try {
+					return Constants.processConstant(item.getToken());
+				} catch (Exception e) {
+					throw e;
+				}
+			}
+			msg = String.format("Unsupported constant '%s' found.", 
 					item.getToken());
 			throw new Exception(msg);
 		}

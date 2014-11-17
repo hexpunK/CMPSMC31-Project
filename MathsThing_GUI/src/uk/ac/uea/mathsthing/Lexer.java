@@ -70,8 +70,11 @@ public class Lexer implements IFormulaLexer, Runnable {
 		orig = orig.replaceAll("\\s+", "");
 		
 		//create the patter to match
-		Pattern p1 = Pattern.compile(TokenType.FUNCTION.getToken() + "|" + TokenType.OPERATOR.getToken() +
-				"|" + TokenType.OPERAND.getToken() + "|" + TokenType.CONSTANT.getToken());
+		Pattern p1 = Pattern.compile(TokenType.FUNCTION.getToken() 
+				+ "|" + TokenType.MAGICNUM.getToken() 
+				+ "|" + TokenType.OPERATOR.getToken() 
+				+ "|" + TokenType.OPERAND.getToken() 
+				+ "|" + TokenType.CONSTANT.getToken());
 		
 		//set up the matcher using the pattern created
 		Matcher mat = p1.matcher(orig);
@@ -82,6 +85,12 @@ public class Lexer implements IFormulaLexer, Runnable {
 			if(mat.group(TokenType.FUNCTION.ordinal()+1) != null)
 			{
 				Token t = new Token(mat.group(TokenType.FUNCTION.ordinal()+1), TokenType.FUNCTION);
+				equation.add(t);
+			}
+			//function
+			if(mat.group(TokenType.MAGICNUM.ordinal()+1) != null)
+			{
+				Token t = new Token(mat.group(TokenType.MAGICNUM.ordinal()+1), TokenType.MAGICNUM);
 				equation.add(t);
 			}
 			//operator

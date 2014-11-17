@@ -20,7 +20,6 @@ public interface IFormulaParser extends IObservable {
 	 * tokens.
 	 * 
 	 * @param tokenised A {@link Token} array of the required formula tokens.
-	 * @return Returns the newly created {@link Formula}.
 	 * @since 1.0
 	 */
 	public void setFormula(Token[] tokenised);

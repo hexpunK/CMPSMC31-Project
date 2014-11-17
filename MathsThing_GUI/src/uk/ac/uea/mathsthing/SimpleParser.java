@@ -54,8 +54,8 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
 		Token funcOp = null;
-		String yAxis = null;
-		String xAxis = null;
+		String yAxis = "y";
+		String xAxis = "x";
 		HashMap<String, Integer> valCount = new HashMap<>();
 		boolean negation = false;
 		
@@ -191,6 +191,9 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					postFix.push(new Token("-", TokenType.OPERATOR));
 					negation = false;
 				}
+				break;
+			case MAGICNUM:
+				postFix.push(token);
 				break;
 			}
 

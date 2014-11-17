@@ -6,7 +6,7 @@ import uk.ac.uea.mathsthing.util.IObservable;
 
 /**
  * Provides methods that will allow a lexer to accept and tokenise a provided 
- * mathematical formula. Calling {@link IFormulaLexer#tokenize(String)} will 
+ * mathematical formula. Calling {@link IFormulaLexer#tokenize()} will 
  * create a String array containing the tokens found in a formula.
  * 
  * @author Jordan Woerner

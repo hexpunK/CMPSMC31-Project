@@ -2,6 +2,7 @@ package uk.ac.uea.mathsthing.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 
 import javax.swing.JEditorPane;
@@ -58,12 +59,13 @@ public class Help
 				e.printStackTrace();
 				return;
 			}
-	        
+	        	        
 	        Document doc = kit.createDefaultDocument();
 	        jEditorPane.setDocument(doc);
 	        jEditorPane.setText(htmlString);
 
 	        JFrame j = new JFrame("Help");
+	        j.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/app-icon.png")));
 	        j.getContentPane().add(scrollPane, BorderLayout.CENTER);
 	        
 	        j.setSize(new Dimension(700, 500));

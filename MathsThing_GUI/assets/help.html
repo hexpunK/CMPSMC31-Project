@@ -1,24 +1,22 @@
 <html>
 <head>
 	<style>
-	body {color:#666666; font-family:sans-serif; margin: 2px; }
-	h1 {color: #000000;}
+	body {color:#666666; font-family:sans-serif; font-size: 14pt; margin: 3em;}
+	h1 {color: #000000; text-align: center; margin: 2ex;}
 	h2 {color: #333333;}
+	p {color: #666666; margin: 1.5ex;}
+	p.subtitle {font-size: medium; text-align:center}
+	.sub {font-size: small; margin:0}
+	.light {color: #BBBBBB;}
 	</style>
 </head>
 <body>
 	<div id="header">
-		<h1 style="text-align: center;">Math Thing Help v0.1</h1>
-
-		<p style="font-size: medium; text-align:center">By Laura Goold, Jake Ruston & Jordan Woerner</p>
+		<h1>Math Thing Help v0.1</h1>
+		<p class="subtitle">By Laura Goold, Jake Ruston & Jordan Woerner</p>
 	</div>
-
-	<div></div>
-
 	<div id="content">
-	
-		<h2>Mathematical</h2>
-		<sub>Note: All formulas must have their parameters pass inside brackets to work.</sub>
+		<h2>Mathematical<span class="light">*</span></h2>
 		<div id="formula">
 			<p>The application currently supports the following functions:</p>
 			<p><strong>+, -, *, /</strong> - Default mathematical operators for addition, subtraction, multiplication and division.</p>
@@ -30,11 +28,8 @@
 			<p><strong>log()</strong> - Calculates the logarithm of the input, to base 10.</p>
 			<p><strong>ln()</strong> - Calculates the natural logarithm of the input.</p>
 		</div>
-
-		<div></div>
-		
-		<h2>Trigonometry</h2>
-		
+		<br />
+		<h2>Trigonometry<span class="light">*</span></h2>		
 		<div id="trig">
 			<p><strong>sin()</strong> - Calculates the sine function of an angle.</p>
 			<p><strong>cos()</strong> - Calculates the cosine function of an angle.</p>
@@ -43,18 +38,20 @@
 			<p><strong>cosh()</strong> - Calculates the hyperbolic cosine function of an angle.</p>
 			<p><strong>tanh()</strong> - Calculates the hyperbolic tangent function of an angle.</p>
 		</div>
-		
-		<div></div>
-
+		<br />
+		<h2>Constants</h2>		
+		<div id="consts">
+			<p><strong>e</strong> - An approximation of Euler's number to 15 digits.</p>
+			<p><strong>pi</strong> - An approximation of pi to 15 digits.</p>
+		</div>
+		<br />
 		<h2>Customizability</h2>
-
 		<div id="customizability">
 			<p><strong>From</strong> - The value to start from when drawing the graph. The default is -10.</p>
 			<p><strong>To</strong> - The value to end at when drawing the graph. The default is 10.</p>
 		</div>
-		
-		<div></div>
+		<br />
+		<p class="sub">*Note: All functions displayed with brackets must have their parameters passed inside the brackets to work.</p>
 	</div>
-
 </body>
 </html>

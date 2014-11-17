@@ -1,7 +1,7 @@
 package uk.ac.uea.mathsthing.util;
 
 /**
- * Observer pattern server interface. {@link IObserver#update()} will be 
+ * Observer pattern server interface. {@link IObserver#update(Object)} will be 
  * called by observed objects , the implementation of update should be able to 
  * access any updated data in the object.
  * 

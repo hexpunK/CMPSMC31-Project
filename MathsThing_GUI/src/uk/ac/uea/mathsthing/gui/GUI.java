@@ -39,7 +39,7 @@ import uk.ac.uea.mathsthing.util.IObserver;
 public class GUI extends JFrame implements IObserver {
 	
 	private static final long serialVersionUID = 1L;
-	private static final double INCREMENTER_VALUE = 0.25;
+	private static final int CHARTED_POINTS = 1000;
 	
 	/** Text field used to enter the formula. */
 	final JTextField inputField, fromField, toField;
@@ -53,6 +53,10 @@ public class GUI extends JFrame implements IObserver {
     final JFrame frame;
     /** Reference to the save graph menu item so we can enable/disable it. */
     JMenuItem saveGraphItem, productHelpItem, aboutItem;
+    /** A {@link IFormulaLexer} to use when interpreting the user formula. */
+    IFormulaLexer lexer;
+    /** A {@link IFormulaParser} to use when evaluating the user formula. */
+	IFormulaParser parser;
 	
     /**
 	 * Sets up the GUI for the application.
@@ -259,11 +263,13 @@ public class GUI extends JFrame implements IObserver {
 		
 		Formula formula;
 		
+		// Attempt to cast the received object to a Formula.
 		try {
-			formula = (Formula)data;
+			formula = (Formula)data;			
 		} catch (ClassCastException castEx) {
-			IFormulaLexer lexer = (IFormulaLexer)data;
-			IFormulaParser parser = new SimpleParser();
+			// If it fails, then we just received the Lexer instance instead.
+			lexer = (IFormulaLexer)data;
+			parser = new SimpleParser();
       		parser.attach(GUI.this);
       		// Attempt to parse the formula from the tokens.
       		try {
@@ -302,10 +308,12 @@ public class GUI extends JFrame implements IObserver {
   		}
   		
   		HashMap<Double, BigDecimal> results = new HashMap<>();
-  		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
-  			HashMap<String, Double> vals = new HashMap<>();
-  			vals.put(formula.getXAxis(), i);
-  			
+  		HashMap<String, Double> vals = lexer.getParameters();
+  		// Calculate the increment for charted points.
+  		double incr = ((toValue - fromValue)/CHARTED_POINTS);
+  		
+  		for (double i=fromValue; i<=toValue; i+=incr) {
+  			vals.put(formula.getXAxis(), i);  			
   			// Get the result and add it to the hash map.
   			try {
 				BigDecimal result = formula.getResult(vals);
