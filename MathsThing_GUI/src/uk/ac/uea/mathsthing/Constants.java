@@ -4,6 +4,12 @@ import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.regex.Matcher;
 
+/**
+ * Provides methods to handle mathematical constants in a provided formula.
+ * 
+ * @author Jordan Woerner
+ * @version 1.0
+ */
 public class Constants {
 
 	/** 
