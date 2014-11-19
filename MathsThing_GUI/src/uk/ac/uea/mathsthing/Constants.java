@@ -53,9 +53,9 @@ public class Constants {
 	 * name is passed.
 	 * @since 1.0
 	 */
-	public static final boolean isSupported(String constant) 
-			throws InvalidParameterException {
-		
+	public static final boolean isSupported(final String constant) 
+			throws InvalidParameterException
+	{		
 		if (constant == null || constant.isEmpty())
 			throw new InvalidParameterException("A function name must be provided.");
 		
@@ -76,9 +76,9 @@ public class Constants {
 	 * @throws Exception Thrown if there is an error evaluating this constant.
 	 * @since 1.0
 	 */
-	public static final BigDecimal processConstant(String constant)
-			throws Exception {
-		
+	public static final BigDecimal processConstant(final String constant)
+			throws Exception 
+	{		
 		// Execute the constant specified.
 		switch (constant) {
 			case "e":

@@ -58,9 +58,9 @@ public final class Functions {
 	 * name is passed.
 	 * @since 1.0
 	 */
-	public static final boolean isSupported(String funcName) 
-			throws InvalidParameterException {
-		
+	public static final boolean isSupported(final String funcName) 
+			throws InvalidParameterException
+	{		
 		if (funcName == null || funcName.isEmpty())
 			throw new InvalidParameterException("A function name must be provided.");
 		
@@ -84,9 +84,9 @@ public final class Functions {
 	 * formula this function works on.
 	 * @since 1.0
 	 */
-	public static final BigDecimal processFunction(String funcName, BigDecimal result)
-			throws Exception {
-		
+	public static final BigDecimal processFunction(final String funcName, 
+			final BigDecimal result) throws Exception
+	{		
 		double dResult = result.doubleValue();
 		
 		if (dResult >= Double.POSITIVE_INFINITY || dResult <= Double.NEGATIVE_INFINITY) {
@@ -143,8 +143,8 @@ public final class Functions {
 	 * @return The computed factorial as a double.
 	 * @since 1.0
 	 */
-	public static final double fact(int n) {
-		
+	public static final double fact(final int n)
+	{		
 		if (n <= 1) {
 			return 1.0;
 		} else {

@@ -24,7 +24,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * 
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree() {
+	public BinaryEvaluationTree()
+	{
 		super();
 	}
 	
@@ -35,7 +36,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * @param item The item to store in the root node as a {@link String}.
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree(Token item) {
+	public BinaryEvaluationTree(final Token item)
+	{
 		super(item);
 	}
 	
@@ -50,7 +52,10 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * child.
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree(Token item, BinaryEvaluationTree leftTree, BinaryEvaluationTree rightTree) {
+	public BinaryEvaluationTree(final Token item, 
+			final BinaryEvaluationTree leftTree, 
+			final BinaryEvaluationTree rightTree)
+	{
 		super(item, leftTree, rightTree);
 	}
 	
@@ -58,16 +63,16 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * Evaluates this {@link BinaryEvaluationTree}.
 	 * 
 	 * @param values A {@link HashMap} of parameters and their values.
-	 * @return The result of the formula with the specified paramters as a 
+	 * @return The result of the formula with the specified parameters as a 
 	 * double.
 	 * @throws Exception Thrown if there is an error in the formula such as 
 	 * incorrect formatting.
 	 * @since 1.0
 	 */
-	public BigDecimal eval(HashMap<String, Double> values) 
-		throws Exception {
-		
-		MathContext mc=new MathContext(32, RoundingMode.HALF_EVEN);
+	public BigDecimal eval(final HashMap<String, Double> values) 
+		throws Exception
+	{		
+		MathContext mc=new MathContext(64, RoundingMode.HALF_EVEN);
 		BigDecimal leftVal = new BigDecimal(0, mc);
 		BigDecimal rightVal = new BigDecimal(0, mc);
 		
@@ -94,8 +99,7 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 			if (values.containsKey(item.getToken())) {
 				return new BigDecimal(values.get(item.getToken()));
 			}
-			msg = String.format(
-					"Could not find matching parameter for operand '%s'", 
+			msg = String.format("Could not find matching parameter for operand '%s'", 
 					item.getToken());
 			throw new Exception(msg);
 		// Operators work on the left and right child results. As these are 0.0
@@ -110,11 +114,10 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 				return leftVal.subtract(rightVal, mc);
 			case "/":
 				return leftVal.divide(rightVal, mc);
-			case "^":
-				return leftVal.pow(rightVal.intValue(), mc);
+			case "^":				
+				return new BigDecimal(Math.pow(leftVal.doubleValue(), rightVal.doubleValue()));
 			default:
-				msg = String.format(
-						"Unknown operator found '%s'", item.getToken());
+				msg = String.format("Unknown operator found '%s'", item.getToken());
 				throw new Exception();
 			}
 		// Functions will be called as needed, if something goes wrong inside 

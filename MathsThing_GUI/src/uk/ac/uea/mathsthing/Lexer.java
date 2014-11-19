@@ -87,7 +87,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 				Token t = new Token(mat.group(TokenType.FUNCTION.ordinal()+1), TokenType.FUNCTION);
 				equation.add(t);
 			}
-			//function
+			//mathematical constants
 			if(mat.group(TokenType.MAGICNUM.ordinal()+1) != null)
 			{
 				Token t = new Token(mat.group(TokenType.MAGICNUM.ordinal()+1), TokenType.MAGICNUM);

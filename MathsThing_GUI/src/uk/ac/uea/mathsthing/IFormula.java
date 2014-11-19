@@ -13,6 +13,15 @@ import java.util.HashMap;
 public interface IFormula {
 
 	/**
+	 * Sets the parameters that will be used when evaluating this 
+	 * {@link IFormula}.
+	 * 
+	 * @param params A mapping of operands to constant values.
+	 * @since 1.0
+	 */
+	public void setParameters(HashMap<String, Double> params);
+	
+	/**
 	 * Gets the operand that represents the Y axis on a graph.
 	 * 
 	 * @return The y axis name as a {@link String}
@@ -31,13 +40,12 @@ public interface IFormula {
 	/**
 	 * Processes the stored formula, evaluating a result for the formula.
 	 * 
-	 * @param params A mapping of operands to constant values.
 	 * @return Returns a {@link BigDecimal} representation of the result.
 	 * @throws Exception Thrown if there are any errors processing the stored 
 	 * formula.
 	 * @since 1.0
 	 */
-	public BigDecimal getResult(HashMap<String, Double> params) 
+	public BigDecimal getResult() 
 			throws Exception;
 	
 	/**

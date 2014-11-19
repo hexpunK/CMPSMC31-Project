@@ -37,20 +37,21 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	 * 
 	 * @since 1.0
 	 */
-	public SimpleParser() {
-
+	public SimpleParser() 
+	{
 		inFix = new Stack<>();
 		postFix = new Stack<>();
 	}
 
 	@Override
-	public void setFormula(Token[] tokenised) {
+	public void setFormula(Token[] tokenised) 
+	{
 		this.tokens = tokenised;
 	}
 	
 	@Override
-	public IFormula parse() {
-
+	public IFormula parse() 
+	{
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
 		Token funcOp = null;
@@ -253,9 +254,11 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 
 	@Override
 	public BigDecimal getResult(HashMap<String, Double> params)
-			throws Exception {
+			throws Exception 
+	{
+		formula.setParameters(params);
 		try {
-			return formula.getResult(params);
+			return formula.getResult();
 		} catch (Exception e) {
 			String err = String.format(
 					"The provided function is not properly formed:\n%s",
@@ -265,49 +268,59 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	}
 
 	@Override
-	public IFormula getFirstDerivative() {		
+	public IFormula getFirstDerivative() 
+	{		
 		return formula.getDerivative();
 	}
 
 	@Override
-	public IFormula getSecondDerivative() {		
+	public IFormula getSecondDerivative() 
+	{		
 		return formula.getDerivative().getDerivative();
 	}
 
 	// These are only here for testing purposes.
-	protected final String getAssignTo() {
+	protected final String getAssignTo() 
+	{
 		return this.formula.getYAxis();
 	}
 
-	protected final Stack<Token> getInFix() {
+	protected final Stack<Token> getInFix() 
+	{
 		return this.inFix;
 	}
 
-	protected final Stack<Token> getPostFix() {
+	protected final Stack<Token> getPostFix() 
+	{
 		return this.postFix;
 	}
 
-	protected final BinaryEvaluationTree getEvalTree() {
+	protected final BinaryEvaluationTree getEvalTree() 
+	{
 		return ((Formula)this.formula).getEvalTree();
 	}
 
 	@Override
-	public void attach(IObserver observable) {
+	public void attach(IObserver observable) 
+	{
 		this.observed = observable;
 	}
 
 	@Override
-	public void detach(IObserver observable) {
+	public void detach(IObserver observable) 
+	{
 		this.observed = null;
 	}
 
 	@Override
-	public void update() {
+	public void update() 
+	{
 		observed.update(this.formula);
 	}
 
 	@Override
-	public void run() {
+	public void run() 
+	{
 		parse();
 		update();
 	}

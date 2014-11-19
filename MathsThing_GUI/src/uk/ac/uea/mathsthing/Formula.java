@@ -14,18 +14,26 @@ import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
  */
 public class Formula implements IFormula {
 
+	/** The label to use on the y-axis of charts. */
 	private String yAxis;
+	/** The label to use on the x-axis of charts. */
 	private String xAxis;
+	/** The {@link Token} objects that represent this {@link Formula} */
 	private Token[] tokens;
+	/** A mapping of operands to their constant values. */
+	private HashMap<String, Double> params;
 	
+	/** The postfix expression tree to evaluate this {@link Formula}. */
 	private BinaryEvaluationTree evalTree;
-	private Formula derivative;
+	/** The first derivative for this {@link Formula} as an {@link IFormula} */
+	private IFormula derivative;
 	
 	protected Formula()
 	{
 		this.yAxis = "y";
 		this.xAxis = "x";
 		this.tokens = new Token[0];
+		this.params = null;
 		this.derivative = null;
 		this.evalTree = null;
 	}
@@ -44,28 +52,58 @@ public class Formula implements IFormula {
 		this.yAxis = y;
 		this.xAxis = x;
 		this.tokens = tokens;
+		this.params = null;
 		this.derivative = null;
 		this.evalTree = eval;
 	}
 	
+	@Override
+	public void setParameters(HashMap<String, Double> params)
+	{ 
+		this.params = params; 
+	}
+	
+	@Override
 	public String getYAxis() { return this.yAxis; }
 	
+	@Override
 	public String getXAxis() { return this.xAxis; }
 	
-	public Token[] getTokens() { return this.tokens; }
+	/**
+	 * Gets the tokens that represent this {@link Formula}.
+	 * 
+	 * @return An array of {@link Token}s for this {@link Formula}.
+	 * @since 1.0
+	 */
+	Token[] getTokens() { return this.tokens; }
 	
-	public BinaryEvaluationTree getEvalTree() { return this.evalTree; }
+	/**
+	 * Gets the evaluation tree for this {@link Formula}.
+	 * 
+	 * @return A {@link BinaryEvaluationTree} for evaluating this 
+	 * {@link Formula}.
+	 * @since 1.0
+	 */
+	BinaryEvaluationTree getEvalTree() { return this.evalTree; }
 	
-	public BigDecimal getResult(HashMap<String, Double> params) 
-			throws Exception
+	@Override
+	public BigDecimal getResult() throws Exception
 	{
 		return this.evalTree.eval(params);
 	}
 	
-	public Formula getDerivative() { return this.derivative; }
+	@Override
+	public IFormula getDerivative() 
+	{
+		if (derivative == null) {
+			// Calculate the derivative.
+		}
+		return this.derivative;
+	}
 	
 	@Override
-	public String toString() {
+	public String toString() 
+	{
 		return this.tokens.toString();
 	}
 }

@@ -40,7 +40,8 @@ import uk.ac.uea.mathsthing.util.IObserver;
 public class GUI extends JFrame implements IObserver {
 	
 	private static final long serialVersionUID = 1L;
-	private static final int CHARTED_POINTS = 1000;
+	/** The number of points to chart on the graph. */
+	static final int CHARTED_POINTS = 1000;
 	
 	/** Text field used to enter the formula. */
 	final JTextField inputField, fromField, toField;
@@ -209,17 +210,13 @@ public class GUI extends JFrame implements IObserver {
         	
         	public void actionPerformed(ActionEvent e) {
         		
-        		try {
-        			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
               		
-              		// Tokenize the input from the user.
-              		IFormulaLexer lexer = new Lexer(inputField.getText());
-              		lexer.setForumla(lexer.getUserFormula());
-              		lexer.attach(GUI.this);
-              		new Thread((Runnable)lexer).start();        		
-        		} finally {
-        			  setCursor(Cursor.getDefaultCursor());
-        		}
+              	// Tokenize the input from the user.
+              	IFormulaLexer lexer = new Lexer(inputField.getText());
+              	lexer.setForumla(lexer.getUserFormula());
+              	lexer.attach(GUI.this);
+              	new Thread((Runnable)lexer).start();
         	}
         	
         });
@@ -232,6 +229,7 @@ public class GUI extends JFrame implements IObserver {
         		inputField.setText("");
         		chart.changeVisibility(false);
         		saveGraphItem.setEnabled(false);
+        		setCursor(Cursor.getDefaultCursor());
         	}
         	
         });
@@ -278,6 +276,7 @@ public class GUI extends JFrame implements IObserver {
       			new Thread((Runnable)parser).start();
       		} catch (Exception ex) {
       			ex.printStackTrace();
+      			setCursor(Cursor.getDefaultCursor());
       			JOptionPane.showMessageDialog(frame, ex.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
       			return;
       		}
@@ -287,9 +286,11 @@ public class GUI extends JFrame implements IObserver {
 		
 		// There is a possibility that the returned formula won't actually exist.
 		if (formula == null) {
+			setCursor(Cursor.getDefaultCursor());
 			JOptionPane.showMessageDialog(frame, "No formula could be created from input.", "Invalid Formula", JOptionPane.ERROR_MESSAGE);
   			return;
 		}
+		formula.setParameters(lexer.getParameters());
 		
 		double fromValue = 0.0, toValue = 0.0;
 		
@@ -299,17 +300,20 @@ public class GUI extends JFrame implements IObserver {
   			toValue = Double.parseDouble(toField.getText());
   		} catch (Exception ex) {
   			ex.printStackTrace();
+  			setCursor(Cursor.getDefaultCursor());
   			JOptionPane.showMessageDialog(frame, "The from and to values must be numbers!", "Invalid Values", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
   		
   		// Throw an error if the from value is less than the to value.
   		if (fromValue >= toValue) {
+  			setCursor(Cursor.getDefaultCursor());
   			JOptionPane.showMessageDialog(frame, "The from value must be lower than the to value.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
   		
   		if (fromValue < -10000 || toValue > 10000) {
+  			setCursor(Cursor.getDefaultCursor());
   			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
@@ -318,19 +322,22 @@ public class GUI extends JFrame implements IObserver {
   		HashMap<String, Double> vals = lexer.getParameters();
   		// Calculate the increment for charted points.
   		double incr = ((toValue - fromValue)/CHARTED_POINTS);
+  		double i = fromValue;
   		
-  		for (double i=fromValue; i<=toValue; i+=incr) {
+  		for (; i<=toValue; i+=incr) {
   			vals.put(formula.getXAxis(), i);  			
   			// Get the result and add it to the hash map.
   			try {
-				BigDecimal result = formula.getResult(vals);
+				BigDecimal result = formula.getResult();
 				results.put(i, result);
-			} catch (Exception e1) {      						
+			} catch (Exception e1) {
 				e1.printStackTrace();
+				setCursor(Cursor.getDefaultCursor());
 				JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
   		}
+		setCursor(Cursor.getDefaultCursor());
   		
   		// Update the chart and allow the graph to be saved as a PNG.
   		chart.updateChart(inputField.getText(), formula.getXAxis(), formula.getYAxis(), results);

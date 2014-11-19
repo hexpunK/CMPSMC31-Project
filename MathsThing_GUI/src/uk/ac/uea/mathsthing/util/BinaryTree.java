@@ -21,50 +21,52 @@ public class BinaryTree<E> implements Collection<E> {
 	/** The right child for this node. */
 	protected BinaryTree<E> rightNode;
 	
-	public BinaryTree() {
-		
+	public BinaryTree() 
+	{		
 		this.item = null;
 		this.leftNode = null;
 		this.rightNode = null;
 	}
 	
-	public BinaryTree(E item) {
-		
+	public BinaryTree(E item)
+	{		
 		this.item = item;
 		this.leftNode = null;
 		this.rightNode = null;
 	}
 	
-	public BinaryTree(E item, BinaryTree<E> leftTree, BinaryTree<E> rightTree) {
-		
+	public BinaryTree(E item, 
+			final BinaryTree<E> leftTree, 
+			final BinaryTree<E> rightTree)
+	{		
 		this.item = item;
 		this.leftNode = leftTree;
 		this.rightNode = rightTree;
 	}
 	
-	public void addLeftNode(E item) {
-		
+	public void addLeftNode(E item)
+	{		
 		leftNode = new BinaryTree<E>(item);
 	}
 	
-	public void addLeftTree(BinaryTree<E> tree) {
-		
+	public void addLeftTree(BinaryTree<E> tree)
+	{		
 		leftNode = tree;
 	}
 	
-	public void addRightNode(E item) {
-		
+	public void addRightNode(E item)
+	{		
 		rightNode = new BinaryTree<E>(item);
 	}
 	
-	public void addRightTree(BinaryTree<E> tree) {
-		
+	public void addRightTree(BinaryTree<E> tree)
+	{		
 		rightNode = tree;
 	}
 
 	@Override
-	public boolean add(E arg) {
-	
+	public boolean add(E arg)
+	{	
 		if (item == null) {
 			item = arg;
 			return true;
@@ -84,8 +86,8 @@ public class BinaryTree<E> implements Collection<E> {
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends E> arg) {
-		
+	public boolean addAll(Collection<? extends E> arg)
+	{		
 		for (E item : arg) {
 			if (this.add(item))
 				return true;
@@ -95,16 +97,16 @@ public class BinaryTree<E> implements Collection<E> {
 	}
 
 	@Override
-	public void clear() {
-		
+	public void clear()
+	{		
 		item = null;
 		leftNode = null;
 		rightNode = null;
 	}
 
 	@Override
-	public boolean contains(Object arg) {
-		
+	public boolean contains(Object arg) 
+	{		
 		if (item != null && item == arg) {
 			return true;
 		} else if (leftNode == null) {
@@ -121,8 +123,8 @@ public class BinaryTree<E> implements Collection<E> {
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg) {
-		
+	public boolean containsAll(Collection<?> arg)
+	{		
 		for (Object item : arg) {
 			if (this.contains(item))
 				return true;
@@ -132,42 +134,46 @@ public class BinaryTree<E> implements Collection<E> {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		
+	public boolean isEmpty()
+	{		
 		return (leftNode == null && rightNode == null && item == null);
 	}
 
 	@Override
 	public Iterator<E> iterator()
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Iterators are not supported "
 				+ "for this version of BinaryTree.");
 	}
 
 	@Override
 	public boolean remove(Object arg0)
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Removal is not supported "
 				+ "for this version of BinaryTree.");
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> arg0)
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Removal is not supported "
 				+ "for this version of BinaryTree.");
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> arg0)
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Retaining is not supported "
 				+ "for this version of BinaryTree.");
 	}
 
 	@Override
-	public int size() {
-		
+	public int size() 
+	{		
 		int leftSize = 0;
 		int rightSize = 0;
 		
@@ -191,19 +197,22 @@ public class BinaryTree<E> implements Collection<E> {
 
 	@Override
 	public Object[] toArray()
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Array conversion is not "
 				+ "supported for this version of BinaryTree.");
 	}
 
 	@Override
 	public <T> T[] toArray(T[] arg0)
-			throws UnsupportedOperationException {
+			throws UnsupportedOperationException 
+	{
 		throw new UnsupportedOperationException("Array conversion is not "
 				+ "supported for this version of BinaryTree.");
 	}
 	
-	public String toString() {		
+	public String toString() 
+	{		
 		return item.toString();
 	}
 }
