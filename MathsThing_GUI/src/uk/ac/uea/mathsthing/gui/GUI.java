@@ -41,7 +41,7 @@ public class GUI extends JFrame implements IObserver {
 	
 	private static final long serialVersionUID = 1L;
 	/** The number of points to chart on the graph. */
-	static final int CHARTED_POINTS = 1000;
+	static final int CHARTED_POINTS = 2000;
 	
 	/** Text field used to enter the formula. */
 	final JTextField inputField, fromField, toField;
@@ -312,9 +312,10 @@ public class GUI extends JFrame implements IObserver {
   			return;
   		}
   		
-  		if (fromValue < -10000 || toValue > 10000) {
+  		// Ensure the values are between -1000 and 1000 to prevent abnormally large numbers.
+  		if (fromValue < -1000 || toValue > 1000) {
   			setCursor(Cursor.getDefaultCursor());
-  			JOptionPane.showMessageDialog(frame, "The from and to values must be between -10,000 and 10,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
+  			JOptionPane.showMessageDialog(frame, "The from and to values must be between -1,000 and 1,000.", "Invalid Values", JOptionPane.ERROR_MESSAGE);
   			return;
   		}
   		
@@ -323,20 +324,61 @@ public class GUI extends JFrame implements IObserver {
   		// Calculate the increment for charted points.
   		double incr = ((toValue - fromValue)/CHARTED_POINTS);
   		double i = fromValue;
+  		BigDecimal lastResult = new BigDecimal(0.0);
   		
   		for (; i<=toValue; i+=incr) {
   			vals.put(formula.getXAxis(), i);  			
   			// Get the result and add it to the hash map.
   			try {
 				BigDecimal result = formula.getResult();
-				results.put(i, result);
+				
+				// Calculate the last value received. If it's 0 set it to 1, because we're going to divide by it.
+				double lastValue = (lastResult.doubleValue() != 0) ? lastResult.doubleValue() : 1;
+				// Calculate the rate of change between the last two values.
+				double rateOfChange = Math.abs((result.doubleValue() - lastResult.doubleValue()) / lastValue);
+				
+				// If the rate of change is not ridiculously high, put it in the results data set.
+				if (rateOfChange < 10000.0 || Math.abs(result.doubleValue() - lastResult.doubleValue()) < 1)
+					results.put(i, result);
+				// If the rate of change is abnormally high, this is likely to be approaching an asymptote.
+				else
+					results.put(i, null);
+				
+				lastResult = result;
 			} catch (Exception e1) {
-				e1.printStackTrace();
-				setCursor(Cursor.getDefaultCursor());
-				JOptionPane.showMessageDialog(frame, e1.getMessage(), "Invalid Formula", JOptionPane.ERROR_MESSAGE);
-				return;
+				results.put(i, null);
 			}
   		}
+  		
+  		// We need to make sure we plot the points for every increment of pi/2. Eg. pi/2, 3pi/2, 5pi/2 etc...
+  		// This is to find the asymptotes in tan. Therefore, we find each increment of pi/2 between the values entered.
+		double firstVal = fromValue - (fromValue % (Math.PI/2));
+		if (firstVal % Math.PI == 0) firstVal += Math.PI/2;
+		
+		// Loop through each increment of pi/2 between the from and to values.
+		for (i=firstVal; i<=toValue; i+=(Math.PI/2)) {
+			vals.put(formula.getXAxis(), i);
+			// Get the result and add it to the hash map.
+			try {
+				BigDecimal result = formula.getResult();
+				
+				// Calculate the last value received. If it's 0 set it to 1, because we're going to divide by it.
+				double lastValue = (lastResult.doubleValue() != 0) ? lastResult.doubleValue() : 1;
+				// Calculate the rate of change between the last two values.
+				double rateOfChange = Math.abs((result.doubleValue() - lastResult.doubleValue()) / lastValue);
+				
+				// If the rate of change is not ridiculously high, put it in the results data set.
+				if (rateOfChange < 10000.0 || Math.abs(result.doubleValue() - lastResult.doubleValue()) < 1)
+					results.put(i, result);
+				// If the rate of change is abnormally high, this is likely to be approaching an asymptote.
+				else
+					results.put(i, null);
+				
+			} catch (Exception e1) {
+				results.put(i, null);
+			}
+		}
+
 		setCursor(Cursor.getDefaultCursor());
   		
   		// Update the chart and allow the graph to be saved as a PNG.

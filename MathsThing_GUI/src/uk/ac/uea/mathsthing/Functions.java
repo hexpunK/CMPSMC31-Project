@@ -104,7 +104,10 @@ public final class Functions {
 			case "cosh":
 				return new BigDecimal(Math.cosh(dResult));
 			case "tan":
-				return new BigDecimal(Math.tan(dResult));
+				BigDecimal bd = new BigDecimal(Math.tan(dResult));
+				// This is to stop abnormally large results being returned as a result of the asymptote.
+				if (bd.doubleValue() > 100 || bd.doubleValue() < -100) return null;
+				else return bd;
 			case "tanh":
 				return new BigDecimal(Math.tanh(dResult));
 			case "floor":
