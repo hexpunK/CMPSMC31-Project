@@ -124,4 +124,22 @@ public final class Functions {
 		
 		return plugin.function(result);
 	}
+	
+	/**
+	 * Calculates factorial numbers. Can only be used for numbers that would 
+	 * return a result that fits within a double. A minor limit, but it should 
+	 * be more than enough for our needs.
+	 * 
+	 * @param n The number to compute the factorial of as an integer.
+	 * @return The computed factorial as a double.
+	 * @since 1.0
+	 */
+	public static final double fact(final int n)
+	{		
+		if (n <= 1) {
+			return 1.0;
+		} else {
+			return n * fact (n - 1);
+		}
+	}
 }

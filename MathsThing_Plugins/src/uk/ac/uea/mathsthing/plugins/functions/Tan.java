@@ -15,7 +15,10 @@ public class Tan implements IFunctionPlugin {
 	@Override
 	public BigDecimal function(BigDecimal input) throws Exception
 	{
-		return new BigDecimal(Math.tan(input.doubleValue()));
+		BigDecimal bd = new BigDecimal(Math.tan(input.doubleValue()));
+		// This is to stop abnormally large results being returned as a result of the asymptote.
+		if (bd.doubleValue() > 100 || bd.doubleValue() < -100) return null;
+		else return bd;
 	}
 
 	
