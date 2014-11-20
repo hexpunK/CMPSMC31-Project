@@ -1,8 +1,8 @@
-package uk.ac.uea.mathsthing;
+package uk.ac.uea.mathsthing.util;
 
 import java.util.HashMap;
 
-import uk.ac.uea.mathsthing.util.IObservable;
+import uk.ac.uea.mathsthing.Token;
 
 /**
  * Provides methods that will allow a lexer to accept and tokenise a provided 

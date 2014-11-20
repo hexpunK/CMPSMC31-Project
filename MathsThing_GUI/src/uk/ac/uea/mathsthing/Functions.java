@@ -1,30 +1,31 @@
 package uk.ac.uea.mathsthing;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.regex.Matcher;
+
+import uk.ac.uea.mathsthing.util.PluginSystem;
+import uk.ac.uea.mathsthing.util.StringLengthComparator;
 
 /**
  * Provides methods to handle mathematical functions in a provided formula.
  * 
  * @author Jordan Woerner
- * @version 1.0
+ * @version 2.0
  */
 public final class Functions {
 
 	/** 
 	 * A collection of the functions the class currently understands.
 	 * 
-	 * @since 1.0
+	 * @since 2.0
 	 */
-	public static final String[] SUPPORTED_FUNCTIONS = {
-		"sinh", "cosh", "tanh",
-		"sin", "cos", "tan",
-		"floor", "ceil", "round", 
-		"log", "ln", 
-		"fact", 
-		"sqrt"
-	};
+	public static HashMap<String, Class<?>> SUPPORTED_FUNCTIONS;
 	
 	/** 
 	 * A {@link String} containing a Regex pattern of all supported 
@@ -35,12 +36,40 @@ public final class Functions {
 	public static final String functionRegex;
 	
 	static {
+		// Load all the plugins.
+		ArrayList<Class<?>> plugins = new ArrayList<>();
+		Functions.SUPPORTED_FUNCTIONS = new HashMap<>();
+		try {
+			plugins.addAll(PluginSystem.getPlugins());
+		} catch (NoSuchMethodException | InvocationTargetException
+				| IllegalAccessException | ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Store the plugins that this class cares about.
+		ArrayList<String> names = new ArrayList<>();
+		for (Class<?> clazz : plugins) {
+			if (IFunctionPlugin.class.isAssignableFrom(clazz)) {
+				try {
+					String name = (String)clazz.getMethod("getName").invoke(clazz.newInstance());
+					names.add(name);
+					Functions.SUPPORTED_FUNCTIONS.put(name, clazz);
+				} catch (IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException
+						| SecurityException | InstantiationException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		
 		// Initialise the regex.
+		Collections.sort(names, new StringLengthComparator());
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");
-		for (int i = 0; i < Functions.SUPPORTED_FUNCTIONS.length; i++) {
-			sb.append(Functions.SUPPORTED_FUNCTIONS[i]);
-			if (i < Functions.SUPPORTED_FUNCTIONS.length - 1) {
+		for (int i = 0; i < names.size(); i++) {
+			sb.append(names.get(i));
+			if (i < (names.size()-1)) {
 				sb.append("|");
 			}
 		}
@@ -64,12 +93,7 @@ public final class Functions {
 		if (funcName == null || funcName.isEmpty())
 			throw new InvalidParameterException("A function name must be provided.");
 		
-		for (String func : SUPPORTED_FUNCTIONS) {
-			if (func.equals(funcName))
-				return true;
-		}
-		
-		return false;
+		return SUPPORTED_FUNCTIONS.containsKey(funcName);
 	}
 	
 	/**
@@ -94,61 +118,10 @@ public final class Functions {
 		}
 		
 		// Execute the function specified.
-		switch (funcName) {
-			case "sin":
-				return new BigDecimal(Math.sin(dResult));
-			case "sinh":
-				return new BigDecimal(Math.sinh(dResult));
-			case "cos":
-				return new BigDecimal(Math.cos(dResult));
-			case "cosh":
-				return new BigDecimal(Math.cosh(dResult));
-			case "tan":
-				return new BigDecimal(Math.tan(dResult));
-			case "tanh":
-				return new BigDecimal(Math.tanh(dResult));
-			case "floor":
-				return new BigDecimal(Math.floor(dResult));
-			case "ceil":
-				return new BigDecimal(Math.ceil(dResult));
-			case "round":
-				return new BigDecimal(Math.round(dResult));
-			case "log":
-				if (dResult <= 0 || dResult == Double.NaN)
-					throw new Exception("log only accepts positive numbers.");
-				return new BigDecimal(Math.log10(dResult));
-			case "ln":
-				if (dResult <= 0 || dResult == Double.NaN)
-					throw new Exception("ln only accepts positive numbers.");
-				return new BigDecimal(Math.log(dResult));
-			case "fact":
-				if (dResult <= 0 || dResult == Double.NaN)
-					throw new Exception("fact only accepts positive numbers.");
-				return new BigDecimal(Functions.fact((int)Math.round(dResult)));
-			case "sqrt":
-				if (dResult <= 0 || dResult == Double.NaN)
-					throw new Exception("sqrt only accepts positive numbers.");
-				return new BigDecimal(Math.sqrt(dResult));
-			default:
-				return result;
-		}
-	}
-	
-	/**
-	 * Calculates factorial numbers. Can only be used for numbers that would 
-	 * return a result that fits within a double. A minor limit, but it should 
-	 * be more than enough for our needs.
-	 * 
-	 * @param n The number to compute the factorial of as an integer.
-	 * @return The computed factorial as a double.
-	 * @since 1.0
-	 */
-	public static final double fact(final int n)
-	{		
-		if (n <= 1) {
-			return 1.0;
-		} else {
-			return n * fact (n - 1);
-		}
+		IFunctionPlugin plugin;
+		Class<?> clazz = Functions.SUPPORTED_FUNCTIONS.get(funcName);
+		plugin = (IFunctionPlugin)clazz.newInstance();
+		
+		return plugin.function(result);
 	}
 }

@@ -3,6 +3,7 @@ package uk.ac.uea.mathsthing.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.security.InvalidParameterException;
@@ -55,8 +56,13 @@ public class FunctionsTests {
 	@Test
 	public final void testFact() {
 		
-		assertEquals(1.0, Functions.fact(1), 0.0);
-		assertEquals(120.0, Functions.fact(5), 0.0);
+		try {
+			assertEquals(new BigDecimal(1), Functions.processFunction("fact", new BigDecimal(1)));
+			assertEquals(new BigDecimal(120), Functions.processFunction("fact", new BigDecimal(5)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
 	}
 
 }

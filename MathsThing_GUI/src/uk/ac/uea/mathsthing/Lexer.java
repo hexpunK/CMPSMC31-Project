@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.uea.mathsthing.util.IFormulaLexer;
 import uk.ac.uea.mathsthing.util.IObserver;
 
 public class Lexer implements IFormulaLexer, Runnable {

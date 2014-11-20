@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
+import uk.ac.uea.mathsthing.util.IFormula;
 
 /**
  * A simplistic implementation of a mathematical formula representation.

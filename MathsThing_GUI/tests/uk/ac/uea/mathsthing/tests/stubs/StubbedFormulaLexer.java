@@ -2,9 +2,9 @@ package uk.ac.uea.mathsthing.tests.stubs;
 
 import java.util.HashMap;
 
-import uk.ac.uea.mathsthing.IFormulaLexer;
 import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.TokenType;
+import uk.ac.uea.mathsthing.util.IFormulaLexer;
 import uk.ac.uea.mathsthing.util.IObserver;
 
 public class StubbedFormulaLexer implements IFormulaLexer {

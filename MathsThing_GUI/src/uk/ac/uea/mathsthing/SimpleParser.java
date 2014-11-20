@@ -7,6 +7,8 @@ import java.util.Stack;
 
 import uk.ac.uea.mathsthing.gui.Graph;
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
+import uk.ac.uea.mathsthing.util.IFormula;
+import uk.ac.uea.mathsthing.util.IFormulaParser;
 import uk.ac.uea.mathsthing.util.IObservable;
 import uk.ac.uea.mathsthing.util.IObserver;
 

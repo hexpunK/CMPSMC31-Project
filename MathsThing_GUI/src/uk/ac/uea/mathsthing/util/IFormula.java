@@ -1,4 +1,4 @@
-package uk.ac.uea.mathsthing;
+package uk.ac.uea.mathsthing.util;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

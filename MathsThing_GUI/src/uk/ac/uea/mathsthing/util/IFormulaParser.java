@@ -1,9 +1,9 @@
-package uk.ac.uea.mathsthing;
+package uk.ac.uea.mathsthing.util;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 
-import uk.ac.uea.mathsthing.util.IObservable;
+import uk.ac.uea.mathsthing.Token;
 
 /**
  * Provides methods to interact with the parser. Allows a tokenised formula to 

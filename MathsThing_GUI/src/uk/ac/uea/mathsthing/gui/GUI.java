@@ -24,11 +24,11 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import uk.ac.uea.mathsthing.Formula;
-import uk.ac.uea.mathsthing.IFormula;
-import uk.ac.uea.mathsthing.IFormulaLexer;
-import uk.ac.uea.mathsthing.IFormulaParser;
 import uk.ac.uea.mathsthing.Lexer;
 import uk.ac.uea.mathsthing.SimpleParser;
+import uk.ac.uea.mathsthing.util.IFormula;
+import uk.ac.uea.mathsthing.util.IFormulaLexer;
+import uk.ac.uea.mathsthing.util.IFormulaParser;
 import uk.ac.uea.mathsthing.util.IObserver;
 
 /**
