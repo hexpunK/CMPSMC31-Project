@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+
+import javax.swing.JOptionPane;
 
 import uk.ac.uea.mathsthing.IConstantPlugin;
 import uk.ac.uea.mathsthing.IFunctionPlugin;
@@ -48,8 +51,18 @@ public class PluginSystem {
 	{
 		this.plugins = new ArrayList<>();
 		
-		String path = String.format(".%splugins", File.separator);
+		String workingDir = null;
+		try {
+			workingDir = getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			throw new IOException("Plugin system could not find current directory.", e);
+		}
+		workingDir = workingDir.substring(0, workingDir.lastIndexOf('/')+1);
+		
+		JOptionPane.showMessageDialog(null, workingDir);
+		String path = String.format("%s%splugins", workingDir, File.separator);
 		File pluginFolder = new File(path);
+		JOptionPane.showMessageDialog(null, pluginFolder.getCanonicalPath());
 		File[] files = pluginFolder.listFiles();
 		for (File jarFile : files) {
 			if (jarFile.exists()) {
