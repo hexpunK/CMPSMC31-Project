@@ -41,12 +41,12 @@ public interface IFormula {
 	 * Processes the stored formula, evaluating a result for the formula.
 	 * 
 	 * @return Returns a {@link BigDecimal} representation of the result.
-	 * @throws Exception Thrown if there are any errors processing the stored 
-	 * formula.
+	 * @throws FormulaException Thrown if there are any errors processing the 
+	 * stored formula.
 	 * @since 1.0
 	 */
 	public BigDecimal getResult() 
-			throws Exception;
+			throws FormulaException;
 	
 	/**
 	 * Gets the derivative for this {@link IFormula}.

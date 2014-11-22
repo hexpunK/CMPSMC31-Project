@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import uk.ac.uea.mathsthing.IConstantPlugin;
 
-public class Pi implements IConstantPlugin {
+public class Pi extends IConstantPlugin {
 
 	@Override
 	public String getName()

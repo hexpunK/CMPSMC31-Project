@@ -7,8 +7,14 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 
+import uk.ac.uea.mathsthing.util.FormulaException;
+import uk.ac.uea.mathsthing.util.PluginSandbox;
 import uk.ac.uea.mathsthing.util.PluginSystem;
 import uk.ac.uea.mathsthing.util.StringLengthComparator;
 
@@ -34,6 +40,8 @@ public class Constants {
 	 *  @since 1.0
 	 */
 	public static String constantRegex;
+	
+	private static final ExecutorService executor = Executors.newFixedThreadPool(1);
 	
 	static {
 		// Load all the plugins.
@@ -102,17 +110,34 @@ public class Constants {
 	 * @param constant The name of the constant to evaluate as a String.
 	 * @return Returns a {@link BigDecimal} containing the value of the 
 	 * constant.
-	 * @throws Exception Thrown if there is an error evaluating this constant.
+	 * @throws FormulaException Thrown if there is an error evaluating this 
+	 * constant.
+	 * @throws SecurityException Thrown if the plugin attempts to do anything 
+	 * the {@link PluginSandbox} does not allow.
 	 * @since 1.0
 	 */
 	public static final BigDecimal processConstant(final String constant)
-			throws Exception 
+			throws FormulaException, SecurityException 
 	{		
 		// Retrieve the constant specified.
-		IConstantPlugin plugin;
+		IConstantPlugin plugin = null;
 		Class<?> clazz = Constants.SUPPORTED_CONSTANTS.get(constant);
-		plugin = (IConstantPlugin)clazz.newInstance();
+		try {
+			plugin = (IConstantPlugin)clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		BigDecimal result = null;
 				
-		return plugin.getValue();
+		try {
+			Future<BigDecimal> output = executor.submit(plugin);
+			result = output.get();
+		} catch (InterruptedException | ExecutionException exEx) {
+			throw new FormulaException(exEx);
+		} catch (SecurityException sEx) {
+			throw sEx;
+		}
+		
+		return result;
 	}
 }

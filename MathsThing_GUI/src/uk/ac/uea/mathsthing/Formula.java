@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
+import uk.ac.uea.mathsthing.util.FormulaException;
 import uk.ac.uea.mathsthing.util.IFormula;
 
 /**
@@ -88,7 +89,7 @@ public class Formula implements IFormula {
 	BinaryEvaluationTree getEvalTree() { return this.evalTree; }
 	
 	@Override
-	public BigDecimal getResult() throws Exception
+	public BigDecimal getResult() throws FormulaException
 	{
 		return this.evalTree.eval(params);
 	}

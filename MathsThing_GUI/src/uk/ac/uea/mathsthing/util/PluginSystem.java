@@ -8,12 +8,10 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
+import java.security.Policy;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-
-import javax.swing.JOptionPane;
 
 import uk.ac.uea.mathsthing.IConstantPlugin;
 import uk.ac.uea.mathsthing.IFunctionPlugin;
@@ -31,6 +29,13 @@ public class PluginSystem {
 	private static PluginSystem instance = null;
 	/** A list of found plugins. */
 	private ArrayList<Class<?>> plugins;
+	/** The {@link PluginLoader} to use when loading plugin classes. */
+	private PluginLoader classLoader;
+	
+	static {
+		Policy.setPolicy(new PluginSandbox());
+		System.setSecurityManager(new SecurityManager());
+	}
 	
 	/**
 	 * Loads all the plugins stored in a specified plugins folder.
@@ -59,11 +64,10 @@ public class PluginSystem {
 		}
 		workingDir = workingDir.substring(0, workingDir.lastIndexOf('/')+1);
 		
-		JOptionPane.showMessageDialog(null, workingDir);
 		String path = String.format("%s%splugins", workingDir, File.separator);
 		File pluginFolder = new File(path);
-		JOptionPane.showMessageDialog(null, pluginFolder.getCanonicalPath());
 		File[] files = pluginFolder.listFiles();
+		
 		for (File jarFile : files) {
 			if (jarFile.exists()) {
 				loadJar(jarFile); // Add the Jar to the classpath.
@@ -119,18 +123,15 @@ public class PluginSystem {
 			IllegalAccessException, IOException
 	{		
 		URL url = null;
-		URLClassLoader classLoader = null;
-		Class<URLClassLoader> foundClass = null;
+		Class<PluginLoader> foundClass = null;
 		
 		try {
 			url = new URL("jar", "", "file:" + file.getCanonicalPath() + "!/");	
 			/* Get the current ClassPath. */
-			classLoader = (URLClassLoader)Thread.currentThread().
-					getContextClassLoader();
-			foundClass = URLClassLoader.class;
+			classLoader = new PluginLoader(url);
+			foundClass = PluginLoader.class;
 			/* Invoke "addURL" like this thanks to encapsulation. */
-			Method addMethod = foundClass.getDeclaredMethod("addURL", 
-					new Class[]{URL.class});
+			Method addMethod = foundClass.getDeclaredMethod("addURL", URL.class);
 			addMethod.setAccessible(true);
 			addMethod.invoke(classLoader, new Object[]{url});
 		} catch (MalformedURLException urlEx) {
@@ -192,7 +193,7 @@ public class PluginSystem {
 					String strippedName = className.replace("/", ".").
 							substring(0, className.length() - 6);
 					/* Try and load the class. */
-					Class<?> clazz = Class.forName(strippedName);
+					Class<?> clazz = Class.forName(strippedName, true, classLoader);
 					
 					// Check that the class derives from one of the plugins.
 					if (IConstantPlugin.class.isAssignableFrom(clazz)

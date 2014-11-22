@@ -3,9 +3,10 @@ package uk.ac.uea.mathsthing.plugins.functions;
 import java.math.BigDecimal;
 
 import uk.ac.uea.mathsthing.IFunctionPlugin;
+import uk.ac.uea.mathsthing.util.FormulaException;
 
-public class ATan implements IFunctionPlugin {
-
+public class ATan extends IFunctionPlugin {
+	
 	@Override
 	public String getName()
 	{
@@ -13,7 +14,7 @@ public class ATan implements IFunctionPlugin {
 	}
 
 	@Override
-	public BigDecimal function(BigDecimal input) throws Exception
+	public BigDecimal function(BigDecimal input) throws FormulaException
 	{
 		BigDecimal bd = new BigDecimal(Math.atan(input.doubleValue()));
 		// This is to stop abnormally large results being returned as a result of the asymptote.

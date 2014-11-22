@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import uk.ac.uea.mathsthing.IConstantPlugin;
 
-public class Euler implements IConstantPlugin {
+public class Euler extends IConstantPlugin {
 
 	@Override
 	public String getName()

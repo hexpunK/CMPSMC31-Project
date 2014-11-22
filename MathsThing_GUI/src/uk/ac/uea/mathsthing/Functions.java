@@ -7,8 +7,14 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 
+import uk.ac.uea.mathsthing.util.FormulaException;
+import uk.ac.uea.mathsthing.util.PluginSandbox;
 import uk.ac.uea.mathsthing.util.PluginSystem;
 import uk.ac.uea.mathsthing.util.StringLengthComparator;
 
@@ -34,6 +40,8 @@ public final class Functions {
 	 *  @since 1.0
 	 */
 	public static final String functionRegex;
+	
+	private static final ExecutorService executor = Executors.newFixedThreadPool(1);
 	
 	static {
 		// Load all the plugins.
@@ -102,44 +110,43 @@ public final class Functions {
 	 *  will be calculated before it is used.
 	 * 
 	 * @param funcName The name of the function to call as a String.
-	 * @param result The result from the evaluation tree to process.
+	 * @param input The result from the evaluation tree to process.
 	 * @return Returns a double containing the result of the function.
-	 * @throws Exception Thrown if there is an error evaluating the 
+	 * @throws FormulaException Thrown if there is an error evaluating the 
 	 * formula this function works on.
+	 * @throws SecurityException Thrown if the plugin attempts to do anything 
+	 * the {@link PluginSandbox} does not allow.
 	 * @since 1.0
 	 */
 	public static final BigDecimal processFunction(final String funcName, 
-			final BigDecimal result) throws Exception
+			final BigDecimal input) throws FormulaException, SecurityException
 	{		
-		double dResult = result.doubleValue();
+		double dResult = input.doubleValue();
 		
 		if (dResult >= Double.POSITIVE_INFINITY || dResult <= Double.NEGATIVE_INFINITY) {
-			throw new Exception("Provided value is too large to use in functions.");
+			throw new FormulaException("Provided value is too large to use in functions.");
 		}
 		
 		// Execute the function specified.
-		IFunctionPlugin plugin;
+		IFunctionPlugin plugin = null;
 		Class<?> clazz = Functions.SUPPORTED_FUNCTIONS.get(funcName);
-		plugin = (IFunctionPlugin)clazz.newInstance();
-		
-		return plugin.function(result);
-	}
-	
-	/**
-	 * Calculates factorial numbers. Can only be used for numbers that would 
-	 * return a result that fits within a double. A minor limit, but it should 
-	 * be more than enough for our needs.
-	 * 
-	 * @param n The number to compute the factorial of as an integer.
-	 * @return The computed factorial as a double.
-	 * @since 1.0
-	 */
-	public static final double fact(final int n)
-	{		
-		if (n <= 1) {
-			return 1.0;
-		} else {
-			return n * fact (n - 1);
+		try {
+			plugin = (IFunctionPlugin)clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
 		}
+		plugin.setInput(input);
+		BigDecimal result = null;
+		
+		try {
+			Future<BigDecimal> output = executor.submit(plugin);
+			result = output.get();
+		} catch (InterruptedException | ExecutionException exEx) {
+			throw new FormulaException(exEx);
+		} catch (SecurityException sEx) {
+			throw sEx;
+		}
+		
+		return result;
 	}
 }

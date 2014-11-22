@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import uk.ac.uea.mathsthing.IConstantPlugin;
 
-public class Tau implements IConstantPlugin {
+public class Tau extends IConstantPlugin {
 
 	@Override
 	public String getName() 

@@ -26,6 +26,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import uk.ac.uea.mathsthing.Formula;
 import uk.ac.uea.mathsthing.Lexer;
 import uk.ac.uea.mathsthing.SimpleParser;
+import uk.ac.uea.mathsthing.util.FormulaException;
 import uk.ac.uea.mathsthing.util.IFormula;
 import uk.ac.uea.mathsthing.util.IFormulaLexer;
 import uk.ac.uea.mathsthing.util.IFormulaParser;
@@ -345,7 +346,9 @@ public class GUI extends JFrame implements IObserver {
 					results.put(i, null);
 				
 				lastResult = result;
-			} catch (Exception e1) {
+  			} catch (SecurityException sEx) {
+  				System.err.println(sEx.getMessage());
+			} catch (FormulaException formEx) {
 				results.put(i, null);
 			}
   		}
