@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+import javafx.embed.swing.JFXPanel;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -66,6 +69,7 @@ public class GUI extends JFrame implements IObserver {
 	public GUI() {
 		
 		frame = this;
+		new JFXPanel();
 		
 		// Sets the window size to be 700 x 600
 		final Dimension screenSize = new Dimension();
@@ -319,10 +323,10 @@ public class GUI extends JFrame implements IObserver {
   			return;
   		}
   		
-  		HashMap<Double, BigDecimal> results = new HashMap<>();
+  		LinkedHashMap<Double, BigDecimal> results = new LinkedHashMap<>();
   		HashMap<String, Double> vals = lexer.getParameters();
   		// Calculate the increment for charted points.
-  		double incr = ((toValue - fromValue)/CHARTED_POINTS);
+  		double incr = 0.25;
   		double i = fromValue;
   		BigDecimal lastResult = new BigDecimal(0.0);
   		
@@ -350,7 +354,7 @@ public class GUI extends JFrame implements IObserver {
 			}
   		}
   		
-  		// We need to make sure we plot the points for every increment of pi/2. Eg. pi/2, 3pi/2, 5pi/2 etc...
+  		/*// We need to make sure we plot the points for every increment of pi/2. Eg. pi/2, 3pi/2, 5pi/2 etc...
   		// This is to find the asymptotes in tan. Therefore, we find each increment of pi/2 between the values entered.
 		double firstVal = fromValue - (fromValue % (Math.PI/2));
 		if (firstVal % Math.PI == 0) firstVal += Math.PI/2;
@@ -377,7 +381,7 @@ public class GUI extends JFrame implements IObserver {
 			} catch (Exception e1) {
 				results.put(i, null);
 			}
-		}
+		}*/
 
 		setCursor(Cursor.getDefaultCursor());
   		
