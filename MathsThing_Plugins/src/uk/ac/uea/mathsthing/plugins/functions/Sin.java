@@ -2,7 +2,7 @@ package uk.ac.uea.mathsthing.plugins.functions;
 
 import java.math.BigDecimal;
 
-import uk.ac.uea.mathsthing.IFunctionPlugin;
+import uk.ac.uea.mathsthing.IPlugin.IFunctionPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
 
 public class Sin extends IFunctionPlugin {

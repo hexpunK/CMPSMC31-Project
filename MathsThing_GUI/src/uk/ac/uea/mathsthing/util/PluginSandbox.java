@@ -14,7 +14,7 @@ import java.security.ProtectionDomain;
  * @author Jordan Woerner
  * @version 1.0
  */
-public class PluginSandbox extends Policy {
+public final class PluginSandbox extends Policy {
 
 	@Override
 	public PermissionCollection getPermissions(ProtectionDomain domain) 
@@ -34,7 +34,7 @@ public class PluginSandbox extends Policy {
 	 * @return Returns true if the specified {@link ProtectionDomain} is a 
 	 * plugin, false otherwise.
 	 */
-	private boolean isPlugin(ProtectionDomain domain)
+	private final boolean isPlugin(ProtectionDomain domain)
 	{
 		return (domain.getClassLoader() instanceof PluginLoader);
 	}
@@ -46,7 +46,7 @@ public class PluginSandbox extends Policy {
 	 * @return A {@link Permissions} object containing {@link AllPermission}.
 	 * @since 1.0
 	 */
-	private Permissions getDefaultPermissions()
+	private final Permissions getDefaultPermissions()
 	{
 		Permissions perms = new Permissions();
 		perms.add(new AllPermission());
@@ -61,7 +61,7 @@ public class PluginSandbox extends Policy {
 	 * objects.
 	 * @since 1.0
 	 */
-	private Permissions getPluginPermissions()
+	private final Permissions getPluginPermissions()
 	{
 		Permissions perms = new Permissions();
 		return perms;

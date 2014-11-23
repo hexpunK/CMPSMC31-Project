@@ -2,6 +2,7 @@ package uk.ac.uea.mathsthing;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
 import uk.ac.uea.mathsthing.util.FormulaException;
@@ -14,7 +15,7 @@ import uk.ac.uea.mathsthing.util.IFormula;
  * @author Jordan Woerner
  * @version 1.0
  */
-public class Formula implements IFormula {
+public class Formula implements IFormula, Callable<BigDecimal> {
 
 	/** The label to use on the y-axis of charts. */
 	private String yAxis;
@@ -30,6 +31,11 @@ public class Formula implements IFormula {
 	/** The first derivative for this {@link Formula} as an {@link IFormula} */
 	private IFormula derivative;
 	
+	/**
+	 * Creates a new {@link Formula} with the axes set to "x" and "y".
+	 * 
+	 * @since 1.0
+	 */
 	protected Formula()
 	{
 		this.yAxis = "y";
@@ -40,6 +46,15 @@ public class Formula implements IFormula {
 		this.evalTree = null;
 	}
 	
+	/**
+	 * Creates a new {@link Formula} with the specified array of {@link Token} 
+	 * objects as the internal representation of the formula. Axes labels are 
+	 * "x" and "y".
+	 * 
+	 * @param tokens An array of {@link Token} objects to represent the stored 
+	 * formula.
+	 * @since 1.0
+	 */
 	protected Formula(Token[] tokens)
 	{
 		this.yAxis = "y";
@@ -49,6 +64,19 @@ public class Formula implements IFormula {
 		this.evalTree = null;
 	}
 	
+	/**
+	 * Creates a new {@link Formula} with the specified array of {@link Token} 
+	 * objects as the internal representation of the formula. Axes labels can 
+	 * be specified by providing a {@link String} for each.
+	 * 
+	 * @param x The {@link String} to use as the label for the x axis.
+	 * @param y The {@link String} to use as the label for the y axis.
+	 * @param tokens An array of {@link Token} objects to represent the stored 
+	 * formula.
+	 * @param eval The {@link BinaryEvaluationTree} to use when evaluating this
+	 *  {@link Formula}.
+	 * @since 1.0
+	 */
 	protected Formula(String y, String x, Token[] tokens, BinaryEvaluationTree eval)
 	{
 		this.yAxis = y;
@@ -72,7 +100,8 @@ public class Formula implements IFormula {
 	public String getXAxis() { return this.xAxis; }
 	
 	/**
-	 * Gets the tokens that represent this {@link Formula}.
+	 * Gets the tokens that represent this {@link Formula}. This is only a 
+	 * testing method. It isn't accessable externally.
 	 * 
 	 * @return An array of {@link Token}s for this {@link Formula}.
 	 * @since 1.0
@@ -80,7 +109,8 @@ public class Formula implements IFormula {
 	Token[] getTokens() { return this.tokens; }
 	
 	/**
-	 * Gets the evaluation tree for this {@link Formula}.
+	 * Gets the evaluation tree for this {@link Formula}. This is only a  
+	 * testing method. It isn't accessable externally.
 	 * 
 	 * @return A {@link BinaryEvaluationTree} for evaluating this 
 	 * {@link Formula}.
@@ -97,6 +127,7 @@ public class Formula implements IFormula {
 	@Override
 	public IFormula getDerivative() 
 	{
+		// Lazy load the derivative.
 		if (derivative == null) {
 			// Calculate the derivative.
 		}
@@ -107,5 +138,11 @@ public class Formula implements IFormula {
 	public String toString() 
 	{
 		return this.tokens.toString();
+	}
+
+	@Override
+	public BigDecimal call() throws Exception {
+		
+		return this.getResult();
 	}
 }

@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import uk.ac.uea.mathsthing.IConstantPlugin;
-import uk.ac.uea.mathsthing.IFunctionPlugin;
+import uk.ac.uea.mathsthing.IPlugin;
 
 /**
  * Reads JAR files and allows access to the {@link Class} objects stored 
@@ -23,7 +22,7 @@ import uk.ac.uea.mathsthing.IFunctionPlugin;
  * @author Jordan Woerner
  * @version 1.0
  */
-public class PluginSystem {
+public final class PluginSystem {
 
 	/** Singleton instance of the {@link PluginSystem}. */
 	private static PluginSystem instance = null;
@@ -64,7 +63,7 @@ public class PluginSystem {
 		}
 		workingDir = workingDir.substring(0, workingDir.lastIndexOf('/')+1);
 		
-		String path = String.format("%s%splugins", workingDir, File.separator);
+		String path = String.format("%splugins", workingDir);
 		File pluginFolder = new File(path);
 		File[] files = pluginFolder.listFiles();
 		
@@ -94,7 +93,7 @@ public class PluginSystem {
 	 * @throws IOException Thrown if the JAR file cannot be opened.
 	 * @since 1.0
 	 */
-	public static ArrayList<Class<?>> getPlugins() 
+	public static final ArrayList<Class<?>> getPlugins() 
 			throws NoSuchMethodException, InvocationTargetException, 
 			IllegalAccessException, ClassNotFoundException, IOException
 	{
@@ -118,7 +117,7 @@ public class PluginSystem {
 	 * 'addURL' from running.
 	 * @throws IOException Thrown if the JAR file cannot be opened.
 	 */
-	private void loadJar(File file) 
+	private final void loadJar(File file) 
 			throws NoSuchMethodException, InvocationTargetException, 
 			IllegalAccessException, IOException
 	{		
@@ -171,7 +170,7 @@ public class PluginSystem {
 	 * @throws ClassNotFoundException Thrown when a class cannot be loaded.
 	 * @since 1.0
 	 */
-	private ArrayList<Class<?>> getClasses(File file) 
+	private final ArrayList<Class<?>> getClasses(File file) 
 			throws IOException, ClassNotFoundException
 	{	
 		ArrayList<Class<?>> classes = new ArrayList<>();
@@ -196,9 +195,8 @@ public class PluginSystem {
 					Class<?> clazz = Class.forName(strippedName, true, classLoader);
 					
 					// Check that the class derives from one of the plugins.
-					if (IConstantPlugin.class.isAssignableFrom(clazz)
-						|| IFunctionPlugin.class.isAssignableFrom(clazz)) {
-							classes.add(clazz); // Add it to the ArrayList.
+					if (IPlugin.class.isAssignableFrom(clazz)) {
+						classes.add(clazz); // Add it to the ArrayList.
 					}
 				}					
 			}

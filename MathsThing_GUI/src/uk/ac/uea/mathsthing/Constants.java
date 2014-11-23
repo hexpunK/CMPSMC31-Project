@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 
+import uk.ac.uea.mathsthing.IPlugin.IConstantPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
 import uk.ac.uea.mathsthing.util.PluginSandbox;
 import uk.ac.uea.mathsthing.util.PluginSystem;

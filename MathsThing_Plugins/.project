@@ -3,6 +3,7 @@
 	<name>MathsThing_Plugins</name>
 	<comment></comment>
 	<projects>
+		<project>MathsThing_GUI</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

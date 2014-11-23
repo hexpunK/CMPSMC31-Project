@@ -2,7 +2,7 @@ package uk.ac.uea.mathsthing.plugins.constants;
 
 import java.math.BigDecimal;
 
-import uk.ac.uea.mathsthing.IConstantPlugin;
+import uk.ac.uea.mathsthing.IPlugin.IConstantPlugin;
 
 public class Tau extends IConstantPlugin {
 
