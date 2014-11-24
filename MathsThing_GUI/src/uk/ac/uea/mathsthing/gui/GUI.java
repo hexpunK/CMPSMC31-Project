@@ -195,7 +195,7 @@ public class GUI extends JFrame implements IObserver {
 				JOptionPane
 						.showMessageDialog(
 								frame,
-								"Maths Thing v0.1 by Laura Goold, Jake Ruston and Jordan Woerner\nfor Advanced Programming Techniques (2014).",
+								"Maths Thing v1.0 by Laura Goold, Jake Ruston and Jordan Woerner\nfor Advanced Programming Techniques (2014).",
 								"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 
