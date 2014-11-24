@@ -20,7 +20,7 @@ public class StubbedFormulaLexer implements IFormulaLexer {
 	}
 
 	@Override
-	public void setForumla(String formula) { }
+	public void setFormula(String formula) { }
 	
 	@Override
 	public Token[] tokenize() {
