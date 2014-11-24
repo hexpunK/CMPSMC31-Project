@@ -412,7 +412,15 @@ public class GUI extends JFrame implements IObserver {
 				setCursor(Cursor.getDefaultCursor());
 				return;
 			} catch (FormulaException formEx) {
-				results.put(i, null);
+				
+				JOptionPane.showMessageDialog(frame,
+						formEx.getMessage(),
+						"Formula", JOptionPane.ERROR_MESSAGE);
+				
+				System.err.println(formEx.getMessage());
+				setCursor(Cursor.getDefaultCursor());
+				return;
+				
 			} catch (NullPointerException nEx) {
 				results.put(i, null);
 			}
