@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
@@ -401,8 +402,15 @@ public class GUI extends JFrame implements IObserver {
 					results.put(i, null);
 
 				lastResult = result;
-			} catch (SecurityException sEx) {
+			} catch (SecurityException | InvalidParameterException sEx) {
+				
+				JOptionPane.showMessageDialog(frame,
+						"A problem has occurred with the plugin which supports this function.",
+						"Plugin Issue", JOptionPane.ERROR_MESSAGE);
+				
 				System.err.println(sEx.getMessage());
+				setCursor(Cursor.getDefaultCursor());
+				return;
 			} catch (FormulaException formEx) {
 				results.put(i, null);
 			} catch (NullPointerException nEx) {

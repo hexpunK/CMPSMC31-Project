@@ -79,7 +79,7 @@ public class SamplePlugin extends IExtensionPlugin {
 	{
 		JFrame window = new JFrame();
 		window.setBounds(50, 50, 50, 200);
-		window.setTitle("Test Plugin");
+		window.setTitle("Show Formula");
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		FlowLayout layout = new FlowLayout();
