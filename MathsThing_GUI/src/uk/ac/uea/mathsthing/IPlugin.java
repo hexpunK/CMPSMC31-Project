@@ -137,7 +137,9 @@ public interface IPlugin {
 	 * @version 1.1
 	 * @since 1.0
 	 */
-	public static abstract class IExtensionPlugin implements IPlugin {
+	public static abstract class IExtensionPlugin implements Callable<Void>, IPlugin {
+		
+		protected IFormula formula;
 		
 		/**
 		 * Creates the {@link JMenuItem} to be added to the {@link GUI} menu.
@@ -154,6 +156,19 @@ public interface IPlugin {
 		 * @param formula An {@link IFormula} instance.
 		 * @since 1.1
 		 */
-		public abstract void setFormula(IFormula formula); 
+		public final void setFormula(IFormula formula)
+		{
+			this.formula = formula;
+		}
+		
+		public abstract void processFormula() 
+				throws FormulaException, SecurityException;
+		
+		@Override
+		public final Void call() throws FormulaException, SecurityException
+		{
+			processFormula();
+			return null;
+		}
 	}
 }

@@ -12,6 +12,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -474,8 +478,16 @@ public class GUI extends JFrame implements IObserver {
 			return;
 		}
 
-		for(IExtensionPlugin plugin : loadedPlugins)
+		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+		for(IExtensionPlugin plugin : loadedPlugins) {
 			plugin.setFormula(formula);
+			final Future<Void> output = executor.submit(plugin);
+			executor.schedule(new Runnable(){
+			     public void run(){
+			         output.cancel(true);
+			     }      
+			 }, 10000, TimeUnit.MILLISECONDS);
+		}
 		
 		processEvaluation(formula);
 	}

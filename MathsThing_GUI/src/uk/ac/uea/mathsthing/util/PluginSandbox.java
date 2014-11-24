@@ -1,6 +1,7 @@
 package uk.ac.uea.mathsthing.util;
 
 import java.awt.AWTPermission;
+import java.io.FilePermission;
 import java.security.AllPermission;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -18,8 +19,21 @@ import java.util.PropertyPermission;
  */
 public final class PluginSandbox extends Policy {
 
+	/**
+	 * Gets the appropriate set of {@link Permission} for the specified 
+	 * {@link ProtectionDomain}. If the class under question was loaded by 
+	 * {@link PluginLoader}, this will be a very restricted set. Otherwise it 
+	 * will be {@link AllPermission}.
+	 * 
+	 * @param domain The {@link ProtectionDomain} to check {@link Permissions} 
+	 * for.
+	 * @return Returns a {@link PermissionCollection} of all the valid 
+	 * {@link Permission} provided for a class.
+	 * @since 1.0
+	 * @see Policy#getPermissions(ProtectionDomain)
+	 */
 	@Override
-	public PermissionCollection getPermissions(ProtectionDomain domain) 
+	public final PermissionCollection getPermissions(ProtectionDomain domain) 
 	{
 		if (isPlugin(domain))
 			return getPluginPermissions();
@@ -69,6 +83,7 @@ public final class PluginSandbox extends Policy {
 		perms.add(new AWTPermission("showWindowWithoutWarningBanner"));
 		perms.add(new AWTPermission("setWindowsAlwaysOnTop"));
 		perms.add(new PropertyPermission("*", "read"));
+		perms.add(new FilePermission("<<ALL FILES>>", "read"));
 		return perms;
 	}
 }

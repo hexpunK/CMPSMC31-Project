@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
-import uk.ac.uea.mathsthing.util.IFormula;
+import uk.ac.uea.mathsthing.util.FormulaException;
 
 public class SamplePlugin extends IExtensionPlugin {
 
@@ -35,7 +35,7 @@ public class SamplePlugin extends IExtensionPlugin {
 	}
 
 	@Override
-	public void setFormula(IFormula formula)
+	public void processFormula() throws FormulaException, SecurityException
 	{
 		text = formula.toString();
 		StringBuilder sb = new StringBuilder();

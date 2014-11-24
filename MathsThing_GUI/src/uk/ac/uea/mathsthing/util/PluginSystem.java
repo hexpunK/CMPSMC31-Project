@@ -63,9 +63,14 @@ public final class PluginSystem {
 		}
 		workingDir = workingDir.substring(0, workingDir.lastIndexOf('/')+1);
 		
+		// Find the plugins folder.
 		String path = String.format("%splugins", workingDir);
 		File pluginFolder = new File(path);
 		File[] files = pluginFolder.listFiles();
+		
+		// If the folder cannot be found or there are no files, give up.
+		if (files == null || files.length == 0)
+			return;
 		
 		for (File jarFile : files) {
 			if (jarFile.exists()) {

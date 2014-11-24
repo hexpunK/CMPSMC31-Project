@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 
 import uk.ac.uea.mathsthing.IPlugin.IFunctionPlugin;
@@ -42,7 +43,8 @@ public final class Functions {
 	 */
 	public static final String functionRegex;
 	
-	private static final ExecutorService executor = Executors.newFixedThreadPool(1);
+	/** Thread pool for the constants to run them concurrently. */
+	private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 	
 	static {
 		// Load all the plugins.
@@ -140,7 +142,12 @@ public final class Functions {
 		BigDecimal result = null;
 		
 		try {
-			Future<BigDecimal> output = executor.submit(plugin);
+			final Future<BigDecimal> output = executor.submit(plugin);
+			executor.schedule(new Runnable(){
+			     public void run(){
+			         output.cancel(true);
+			     }      
+			 }, 10000, TimeUnit.MILLISECONDS);
 			result = output.get();
 		} catch (InterruptedException | ExecutionException exEx) {
 			throw new FormulaException(exEx);
