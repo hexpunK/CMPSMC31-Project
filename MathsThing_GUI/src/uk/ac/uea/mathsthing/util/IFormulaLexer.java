@@ -39,7 +39,7 @@ public interface IFormulaLexer extends IObservable {
 	 * @param formula A String representation of the formula.
 	 * @since 1.0
 	 */
-	public void setForumla(String formula);
+	public void setFormula(String formula);
 	
 	/**
 	 * Analyse and tokenise a provided formula. The tokens will contain 

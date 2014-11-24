@@ -59,7 +59,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 	}
 
 	@Override
-	public void setForumla(String formula) {
+	public void setFormula(String formula) {
 		this.input = formula;
 	}
 	

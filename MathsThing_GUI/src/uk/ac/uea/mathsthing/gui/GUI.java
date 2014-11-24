@@ -271,7 +271,7 @@ public class GUI extends JFrame implements IObserver {
 
 				// Tokenize the input from the user.
 				IFormulaLexer lexer = new Lexer(inputField.getText());
-				lexer.setForumla(lexer.getUserFormula());
+				lexer.setFormula(lexer.getUserFormula());
 				lexer.attach(GUI.this);
 				new Thread((Runnable) lexer).start();
 			}

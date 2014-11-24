@@ -15,6 +15,7 @@ import uk.ac.uea.mathsthing.util.FormulaException;
 public class SamplePlugin extends IExtensionPlugin {
 
 	private String text;
+	JMenuItem button;
 	
 	@Override
 	public String getName() { return "niceView"; }
@@ -22,7 +23,7 @@ public class SamplePlugin extends IExtensionPlugin {
 	@Override
 	public JMenuItem getMenuEntry()
 	{		
-		JMenuItem button = new JMenuItem("Show Formula");
+		button = new JMenuItem("Show Formula");
 		button.addActionListener(new ActionListener() {
 			
 			@Override
@@ -30,7 +31,7 @@ public class SamplePlugin extends IExtensionPlugin {
 				createGUI();
 			}
 		});
-		
+		button.setEnabled(false);
 		return button;
 	}
 
@@ -73,6 +74,8 @@ public class SamplePlugin extends IExtensionPlugin {
 		}
 		sb.append("</html>");
 		text = sb.toString();
+		
+		button.setEnabled(formula.toString().length() > 0);
 	}
 	
 	private void createGUI()
