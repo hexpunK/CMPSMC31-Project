@@ -33,7 +33,7 @@ public class LexerTests {
 		Lexer lex = new Lexer(input);
 		
 		assertEquals("", lex.getProccessedFormula());
-		lex.setForumla(input);
+		lex.setFormula(input);
 		lex.tokenize();
 		assertEquals(outputString, lex.getProccessedFormula());
 	}
@@ -42,7 +42,7 @@ public class LexerTests {
 	public final void testTokenize() {
 		
 		Lexer lex = new Lexer();
-		lex.setForumla(input);
+		lex.setFormula(input);
 		Token[] outputT = lex.tokenize();
 		
 		String[] output = new String[outputT.length];
