@@ -33,7 +33,7 @@ public final class Functions {
 	 * 
 	 * @since 2.0
 	 */
-	public static HashMap<String, Class<?>> SUPPORTED_FUNCTIONS;
+	static HashMap<String, Class<?>> SUPPORTED_FUNCTIONS;
 	
 	/** 
 	 * A {@link String} containing a Regex pattern of all supported 
@@ -41,7 +41,7 @@ public final class Functions {
 	 * 
 	 *  @since 1.0
 	 */
-	public static final String functionRegex;
+	static final String functionRegex;
 	
 	/** Thread pool for the constants to run them concurrently. */
 	private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);

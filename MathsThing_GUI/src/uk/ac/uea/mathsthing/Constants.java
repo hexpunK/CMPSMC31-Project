@@ -33,7 +33,7 @@ public class Constants {
 	 * 
 	 * @since 2.0
 	 */
-	public static HashMap<String, Class<?>> SUPPORTED_CONSTANTS;
+	static HashMap<String, Class<?>> SUPPORTED_CONSTANTS;
 	
 	/** 
 	 * A {@link String} containing a Regex pattern of all supported 
@@ -41,7 +41,7 @@ public class Constants {
 	 * 
 	 *  @since 1.0
 	 */
-	public static String constantRegex;
+	static String constantRegex;
 	
 	/** Thread pool for the functions to run them concurrently. */
 	private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);

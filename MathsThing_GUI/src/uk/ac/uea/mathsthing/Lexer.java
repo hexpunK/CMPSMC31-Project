@@ -70,12 +70,25 @@ public class Lexer implements IFormulaLexer, Runnable {
 		orig.trim();
 		orig = orig.replaceAll("\\s+", "");
 		
+		// Build up a regex pattern.
+		StringBuilder pattern = new StringBuilder();
+		// If there are no functions or constants, we need to match against nothing.
+		if (!Functions.functionRegex.equals("()"))
+			pattern.append(TokenType.FUNCTION.getToken()).append("|");
+		else
+			pattern.append("($^)").append("|"); // Nothing!s
+		
+		if (!Constants.constantRegex.equals("()"))
+			pattern.append(TokenType.MAGICNUM.getToken()).append("|");
+		else
+			pattern.append("($^)").append("|");
+		// These will always have something to match against however.
+		pattern.append(TokenType.OPERATOR.getToken()).append("|");
+		pattern.append(TokenType.OPERAND.getToken()).append("|");
+		pattern.append(TokenType.CONSTANT.getToken());
+		
 		//create the patter to match
-		Pattern p1 = Pattern.compile(TokenType.FUNCTION.getToken() 
-				+ "|" + TokenType.MAGICNUM.getToken() 
-				+ "|" + TokenType.OPERATOR.getToken() 
-				+ "|" + TokenType.OPERAND.getToken() 
-				+ "|" + TokenType.CONSTANT.getToken());
+		Pattern p1 = Pattern.compile(pattern.toString());
 		
 		//set up the matcher using the pattern created
 		Matcher mat = p1.matcher(orig);
