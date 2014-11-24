@@ -137,7 +137,13 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	@Override
 	public String toString() 
 	{
-		return this.tokens.toString();
+		StringBuilder sb = new StringBuilder();
+		
+		for (Token tok : tokens) {
+			sb.append(tok.toString());
+		}
+		
+		return sb.toString();
 	}
 
 	@Override

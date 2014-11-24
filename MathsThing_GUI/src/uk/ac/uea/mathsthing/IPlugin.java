@@ -8,6 +8,8 @@ import javax.swing.JMenuItem;
 
 import uk.ac.uea.mathsthing.gui.GUI;
 import uk.ac.uea.mathsthing.util.FormulaException;
+import uk.ac.uea.mathsthing.util.IFormula;
+import uk.ac.uea.mathsthing.util.IFormulaLexer;
 import uk.ac.uea.mathsthing.util.PluginSystem;
 
 /**
@@ -132,7 +134,7 @@ public interface IPlugin {
 	 * itself to the menu system. 
 	 * 
 	 * @author Jordan Woerner
-	 * @version 1.0
+	 * @version 1.1
 	 * @since 1.0
 	 */
 	public static abstract class IExtensionPlugin implements IPlugin {
@@ -143,5 +145,15 @@ public interface IPlugin {
 		 * @return Returns a {@link JMenuItem} entry for a {@link JMenuBar}.
 		 */
 		public abstract JMenuItem getMenuEntry();
+		
+		/**
+		 * Provides this {@link IExtensionPlugin} a {@link IFormula} to work 
+		 * with. This will be called by the GUI when it is returned a valid 
+		 * {@link IFormula} from the {@link IFormulaLexer} being used.
+		 * 
+		 * @param formula An {@link IFormula} instance.
+		 * @since 1.1
+		 */
+		public abstract void setFormula(IFormula formula); 
 	}
 }

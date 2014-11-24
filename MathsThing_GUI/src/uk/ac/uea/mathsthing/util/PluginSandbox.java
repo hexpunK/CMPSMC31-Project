@@ -1,11 +1,13 @@
 package uk.ac.uea.mathsthing.util;
 
+import java.awt.AWTPermission;
 import java.security.AllPermission;
 import java.security.Permission;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
+import java.util.PropertyPermission;
 
 /**
  * Custom security {@link Policy} to prevent plugin classes from harming the 
@@ -64,6 +66,9 @@ public final class PluginSandbox extends Policy {
 	private final Permissions getPluginPermissions()
 	{
 		Permissions perms = new Permissions();
+		perms.add(new AWTPermission("showWindowWithoutWarningBanner"));
+		perms.add(new AWTPermission("setWindowsAlwaysOnTop"));
+		perms.add(new PropertyPermission("*", "read"));
 		return perms;
 	}
 }

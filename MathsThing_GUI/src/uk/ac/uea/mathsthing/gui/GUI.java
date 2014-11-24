@@ -66,6 +66,8 @@ public class GUI extends JFrame implements IObserver {
 	IFormulaLexer lexer;
 	/** A {@link IFormulaParser} to use when evaluating the user formula. */
 	IFormulaParser parser;
+	/** A list of the extension plugins loaded into the GUI. */
+	ArrayList<IExtensionPlugin> loadedPlugins;
 
 	/**
 	 * Sets up the GUI for the application.
@@ -98,7 +100,7 @@ public class GUI extends JFrame implements IObserver {
 		JMenuItem exitItem = new JMenuItem("Exit");
 		
 		// Load IExtensionPlugin instances to hook into the GUI.
-		ArrayList<IExtensionPlugin> loadedPlugins = new ArrayList<>();
+		loadedPlugins = new ArrayList<>();
 		try {
 			for(Class<?> plugin : PluginSystem.getPlugins()) {
 				if (IExtensionPlugin.class.isAssignableFrom(plugin)) {
@@ -110,6 +112,7 @@ public class GUI extends JFrame implements IObserver {
 				| SecurityException | ClassNotFoundException | IOException
 				| InstantiationException e) {
 			e.printStackTrace();
+			System.err.println("Error loading extension plugins. Reason: " + e.getMessage());
 		}
 		// Create the plugins menu if any extensions are found.
 		JMenu plugins = null;		
@@ -471,6 +474,9 @@ public class GUI extends JFrame implements IObserver {
 			return;
 		}
 
+		for(IExtensionPlugin plugin : loadedPlugins)
+			plugin.setFormula(formula);
+		
 		processEvaluation(formula);
 	}
 	
