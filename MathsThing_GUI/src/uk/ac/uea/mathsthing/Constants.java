@@ -141,7 +141,10 @@ public class Constants {
 			 }, 10000, TimeUnit.MILLISECONDS);
 			result = output.get();
 		} catch (InterruptedException | ExecutionException exEx) {
-			throw new FormulaException(exEx);
+			if (exEx.getCause() != null)
+				throw new FormulaException(exEx.getCause().getMessage());
+			
+			throw new FormulaException(exEx.getMessage());
 		} catch (SecurityException sEx) {
 			throw sEx;
 		}
