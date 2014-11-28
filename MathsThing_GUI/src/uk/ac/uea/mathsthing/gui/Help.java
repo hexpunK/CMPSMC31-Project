@@ -18,7 +18,7 @@ import org.apache.commons.io.IOUtils;
  * Initializes the help menu for the user. This loads the HTML file and displays it to the user.
  * 
  * @author Jake Ruston
- * @version 0.1
+ * @version 1.0
  */
 public class Help
 {

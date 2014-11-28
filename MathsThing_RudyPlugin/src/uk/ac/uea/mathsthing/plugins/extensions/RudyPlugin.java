@@ -51,7 +51,6 @@ public class RudyPlugin extends IExtensionPlugin {
 		try {
 			myPicture = ImageIO.read(this.getClass().getResourceAsStream("/rudy.jpg"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

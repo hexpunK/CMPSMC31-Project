@@ -47,7 +47,7 @@ import uk.ac.uea.mathsthing.util.PluginSystem;
  * Initialises the GUI for the application.
  * 
  * @author Jake Ruston
- * @version 0.1
+ * @version 1.0
  */
 public class GUI extends JFrame implements IObserver {
 
@@ -132,6 +132,7 @@ public class GUI extends JFrame implements IObserver {
 		productHelpItem = new JMenuItem("Product Guide");
 		aboutItem = new JMenuItem("About");
 
+		// Add a listener so the user can save the graph to a file.
 		saveGraphItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -164,6 +165,7 @@ public class GUI extends JFrame implements IObserver {
 
 		});
 
+		// Add a listener so the app can be exited.
 		exitItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -174,6 +176,7 @@ public class GUI extends JFrame implements IObserver {
 
 		});
 
+		// Add a listener so the user can view the product help guide.
 		productHelpItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -186,6 +189,7 @@ public class GUI extends JFrame implements IObserver {
 
 		});
 
+		// Add a listener so the user can see the authors of the application.
 		aboutItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -263,6 +267,7 @@ public class GUI extends JFrame implements IObserver {
 
 		chart = new Graph(this);
 
+		// Listener to process the formula and update the graph.
 		enterButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -278,6 +283,7 @@ public class GUI extends JFrame implements IObserver {
 
 		});
 
+		// Listener to reset the formula being used for the graph.
 		resetButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -402,6 +408,8 @@ public class GUI extends JFrame implements IObserver {
 					results.put(i, null);
 
 				lastResult = result;
+				
+			// If a plugin is trying to breach security, show an error.
 			} catch (SecurityException | InvalidParameterException sEx) {
 				
 				JOptionPane.showMessageDialog(frame,
@@ -411,6 +419,8 @@ public class GUI extends JFrame implements IObserver {
 				System.err.println(sEx.getMessage());
 				setCursor(Cursor.getDefaultCursor());
 				return;
+				
+			// If the user has entered an invalid formula, show an error.
 			} catch (FormulaException formEx) {
 				
 				JOptionPane.showMessageDialog(frame,
@@ -494,6 +504,7 @@ public class GUI extends JFrame implements IObserver {
 			return;
 		}
 
+		// Make plugin threads time out after 10 seconds if they are still running.
 		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 		for(IExtensionPlugin plugin : loadedPlugins) {
 			plugin.setFormula(formula);
