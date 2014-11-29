@@ -36,7 +36,7 @@ public class SamplePlugin extends IExtensionPlugin {
 	}
 
 	@Override
-	public void processFormula() throws FormulaException, SecurityException
+	public void processFormula() throws FormulaException
 	{
 		text = formula.toString();
 		StringBuilder sb = new StringBuilder();
@@ -99,5 +99,11 @@ public class SamplePlugin extends IExtensionPlugin {
 		window.pack();
 		window.setResizable(false);
 		window.setVisible(true);
+	}
+
+	@Override
+	public void onReset() {
+		this.formula = null;
+		this.button.setEnabled(false);
 	}
 }

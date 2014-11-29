@@ -26,7 +26,7 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	/** A mapping of operands to their constant values. */
 	private HashMap<String, Double> params;
 	
-	/** The postfix expression tree to evaluate this {@link Formula}. */
+	/** The post-fix expression tree to evaluate this {@link Formula}. */
 	private BinaryEvaluationTree evalTree;
 	/** The first derivative for this {@link Formula} as an {@link IFormula} */
 	private IFormula derivative;
@@ -101,7 +101,7 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	
 	/**
 	 * Gets the tokens that represent this {@link Formula}. This is only a 
-	 * testing method. It isn't accessable externally.
+	 * testing method. It isn't accessible externally.
 	 * 
 	 * @return An array of {@link Token}s for this {@link Formula}.
 	 * @since 1.0
@@ -110,7 +110,7 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	
 	/**
 	 * Gets the evaluation tree for this {@link Formula}. This is only a  
-	 * testing method. It isn't accessable externally.
+	 * testing method. It isn't accessible externally.
 	 * 
 	 * @return A {@link BinaryEvaluationTree} for evaluating this 
 	 * {@link Formula}.
@@ -129,7 +129,7 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	{
 		// Lazy load the derivative.
 		if (derivative == null) {
-			// Calculate the derivative.
+			throw new UnsupportedOperationException("Differentiation does not work in this version of Formula.");
 		}
 		return this.derivative;
 	}
@@ -147,7 +147,7 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	}
 
 	@Override
-	public BigDecimal call() throws Exception {
+	public BigDecimal call() throws FormulaException {
 		
 		return this.getResult();
 	}

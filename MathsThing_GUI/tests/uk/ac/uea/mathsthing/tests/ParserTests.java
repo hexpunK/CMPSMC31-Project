@@ -11,6 +11,7 @@ import org.junit.Test;
 import uk.ac.uea.mathsthing.SimpleParser;
 import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.TokenType;
+import uk.ac.uea.mathsthing.util.IFormula;
 
 public class ParserTests extends SimpleParser {
 
@@ -113,11 +114,12 @@ public class ParserTests extends SimpleParser {
 		System.out.printf("Formula: %s\n", printArray(formula2));
 		System.out.printf("x = %2.2f\n", input);
 		this.setFormula(formula2);
-		this.parse();
+		IFormula formula = this.parse();
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
+		formula.setParameters(vals);
 		try {
-			double result = this.getResult(vals).doubleValue();
+			double result = formula.getResult().doubleValue();
 			System.out.printf("Formula result: %2.10f\n", result);
 			assertEquals(11.0, result, 0.0);
 		} catch (Exception e) {

@@ -13,10 +13,7 @@ import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CancellationException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -31,7 +28,9 @@ import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import uk.ac.uea.mathsthing.Constants;
 import uk.ac.uea.mathsthing.Formula;
+import uk.ac.uea.mathsthing.Functions;
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
 import uk.ac.uea.mathsthing.Lexer;
 import uk.ac.uea.mathsthing.SimpleParser;
@@ -73,7 +72,7 @@ public class GUI extends JFrame implements IObserver {
 	IFormulaParser parser;
 	/** A list of the extension plugins loaded into the GUI. */
 	ArrayList<IExtensionPlugin> loadedPlugins;
-
+	
 	/**
 	 * Sets up the GUI for the application.
 	 */
@@ -192,11 +191,9 @@ public class GUI extends JFrame implements IObserver {
 
 				// Show an about window when the about menu item has been
 				// clicked.
-				JOptionPane
-						.showMessageDialog(
-								frame,
-								"Maths Thing v1.0 by Laura Goold, Jake Ruston and Jordan Woerner\nfor Advanced Programming Techniques (2014).",
-								"About", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame,
+					"Maths Thing v1.0 by Laura Goold, Jake Ruston and Jordan Woerner\nfor Advanced Programming Techniques (2014).",
+					"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 		});
@@ -274,6 +271,7 @@ public class GUI extends JFrame implements IObserver {
 				lexer.setFormula(lexer.getUserFormula());
 				lexer.attach(GUI.this);
 				new Thread((Runnable) lexer).start();
+				enterButton.setEnabled(false);
 			}
 
 		});
@@ -284,9 +282,7 @@ public class GUI extends JFrame implements IObserver {
 
 				// Reset the input and hide the chart.
 				inputField.setText("");
-				chart.changeVisibility(false);
-				saveGraphItem.setEnabled(false);
-				setCursor(Cursor.getDefaultCursor());
+				reset();
 			}
 
 		});
@@ -309,7 +305,7 @@ public class GUI extends JFrame implements IObserver {
 			new Thread((Runnable) parser).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			setCursor(Cursor.getDefaultCursor());
+			reset();
 			JOptionPane.showMessageDialog(frame, ex.getMessage(),
 					"Invalid Formula", JOptionPane.ERROR_MESSAGE);
 		}
@@ -325,7 +321,7 @@ public class GUI extends JFrame implements IObserver {
 		// There is a possibility that the returned formula won't actually
 		// exist.
 		if (formula == null) {
-			setCursor(Cursor.getDefaultCursor());
+			reset();
 			JOptionPane.showMessageDialog(frame,
 					"No formula could be created from input.",
 					"Invalid Formula", JOptionPane.ERROR_MESSAGE);
@@ -342,7 +338,7 @@ public class GUI extends JFrame implements IObserver {
 			toValue = Double.parseDouble(toField.getText());
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			setCursor(Cursor.getDefaultCursor());
+			reset();
 			JOptionPane.showMessageDialog(frame,
 					"The from and to values must be numbers!",
 					"Invalid Values", JOptionPane.ERROR_MESSAGE);
@@ -351,7 +347,7 @@ public class GUI extends JFrame implements IObserver {
 
 		// Throw an error if the from value is less than the to value.
 		if (fromValue >= toValue) {
-			setCursor(Cursor.getDefaultCursor());
+			reset();
 			JOptionPane.showMessageDialog(frame,
 					"The from value must be lower than the to value.",
 					"Invalid Values", JOptionPane.ERROR_MESSAGE);
@@ -361,7 +357,7 @@ public class GUI extends JFrame implements IObserver {
 		// Ensure the values are between -1000 and 1000 to prevent abnormally
 		// large numbers.
 		if (fromValue < -1000 || toValue > 1000) {
-			setCursor(Cursor.getDefaultCursor());
+			reset();
 			JOptionPane.showMessageDialog(frame,
 					"The from and to values must be between -1,000 and 1,000.",
 					"Invalid Values", JOptionPane.ERROR_MESSAGE);
@@ -406,21 +402,18 @@ public class GUI extends JFrame implements IObserver {
 				
 				JOptionPane.showMessageDialog(frame,
 						"A problem has occurred with the plugin which supports this function.",
-						"Plugin Issue", JOptionPane.ERROR_MESSAGE);
-				
+						"Plugin Error", JOptionPane.ERROR_MESSAGE);				
 				System.err.println(sEx.getMessage());
-				setCursor(Cursor.getDefaultCursor());
+				reset();
 				return;
 			} catch (FormulaException formEx) {
 				
 				JOptionPane.showMessageDialog(frame,
 						formEx.getMessage(),
-						"Formula", JOptionPane.ERROR_MESSAGE);
-				
+						"Formula Error", JOptionPane.ERROR_MESSAGE);				
+				reset();
 				System.err.println(formEx.getMessage());
-				setCursor(Cursor.getDefaultCursor());
-				return;
-				
+				return;				
 			} catch (NullPointerException nEx) {
 				results.put(i, null);
 			}
@@ -472,6 +465,27 @@ public class GUI extends JFrame implements IObserver {
 		chart.updateChart(inputField.getText(), formula.getXAxis(),
 				formula.getYAxis(), results);
 		saveGraphItem.setEnabled(true);
+		enterButton.setEnabled(true);
+	}
+	
+	/**
+	 * Reset the GUI controls and the plugins.
+	 */
+	private void reset() {
+		
+		chart.changeVisibility(false);
+		saveGraphItem.setEnabled(false);
+		setCursor(Cursor.getDefaultCursor());
+		enterButton.setEnabled(true);
+		Functions.reset();
+		Constants.reset();
+		for (IExtensionPlugin plugin : loadedPlugins) {
+			try {
+				IExtensionPlugin.reset(plugin);
+			} catch (CancellationException ex) {
+				JOptionPane.showMessageDialog(frame, ex.getMessage(), "Extension Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	/**
@@ -494,15 +508,15 @@ public class GUI extends JFrame implements IObserver {
 			return;
 		}
 
-		ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 		for(IExtensionPlugin plugin : loadedPlugins) {
-			plugin.setFormula(formula);
-			final Future<Void> output = executor.submit(plugin);
-			executor.schedule(new Runnable(){
-			     public void run(){
-			         output.cancel(true);
-			     }      
-			 }, 10000, TimeUnit.MILLISECONDS);
+			try {
+				IExtensionPlugin.runExtension(plugin, formula);
+			} catch (CancellationException e) {
+				JOptionPane.showMessageDialog(null, "Plugin was killed");
+				e.printStackTrace();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Plugin did something bad");
+			}
 		}
 		
 		processEvaluation(formula);

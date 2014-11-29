@@ -1,6 +1,5 @@
 package uk.ac.uea.mathsthing;
 
-import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
@@ -252,33 +251,6 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 			this.formula = new Formula(yAxis, xAxis, tokens, tmpStack.pop());
 		
 		return this.formula;
-	}
-
-	@Override
-	public BigDecimal getResult(HashMap<String, Double> params)
-			throws Exception 
-	{
-		formula.setParameters(params);
-		try {
-			return formula.getResult();
-		} catch (Exception e) {
-			String err = String.format(
-					"The provided function is not properly formed:\n%s",
-					e.getMessage());
-			throw new Exception(err);
-		}
-	}
-
-	@Override
-	public IFormula getFirstDerivative() 
-	{		
-		return formula.getDerivative();
-	}
-
-	@Override
-	public IFormula getSecondDerivative() 
-	{		
-		return formula.getDerivative().getDerivative();
 	}
 
 	// These are only here for testing purposes.

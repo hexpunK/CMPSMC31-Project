@@ -3,6 +3,7 @@ package uk.ac.uea.mathsthing.plugins.extensions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
+
 import javax.swing.JMenuItem;
 
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
@@ -39,7 +40,8 @@ public class SecurityTestPlugin extends IExtensionPlugin {
 	}
 
 	@Override
-	public void processFormula() throws FormulaException, SecurityException
-	{
-	}
+	public void processFormula() throws FormulaException { }
+
+	@Override
+	public void onReset() { }
 }

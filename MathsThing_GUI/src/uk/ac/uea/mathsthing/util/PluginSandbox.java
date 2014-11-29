@@ -84,6 +84,9 @@ public final class PluginSandbox extends Policy {
 		perms.add(new AWTPermission("setWindowsAlwaysOnTop"));
 		perms.add(new PropertyPermission("*", "read"));
 		perms.add(new FilePermission("<<ALL FILES>>", "read"));
+		perms.add(new RuntimePermission("modifyThread"));
+		perms.add(new RuntimePermission("stopThread"));
+		perms.add(new RuntimePermission("modifyThreadGroup"));
 		return perms;
 	}
 }

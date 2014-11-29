@@ -7,6 +7,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -16,7 +17,6 @@ import java.util.regex.Matcher;
 
 import uk.ac.uea.mathsthing.IPlugin.IConstantPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
-import uk.ac.uea.mathsthing.util.PluginSandbox;
 import uk.ac.uea.mathsthing.util.PluginSystem;
 import uk.ac.uea.mathsthing.util.StringLengthComparator;
 
@@ -24,7 +24,7 @@ import uk.ac.uea.mathsthing.util.StringLengthComparator;
  * Provides methods to handle mathematical constants in a provided formula.
  * 
  * @author Jordan Woerner
- * @version 2.0
+ * @version 2.1
  */
 public class Constants {
 
@@ -44,7 +44,7 @@ public class Constants {
 	static String constantRegex;
 	
 	/** Thread pool for the functions to run them concurrently. */
-	private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+	private static ScheduledExecutorService executor;
 	
 	static {
 		// Load all the plugins.
@@ -115,12 +115,10 @@ public class Constants {
 	 * constant.
 	 * @throws FormulaException Thrown if there is an error evaluating this 
 	 * constant.
-	 * @throws SecurityException Thrown if the plugin attempts to do anything 
-	 * the {@link PluginSandbox} does not allow.
 	 * @since 1.0
 	 */
 	public static final BigDecimal processConstant(final String constant)
-			throws FormulaException, SecurityException 
+			throws FormulaException 
 	{		
 		// Retrieve the constant specified.
 		IConstantPlugin plugin = null;
@@ -133,22 +131,47 @@ public class Constants {
 		BigDecimal result = null;
 				
 		try {
+			if (executor == null || executor.isShutdown())
+				executor = Executors.newScheduledThreadPool(2);
+			
+			// Run the IConstantPlugin in a separate thread.
 			final Future<BigDecimal> output = executor.submit(plugin);
+			// Schedule another thread to kill the plugin if it runs too long.
 			executor.schedule(new Runnable(){
 			     public void run(){
 			         output.cancel(true);
 			     }      
-			 }, 10000, TimeUnit.MILLISECONDS);
+			 }, IConstantPlugin.RUN_TIME_SECONDS, TimeUnit.SECONDS);
 			result = output.get();
-		} catch (InterruptedException | ExecutionException exEx) {
+		} catch (CancellationException cEx) { 
+			String msg = String.format(
+					"Constant '%s' stopped processing. Exceeded allowed run time.",
+					plugin.getName());
+			throw new FormulaException(msg);
+		} catch (InterruptedException | ExecutionException exEx) {			
 			if (exEx.getCause() != null)
-				throw new FormulaException(exEx.getCause().getMessage());
+				// Security exceptions need a bit more detail in their message.
+				if (exEx.getCause() instanceof SecurityException) {
+					throw new FormulaException(String.format(
+							"Plugin '%s' performed a restricted action!\n%s",
+							plugin.getName(), exEx.getCause().getMessage()));
+				} else
+					throw new FormulaException(exEx.getCause().getMessage());
 			
 			throw new FormulaException(exEx.getMessage());
-		} catch (SecurityException sEx) {
-			throw sEx;
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Cancels any active executions of plugins.
+	 * 
+	 * @since 2.1
+	 */
+	public static final void reset()
+	{
+		if (executor != null && !executor.isTerminated())
+			executor.shutdownNow();
 	}
 }

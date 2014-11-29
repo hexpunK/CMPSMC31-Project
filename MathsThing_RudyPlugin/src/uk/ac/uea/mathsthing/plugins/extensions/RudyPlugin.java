@@ -35,9 +35,7 @@ public class RudyPlugin extends IExtensionPlugin {
 	}
 
 	@Override
-	public void processFormula() throws FormulaException, SecurityException
-	{
-	}
+	public void processFormula() throws FormulaException { }
 	
 	private void createGUI()
 	{
@@ -62,4 +60,7 @@ public class RudyPlugin extends IExtensionPlugin {
 		window.setResizable(false);
 		window.setVisible(true);
 	}
+
+	@Override
+	public void onReset() { }
 }
