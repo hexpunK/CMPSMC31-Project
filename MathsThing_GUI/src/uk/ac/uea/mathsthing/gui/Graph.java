@@ -26,7 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  * Initializes a graph to be drawn to show the user the results of a mathematical function.
  * 
  * @author Jake Ruston
- * @version 0.1
+ * @version 1.0
  */
 public class Graph extends JPanel {
 	
@@ -114,11 +114,13 @@ public class Graph extends JPanel {
 
         chart.setBackgroundPaint(Color.white);
         
+        // Set the colour scheme of the chart
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         
+        // Disable individual points being drawn.
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);

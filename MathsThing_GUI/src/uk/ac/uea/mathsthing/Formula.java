@@ -12,7 +12,7 @@ import uk.ac.uea.mathsthing.util.IFormula;
  * A simplistic implementation of a mathematical formula representation.
  * This will be replaced with a native C/C++ version when possible.
  * 
- * @author Jordan Woerner
+ * @author Jordan Woerner, Jake Ruston
  * @version 1.0
  */
 public class Formula implements IFormula, Callable<BigDecimal> {

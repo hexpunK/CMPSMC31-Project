@@ -13,6 +13,13 @@ import org.junit.Test;
 
 import uk.ac.uea.mathsthing.Functions;
 
+/**
+ * Tests the {@link Functions} class to ensure it works as intended. It
+ * checks to ensure it correctly identifies supported functions and throw
+ * correct error messages for inputs such as log(-1).
+ * 
+ * @author Jordan Woerner, Jake Ruston
+ */
 public class FunctionsTests {
 
 	private static final HashMap<String, Double> params;

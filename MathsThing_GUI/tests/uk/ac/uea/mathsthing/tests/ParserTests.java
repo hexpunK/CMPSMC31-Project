@@ -13,6 +13,13 @@ import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.TokenType;
 import uk.ac.uea.mathsthing.util.IFormula;
 
+/**
+ * Tests the {@link SimpleParser} class to ensure it works as intended. It creates
+ * several formula and attempts to calculate the result, to make sure that it does
+ * not generate incorrect information.
+ * 
+ * @author Jordan Woerner, Jake Ruston
+ */
 public class ParserTests extends SimpleParser {
 
 	// y = a(b+cd)+a

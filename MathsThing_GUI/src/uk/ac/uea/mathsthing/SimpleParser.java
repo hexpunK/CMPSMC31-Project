@@ -19,7 +19,7 @@ import uk.ac.uea.mathsthing.util.IObserver;
  * Generates a evaluation tree of the postfix notation, which can be evaluated.
  * Evaluation can take a mapping of variables to values.
  * 
- * @author Jordan Woerner
+ * @author Jordan Woerner, Jake Ruston
  * @version 1.0
  */
 public class SimpleParser implements IFormulaParser, IObservable, Runnable {
