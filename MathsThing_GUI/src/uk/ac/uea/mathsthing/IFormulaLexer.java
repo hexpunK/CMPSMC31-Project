@@ -53,5 +53,5 @@ public interface IFormulaLexer {
 	 * Each one is a letter assigned a numerical value
 	 * @return Returns a Hashmap containing all the parameters
 	 */
-	public HashMap<String, Integer> getParameters();
+	public HashMap<String, Double> getParameters();
 }

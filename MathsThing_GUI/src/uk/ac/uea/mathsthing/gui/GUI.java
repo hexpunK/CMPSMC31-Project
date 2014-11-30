@@ -241,7 +241,7 @@ public class GUI extends JFrame {
         		HashMap<Double, BigDecimal> results = new HashMap<>();
        
         		for (double i=fromValue; i<=toValue; i+=INCREMENTER_VALUE) {
-        			HashMap<String, Double> vals = new HashMap<>();
+        			HashMap<String, Double> vals = lexer.getParameters();
         			vals.put("x", i);
         			
         			// Get the result and add it to the hash map.
