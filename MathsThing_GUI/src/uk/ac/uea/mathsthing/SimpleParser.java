@@ -85,7 +85,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 			switch (token.type) {
 			case OPERATOR:
 				switch (token.val) {
-				case "(":
+				case "(":					
 					opStack.push(token);
 					break;
 				case ")":
@@ -179,6 +179,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					int oldVal = valCount.get(token.val);
 					valCount.put(token.val, ++oldVal);
 				}
+			case CONSTANT:
 				if (!negation) {
 					postFix.push(token);
 				} else {
@@ -193,16 +194,6 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					opStack.push(funcOp);
 				}
 				funcOp = token;
-				break;
-			case CONSTANT:
-				if (!negation) {
-					postFix.push(token);
-				} else {
-					postFix.push(new Token("0", TokenType.CONSTANT));
-					postFix.push(token);
-					postFix.push(new Token("-", TokenType.OPERATOR));
-					negation = false;
-				}
 				break;
 			case MAGICNUM:
 				postFix.push(token);

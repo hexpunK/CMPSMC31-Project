@@ -10,7 +10,7 @@ import uk.ac.uea.mathsthing.Token;
  * formula.
  * 
  * @author Jordan Woerner
- * @version 1.1
+ * @version 1.2
  */
 public interface IFormula {
 
@@ -22,6 +22,15 @@ public interface IFormula {
 	 * @since 1.0
 	 */
 	public void setParameters(HashMap<String, Double> params);
+	
+	/**
+	 * Retrieves the mapping of parameters stored in this {@link IFormula}.
+	 * 
+	 * @return A {@link HashMap} of {@link String} to {@link Double} containing
+	 *  the paramters used in this formula.
+	 * @since 1.2
+	 */
+	public HashMap<String, Double> getParameters();
 	
 	/**
 	 * Gets the operand that represents the Y axis on a graph.

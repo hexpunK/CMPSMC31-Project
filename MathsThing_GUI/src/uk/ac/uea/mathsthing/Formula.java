@@ -94,6 +94,12 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	}
 	
 	@Override
+	public HashMap<String, Double> getParameters()
+	{
+		return this.params;
+	}
+	
+	@Override
 	public String getYAxis() { return this.yAxis; }
 	
 	@Override

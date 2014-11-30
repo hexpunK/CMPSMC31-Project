@@ -142,7 +142,7 @@ public class RootPlugin extends IExtensionPlugin {
 		public double value(double input) {
 			
 			// Set the parameters for the parser.
-			HashMap<String,Double> params = new HashMap<String,Double>();
+			HashMap<String,Double> params = formula.getParameters();
 			params.put(formula.getXAxis(), Double.valueOf(input));
 			formula.setParameters(params);
 			
