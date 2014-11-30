@@ -101,9 +101,12 @@ public class GUI extends JFrame implements IObserver {
 		// Create the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("File");
+		file.setMnemonic('F');
 		saveGraphItem = new JMenuItem("Save Graph");
+		saveGraphItem.setMnemonic('S');
 		saveGraphItem.setEnabled(false);
 		JMenuItem exitItem = new JMenuItem("Exit");
+		exitItem.setMnemonic('X');
 		
 		// Load IExtensionPlugin instances to hook into the GUI.
 		loadedPlugins = new ArrayList<>();
@@ -124,12 +127,14 @@ public class GUI extends JFrame implements IObserver {
 		JMenu plugins = null;		
 		if (!loadedPlugins.isEmpty()) {
 			plugins = new JMenu("Plugins");
+			plugins.setMnemonic('P');
 			for(IExtensionPlugin plugin : loadedPlugins) {
 				plugins.add(plugin.getMenuEntry());
 			}
 		}
 
 		JMenu help = new JMenu("Help");
+		help.setMnemonic('H');
 		productHelpItem = new JMenuItem("Product Guide");
 		aboutItem = new JMenuItem("About");
 
