@@ -102,6 +102,9 @@ public class RootPlugin extends IExtensionPlugin {
 		if (roots.isEmpty()) {
 			JOptionPane.showMessageDialog(window, "Unable to find any roots between -1000 and 1000 for this formula.",
 					"Root Finder", JOptionPane.ERROR_MESSAGE);
+		} if (roots.size() > 12) {
+			JOptionPane.showMessageDialog(window, "There are too many roots for this solution to display.",
+					"Root Finder", JOptionPane.ERROR_MESSAGE);
 		} else {
 			
 			String rootsString = "";
