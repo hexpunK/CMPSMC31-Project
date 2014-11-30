@@ -10,7 +10,7 @@ class TanH extends IFunctionPlugin {
   def function(input: BigDecimal) : BigDecimal = {
   	val result:BigDecimal = new BigDecimal(Math.tanh(input.doubleValue))
   	
-  	if (result.doubleValue() > 100 || result.doubleValue() < -100)
+  	if (result.doubleValue > 100 || result.doubleValue < -100)
   	  return null;
   	else
       result

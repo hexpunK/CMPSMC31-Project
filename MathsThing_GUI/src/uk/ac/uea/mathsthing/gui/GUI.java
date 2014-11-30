@@ -72,6 +72,8 @@ public class GUI extends JFrame implements IObserver {
 	IFormulaParser parser;
 	/** A list of the extension plugins loaded into the GUI. */
 	ArrayList<IExtensionPlugin> loadedPlugins;
+	/** The function domain. */
+	double fromValue = 0.0, toValue = 0.0;
 	
 	/**
 	 * Sets up the GUI for the application.
@@ -335,8 +337,6 @@ public class GUI extends JFrame implements IObserver {
 		}
 		formula.setParameters(lexer.getParameters());
 
-		double fromValue = 0.0, toValue = 0.0;
-
 		// Attempt to parse the from and to values as numbers. Exception is
 		// thrown if they aren't valid numbers.
 		try {
@@ -518,9 +518,11 @@ public class GUI extends JFrame implements IObserver {
 			return;
 		}
 
+		processEvaluation(formula);
+		
 		for(IExtensionPlugin plugin : loadedPlugins) {
 			try {
-				IExtensionPlugin.runExtension(plugin, formula);
+				IExtensionPlugin.runExtension(plugin, formula, fromValue, toValue);
 			} catch (CancellationException e) {
 				JOptionPane.showMessageDialog(null, "Plugin was killed");
 				e.printStackTrace();
@@ -528,8 +530,6 @@ public class GUI extends JFrame implements IObserver {
 				JOptionPane.showMessageDialog(null, "Plugin did something bad");
 			}
 		}
-		
-		processEvaluation(formula);
 	}
 	
 	public static void main(String[] args) {

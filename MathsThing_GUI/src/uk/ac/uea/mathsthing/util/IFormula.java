@@ -3,12 +3,14 @@ package uk.ac.uea.mathsthing.util;
 import java.math.BigDecimal;
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.Token;
+
 /**
  * Provides the required methods for a representation of a mathematical 
  * formula.
  * 
  * @author Jordan Woerner
- * @version 1.0
+ * @version 1.1
  */
 public interface IFormula {
 
@@ -56,4 +58,13 @@ public interface IFormula {
 	 * @since 1.0
 	 */
 	public IFormula getDerivative();
+	
+	/**
+	 * Gets the {@link Token} objects that represent this {@link IFormula} 
+	 * internally.
+	 * 
+	 * @return Returns an array of {@link Token} objects.
+	 * @since 1.1
+	 */
+	public Token[] getTokens();
 }

@@ -150,12 +150,15 @@ public interface IPlugin {
 	 */
 	public static abstract class IExtensionPlugin implements Callable<Void>, IPlugin {
 		
-		/** The {@link IFormula} this {@link IExtensionPlugin} can use. */
-		protected IFormula formula;
-		/** Used to flag the {@link Callable#call()} execution path. */
-		private boolean isReset;
 		/** How long should a {@link IExtensionPlugin} be allowed to run. */
 		protected static final long RUN_TIME_SECONDS = 2;
+		
+		/** The {@link IFormula} this {@link IExtensionPlugin} can use. */
+		protected IFormula formula;
+		/** The function domain for the rendered graph. */
+		protected double minX, maxX;
+		/** Used to flag the {@link Callable#call()} execution path. */
+		private boolean isReset;
 		
 		/**
 		 * Creates the {@link JMenuItem} to be added to the {@link GUI} menu.
@@ -170,13 +173,21 @@ public interface IPlugin {
 		 * to work with. This will be called by the GUI when it is returned a 
 		 * valid {@link IFormula} from the {@link IFormulaLexer} being used.
 		 * 
+		 * @param plugin The {@link IExtensionPlugin} to execute.
 		 * @param formula An {@link IFormula} instance.
+		 * @param minX The minimum X axis value to consider.
+		 * @param maxX The maximum X axis value to consider.
 		 * @since 1.1
 		 */
-		public final static void runExtension(final IExtensionPlugin plugin, IFormula formula)
+		public final static void runExtension(final IExtensionPlugin plugin, 
+				final IFormula formula, 
+				double minX, 
+				double maxX)
 		{
 			plugin.isReset = false;
 			plugin.formula = formula;
+			plugin.minX = minX;
+			plugin.maxX = maxX;
 			plugin.execute();
 		}
 		

@@ -99,14 +99,8 @@ public class Formula implements IFormula, Callable<BigDecimal> {
 	@Override
 	public String getXAxis() { return this.xAxis; }
 	
-	/**
-	 * Gets the tokens that represent this {@link Formula}. This is only a 
-	 * testing method. It isn't accessible externally.
-	 * 
-	 * @return An array of {@link Token}s for this {@link Formula}.
-	 * @since 1.0
-	 */
-	Token[] getTokens() { return this.tokens; }
+	@Override
+	public Token[] getTokens() { return this.tokens; }
 	
 	/**
 	 * Gets the evaluation tree for this {@link Formula}. This is only a  

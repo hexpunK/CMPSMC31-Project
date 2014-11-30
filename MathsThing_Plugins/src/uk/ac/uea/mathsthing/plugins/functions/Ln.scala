@@ -11,7 +11,7 @@ class Ln extends IFunctionPlugin {
     
   def function(input: BigDecimal) : BigDecimal = {
     
-    if (input.doubleValue() == Double.NaN || input.doubleValue() <= 0)
+    if (input.doubleValue == Double.NaN || input.doubleValue <= 0)
       throw new FormulaException("ln only accepts positive numbers.");
     
     val result:BigDecimal = new BigDecimal(Math.log(input.doubleValue))

@@ -11,7 +11,7 @@ class Log extends IFunctionPlugin {
     
   def function(input: BigDecimal) : BigDecimal = {
     
-    if (input.doubleValue() == Double.NaN || input.doubleValue() <= 0)
+    if (input.doubleValue == Double.NaN || input.doubleValue <= 0)
       throw new FormulaException("log only accepts positive numbers.");
     
     val result:BigDecimal = new BigDecimal(Math.log10(input.doubleValue))

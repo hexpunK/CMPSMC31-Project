@@ -10,12 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver;
+
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
-
-import org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver;
-import org.apache.commons.math3.analysis.solvers.UnivariateSolver;
-import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
  * Plugin for calculating the root of a function. Currently, it can calculate an unlimited
@@ -28,6 +27,7 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
 public class RootPlugin extends IExtensionPlugin {
 	
 	JMenuItem button;
+	ArrayList<Double> roots;
 	
 	@Override
 	public String getName() { return "rootView"; }
@@ -49,6 +49,28 @@ public class RootPlugin extends IExtensionPlugin {
 
 	@Override
 	public void processFormula() throws FormulaException {
+		// Uses the Brent-Dekker algorithm to calculate roots.
+		RootCalculate f = new RootCalculate();
+		final double relativeAccuracy = 1.0e-12;
+		final double absoluteAccuracy = 1.0e-8;
+		final int maxOrder = 5;
+		BracketingNthOrderBrentSolver solver = new BracketingNthOrderBrentSolver(relativeAccuracy, absoluteAccuracy, maxOrder);
+				
+		roots = new ArrayList<Double>();
+		double lowestValue = minX;
+				
+		// Loop through attempting to find all root solutions
+		while (true) {		
+			// When a root has been found, increment slightly and move on to find more roots.
+			try {
+				double a = solver.solve(4000, f, lowestValue, maxX);
+				lowestValue = a+0.00000001;
+				roots.add(Double.valueOf(a));
+			} catch (Exception e) {
+				break;
+			}
+		}
+				
 		button.setEnabled(formula.toString().length() > 0);
 	}
 	
@@ -56,29 +78,6 @@ public class RootPlugin extends IExtensionPlugin {
 	{
 		final JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		
-		// Uses the Brent-Dekker algorithm to calculate roots.
-		RootCalculate f = new RootCalculate();
-		final double relativeAccuracy = 1.0e-12;
-		final double absoluteAccuracy = 1.0e-8;
-		final int maxOrder = 5;
-		UnivariateSolver solver = new BracketingNthOrderBrentSolver(relativeAccuracy, absoluteAccuracy, maxOrder);
-		
-		ArrayList<Double> roots = new ArrayList<Double>();
-		double lowestValue = -1000;
-		
-		// Loop through attempting to find all root solutions
-		while (true) {
-			
-			// When a root has been found, increment slightly and move on to find more roots.
-			try {
-				double a = solver.solve(4000, f, lowestValue, 1000);
-				lowestValue = a+0.00000001;
-				roots.add(Double.valueOf(a));
-			} catch (Exception e) {
-				break;
-			}
-		}
 		
 		// If there are no roots, throw an error message to the user.
 		if (roots.isEmpty()) {
