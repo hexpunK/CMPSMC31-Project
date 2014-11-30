@@ -57,13 +57,13 @@ public class RootPlugin extends IExtensionPlugin {
 		BracketingNthOrderBrentSolver solver = new BracketingNthOrderBrentSolver(relativeAccuracy, absoluteAccuracy, maxOrder);
 				
 		roots = new ArrayList<Double>();
-		double lowestValue = minX;
+		double lowestValue = -1000;
 				
 		// Loop through attempting to find all root solutions
 		while (true) {		
 			// When a root has been found, increment slightly and move on to find more roots.
 			try {
-				double a = solver.solve(4000, f, lowestValue, maxX);
+				double a = solver.solve(4000, f, lowestValue, 1000);
 				lowestValue = a+0.00000001;
 				roots.add(Double.valueOf(a));
 			} catch (Exception e) {
@@ -79,9 +79,28 @@ public class RootPlugin extends IExtensionPlugin {
 		final JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
+		for (int i=0; i<formula.getTokens().length; i++) {
+			
+			if (formula.getTokens()[i].val.equals("sin")) {
+				JOptionPane.showMessageDialog(window, "The roots of sin occur at all integer multiples of pi.",
+						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
+				return;
+				
+			} else if (formula.getTokens()[i].val.equals("cos")) {
+				JOptionPane.showMessageDialog(window, "The roots of cos occur at all integer multiples of pi/2.",
+						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
+				return;
+				
+			} else if (formula.getTokens()[i].val.equals("tan")) {
+				JOptionPane.showMessageDialog(window, "The roots of tan occur at all integer multiples of pi.",
+						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+		}
+		
 		// If there are no roots, throw an error message to the user.
 		if (roots.isEmpty()) {
-			JOptionPane.showMessageDialog(window, "Unable to calculate the root for this formula.",
+			JOptionPane.showMessageDialog(window, "Unable to find any roots between -1000 and 1000 for this formula.",
 					"Root Finder", JOptionPane.ERROR_MESSAGE);
 		} else {
 			
