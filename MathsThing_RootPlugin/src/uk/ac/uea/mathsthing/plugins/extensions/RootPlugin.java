@@ -3,6 +3,7 @@ package uk.ac.uea.mathsthing.plugins.extensions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -17,8 +18,9 @@ import org.apache.commons.math3.analysis.solvers.UnivariateSolver;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 
 /**
- * Plugin for calculating the root of a function. Currently, it can provide 2 roots at maximum
- * and uses the Brent-Dekker algorithm to calculate roots. 
+ * Plugin for calculating the root of a function. Currently, it can calculate an unlimited
+ * number of roots occurring between -1000 and 1000, and uses the Brent-Dekker algorithm
+ * to calculate roots. 
  * 
  * @author Jake Ruston
  * @version 1.0
@@ -62,30 +64,47 @@ public class RootPlugin extends IExtensionPlugin {
 		final int maxOrder = 5;
 		UnivariateSolver solver = new BracketingNthOrderBrentSolver(relativeAccuracy, absoluteAccuracy, maxOrder);
 		
-		try {
-			double a = solver.solve(2000, f, -1000, 1000);
-			DecimalFormat df = new DecimalFormat("#.####"); 
-			String firstRoot = df.format(a);
+		ArrayList<Double> roots = new ArrayList<Double>();
+		double lowestValue = -1000;
+		
+		// Loop through attempting to find all root solutions
+		while (true) {
 			
-			// Okay so we've calculated one root, now we should search to see if we can find another.
+			// When a root has been found, increment slightly and move on to find more roots.
 			try {
-				double b = solver.solve(2000, f, a+0.0001, 1000);
-				String secondRoot = df.format(b);
-				JOptionPane.showMessageDialog(window, "The roots for this formula are "+firstRoot+" and "+secondRoot+".",
-						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
-				
-			// If not, there must only be one root for this formula.
+				double a = solver.solve(4000, f, lowestValue, 1000);
+				lowestValue = a+0.00000001;
+				roots.add(Double.valueOf(a));
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(window, "The root of this formula is "+firstRoot+".",
-						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
+				break;
 			}
-			
-		// We could not calculate the root. This could be because there is none. Eg. y = 1000.
-		} catch (Exception e) {
-			e.printStackTrace();
+		}
+		
+		// If there are no roots, throw an error message to the user.
+		if (roots.isEmpty()) {
 			JOptionPane.showMessageDialog(window, "Unable to calculate the root for this formula.",
 					"Root Finder", JOptionPane.ERROR_MESSAGE);
-			return;
+		} else {
+			
+			String rootsString = "";
+			DecimalFormat df = new DecimalFormat("#.####"); 
+			
+			// Loop through all of the roots, creating a string with the list of them to show.
+			for (int i=0; i<roots.size(); i++) {
+				if (i>0) rootsString = rootsString + ", ";
+				Double root = roots.get(i);
+				rootsString = rootsString + df.format(root.doubleValue());
+			}
+			
+			// If we have more than 1 root, then "roots" is plural.
+			if (roots.size() > 1)
+				JOptionPane.showMessageDialog(window, "The roots for this formula are "+rootsString+".",
+					"Root Finder", JOptionPane.INFORMATION_MESSAGE);
+			
+			// If we have 1 root, then it is just one "root".
+			else
+				JOptionPane.showMessageDialog(window, "The root for this formula is "+rootsString+".",
+						"Root Finder", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		window.setVisible(false);
@@ -111,7 +130,7 @@ public class RootPlugin extends IExtensionPlugin {
 			
 			try {
 				return formula.getResult().doubleValue();
-			} catch (Exception e) {
+			} catch (FormulaException e) {
 				e.printStackTrace();
 			}
 			
