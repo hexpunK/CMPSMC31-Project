@@ -10,13 +10,8 @@ import uk.ac.uea.mathsthing.Token;
  * mathematical formula. Calling {@link IFormulaLexer#tokenize()} will 
  * create a String array containing the tokens found in a formula.
  * 
-<<<<<<< HEAD:MathsThing_GUI/src/uk/ac/uea/mathsthing/IFormulaLexer.java
- * @author Jordan Woerner & Laura Goold
+ * @author Jordan Woerner, Laura Goold
  * @version 0.1
-=======
- * @author Jordan Woerner
- * @version 1.0
->>>>>>> master:MathsThing_GUI/src/uk/ac/uea/mathsthing/util/IFormulaLexer.java
  */
 public interface IFormulaLexer extends IObservable {
 
@@ -67,18 +62,12 @@ public interface IFormulaLexer extends IObservable {
 	public Token[] getTokens();
 	
 	/**
-<<<<<<< HEAD:MathsThing_GUI/src/uk/ac/uea/mathsthing/IFormulaLexer.java
-	 * Returns the parameters provided by the user in the initial input
-	 * Each one is a letter assigned a numerical value
-	 * @return Returns a Hashmap containing all the parameters
-=======
 	 * Returns a mapping of parameters found in a formula. Mapping contains a 
 	 * mapping of a operand to a constant to replace it with.
 	 * 
 	 * @return A {@link HashMap} of {@link String} to {@link Double} for each 
 	 * parameter found in the formula being parsed.
 	 * @since 1.0
->>>>>>> master:MathsThing_GUI/src/uk/ac/uea/mathsthing/util/IFormulaLexer.java
 	 */
 	public HashMap<String, Double> getParameters();
 }
