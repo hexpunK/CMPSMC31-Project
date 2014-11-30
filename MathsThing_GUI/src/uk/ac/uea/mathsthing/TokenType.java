@@ -5,7 +5,7 @@ package uk.ac.uea.mathsthing;
  * {@link TokenType#OPERAND}, {@link TokenType#CONSTANT}, or {@link TokenType#FUNCTION}. 
  * Each Token contains a String of the component it represents.
  * 
- * @author Jordan Woerner
+ * @author Jordan Woerner & Laura Goold
  * @version 1.0
  */
 public enum TokenType {

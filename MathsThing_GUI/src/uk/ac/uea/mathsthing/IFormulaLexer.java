@@ -1,11 +1,14 @@
 package uk.ac.uea.mathsthing;
 
+import java.util.HashMap;
+
+
 /**
  * Provides methods that will allow a lexer to accept and tokenise a provided 
  * mathematical formula. Calling {@link IFormulaLexer#tokenize(String)} will 
  * create a String array containing the tokens found in a formula.
  * 
- * @author Jordan Woerner
+ * @author Jordan Woerner & Laura Goold
  * @version 0.1
  */
 public interface IFormulaLexer {
@@ -44,4 +47,11 @@ public interface IFormulaLexer {
 	 * processed formula.
 	 */
 	public Token[] getTokens();
+	
+	/**
+	 * Returns the parameters provided by the user in the initial input
+	 * Each one is a letter assigned a numerical value
+	 * @return Returns a Hashmap containing all the parameters
+	 */
+	public HashMap<String, Integer> getParameters();
 }
