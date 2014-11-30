@@ -5,15 +5,21 @@ package uk.ac.uea.mathsthing;
  * {@link TokenType#OPERAND}, {@link TokenType#CONSTANT}, or {@link TokenType#FUNCTION}. 
  * Each Token contains a String of the component it represents.
  * 
+<<<<<<< HEAD
  * @author Jordan Woerner & Laura Goold
+=======
+ * @author Jordan Woerner, Laura Goold
+>>>>>>> master
  * @version 1.0
  */
 public enum TokenType {
 
 	/** Mathematical functions such as sin, cos, floor, etc. */
 	FUNCTION(Functions.functionRegex),
+	/** Mathematical constants such as pi, e, etc. */
+	MAGICNUM(Constants.constantRegex),
 	/** Mathematical operators such as addition, subtraction, etc. */
-	OPERATOR("([*|/|+|-|(|)|=|^])"),
+	OPERATOR("([*|/|+|\\-|(|)|=|^])"),
 	/** Replaceable values such as x, y, s, t, etc. */
 	OPERAND("([a-z])"),
 	/** Numeric values. */

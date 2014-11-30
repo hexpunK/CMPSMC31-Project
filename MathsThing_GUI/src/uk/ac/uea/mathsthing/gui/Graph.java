@@ -26,7 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  * Initializes a graph to be drawn to show the user the results of a mathematical function.
  * 
  * @author Jake Ruston
- * @version 0.1
+ * @version 1.0
  */
 public class Graph extends JPanel {
 	
@@ -41,7 +41,7 @@ public class Graph extends JPanel {
 	 */
     public Graph(final JFrame frame) {
     	
-        JFreeChart chart = createChart("", new HashMap<Double, BigDecimal>());
+        JFreeChart chart = createChart("", "", "", new HashMap<Double, BigDecimal>());
     	chartPanel = new ChartPanel(chart);
         
     	// Set the location of the chart and hide it until the user enters a formula.
@@ -55,12 +55,14 @@ public class Graph extends JPanel {
     /**
      * Re-draws the chart based on a new dataset.
      * @param title The title of the chart - usually the formula.
+     * @param xAxis The name of the x axis for the chart.
+     * @param yAxis The name of the y axis for the chart.
      * @param results The results to display - the value of x and the value of y as a HashMap.
      */
-    public void updateChart(String title, HashMap<Double, BigDecimal> results) {
+    public void updateChart(String title, String xAxis, String yAxis, HashMap<Double, BigDecimal> results) {
     	
     	chartPanel.setVisible(true);
-    	JFreeChart chart = createChart(title, results);
+    	JFreeChart chart = createChart(title, xAxis, yAxis, results);
     	chartPanel.setChart(chart);
     }
     
@@ -89,18 +91,20 @@ public class Graph extends JPanel {
     /**
      * Method to create a chart so it can be displayed in the window.
      * @param title The title of the chart.
+     * @param xAxis The name of the x axis for the chart.
+     * @param yAxis The name of the y axis for the chart.
      * @param results The results as a HashMap - containing values of x and values of y.
      * @return The JFreeChart object, the chart to draw.
      */
-    private JFreeChart createChart(String title, HashMap<Double, BigDecimal> results) {
+    private JFreeChart createChart(String title, String xAxis, String yAxis, HashMap<Double, BigDecimal> results) {
     	
     	XYDataset dataset = createDataset(results);
     	
     	// Create the chart
         JFreeChart chart = ChartFactory.createXYLineChart(
             title,
-            "x",
-            "y",
+            xAxis,
+            yAxis,
             dataset,
             PlotOrientation.VERTICAL,
             false,
@@ -110,11 +114,13 @@ public class Graph extends JPanel {
 
         chart.setBackgroundPaint(Color.white);
         
+        // Set the colour scheme of the chart
         final XYPlot plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.lightGray);
         plot.setDomainGridlinePaint(Color.white);
         plot.setRangeGridlinePaint(Color.white);
         
+        // Disable individual points being drawn.
         final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         renderer.setSeriesLinesVisible(0, true);
         renderer.setSeriesShapesVisible(0, false);
@@ -147,5 +153,4 @@ public class Graph extends JPanel {
         return dataset;
         
     }
-
 }

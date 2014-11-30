@@ -11,7 +11,15 @@ import org.junit.Test;
 import uk.ac.uea.mathsthing.SimpleParser;
 import uk.ac.uea.mathsthing.Token;
 import uk.ac.uea.mathsthing.TokenType;
+import uk.ac.uea.mathsthing.util.IFormula;
 
+/**
+ * Tests the {@link SimpleParser} class to ensure it works as intended. It creates
+ * several formula and attempts to calculate the result, to make sure that it does
+ * not generate incorrect information.
+ * 
+ * @author Jordan Woerner, Jake Ruston
+ */
 public class ParserTests extends SimpleParser {
 
 	// y = a(b+cd)+a
@@ -79,6 +87,7 @@ public class ParserTests extends SimpleParser {
 		System.out.println("\nTesting formula parsing...");
 		System.out.printf("Formula: %s\n", printArray(testFormula));
 		this.setFormula(ParserTests.testFormula);
+		this.parse();
 		// Check the right variable is being assigned to.
 		assertEquals(ParserTests.assignTo, this.getAssignTo());
 		
@@ -109,13 +118,15 @@ public class ParserTests extends SimpleParser {
 	public void testGetResult() {
 		
 		System.out.println("\nTesting formula evaluation...");
-		System.out.printf("Formula: %s\n", printArray(formula3));
+		System.out.printf("Formula: %s\n", printArray(formula2));
 		System.out.printf("x = %2.2f\n", input);
-		this.setFormula(formula3);
+		this.setFormula(formula2);
+		IFormula formula = this.parse();
 		HashMap<String, Double> vals = new HashMap<>();
 		vals.put("x", input);
+		formula.setParameters(vals);
 		try {
-			double result = this.getResult(vals).doubleValue();
+			double result = formula.getResult().doubleValue();
 			System.out.printf("Formula result: %2.10f\n", result);
 			assertEquals(11.0, result, 0.0);
 		} catch (Exception e) {

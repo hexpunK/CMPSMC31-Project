@@ -15,41 +15,41 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 
-import uk.ac.uea.mathsthing.IPlugin.IFunctionPlugin;
+import uk.ac.uea.mathsthing.IPlugin.IConstantPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
 import uk.ac.uea.mathsthing.util.PluginSystem;
 import uk.ac.uea.mathsthing.util.StringLengthComparator;
 
 /**
- * Provides methods to handle mathematical functions in a provided formula.
+ * Provides methods to handle mathematical constants in a provided formula.
  * 
  * @author Jordan Woerner
  * @version 2.1
  */
-public final class Functions {
+public class Constants {
 
 	/** 
-	 * A collection of the functions the class currently understands.
+	 * A collection of the constants the class currently understands.
 	 * 
 	 * @since 2.0
 	 */
-	static HashMap<String, Class<?>> SUPPORTED_FUNCTIONS;
+	static HashMap<String, Class<?>> SUPPORTED_CONSTANTS;
 	
 	/** 
 	 * A {@link String} containing a Regex pattern of all supported 
-	 * functions. Allows for known functions to be captured by {@link Matcher}.
+	 * constants. Allows for known constant to be captured by {@link Matcher}.
 	 * 
 	 *  @since 1.0
 	 */
-	static final String functionRegex;
+	static String constantRegex;
 	
-	/** Thread pool for the constants to run them concurrently. */
-	private static ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+	/** Thread pool for the functions to run them concurrently. */
+	private static ScheduledExecutorService executor;
 	
 	static {
 		// Load all the plugins.
 		ArrayList<Class<?>> plugins = new ArrayList<>();
-		Functions.SUPPORTED_FUNCTIONS = new HashMap<>();
+		Constants.SUPPORTED_CONSTANTS = new HashMap<>();
 		try {
 			plugins.addAll(PluginSystem.getPlugins());
 		} catch (NoSuchMethodException | InvocationTargetException
@@ -60,11 +60,11 @@ public final class Functions {
 		// Store the plugins that this class cares about.
 		ArrayList<String> names = new ArrayList<>();
 		for (Class<?> clazz : plugins) {
-			if (IFunctionPlugin.class.isAssignableFrom(clazz)) {
+			if (IConstantPlugin.class.isAssignableFrom(clazz)) {
 				try {
 					String name = (String)clazz.getMethod("getName").invoke(clazz.newInstance());
 					names.add(name);
-					Functions.SUPPORTED_FUNCTIONS.put(name, clazz);
+					Constants.SUPPORTED_CONSTANTS.put(name, clazz);
 				} catch (IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NoSuchMethodException
 						| SecurityException | InstantiationException e) {
@@ -85,76 +85,67 @@ public final class Functions {
 			}
 		}
 		sb.append(")");
-		functionRegex = sb.toString();
+		Constants.constantRegex = sb.toString();
 	}
 	
 	/**
-	 * Checks to see if the specified function is supported before it is 
+	 * Checks to see if the specified constant is supported before it is 
 	 * processed.
 	 * 
-	 * @param funcName The function name as a {@link String}.
-	 * @return Returns true if the function is supported, false otherwise.
-	 * @throws InvalidParameterException Thrown if an empty or null function 
+	 * @param constant The constant name as a {@link String}.
+	 * @return Returns true if the constant is supported, false otherwise.
+	 * @throws InvalidParameterException Thrown if an empty or null constant 
 	 * name is passed.
 	 * @since 1.0
 	 */
-	public static final boolean isSupported(final String funcName) 
+	public static final boolean isSupported(final String constant) 
 			throws InvalidParameterException
 	{		
-		if (funcName == null || funcName.isEmpty())
-			throw new InvalidParameterException("A function name must be provided.");
+		if (constant == null || constant.isEmpty())
+			throw new InvalidParameterException("A constant name must be provided.");
 		
-		return SUPPORTED_FUNCTIONS.containsKey(funcName);
+		return Constants.SUPPORTED_CONSTANTS.containsKey(constant);
 	}
 	
 	/**
-	 * Processes a provided function and returns the output from the function. 
-	 * If the parameter is a formula itself rather than a constant or number it
-	 *  will be calculated before it is used.
+	 * Processes a provided constant and returns the approximated value of it.
 	 * 
-	 * @param funcName The name of the function to call as a String.
-	 * @param input The result from the evaluation tree to process.
-	 * @return Returns a double containing the result of the function.
-	 * @throws FormulaException Thrown if there is an error evaluating the 
-	 * formula this function works on.
+	 * @param constant The name of the constant to evaluate as a String.
+	 * @return Returns a {@link BigDecimal} containing the value of the 
+	 * constant.
+	 * @throws FormulaException Thrown if there is an error evaluating this 
+	 * constant.
 	 * @since 1.0
 	 */
-	public static final BigDecimal processFunction(final String funcName, 
-			final BigDecimal input) throws FormulaException
+	public static final BigDecimal processConstant(final String constant)
+			throws FormulaException 
 	{		
-		double dResult = input.doubleValue();
-		
-		if (dResult >= Double.POSITIVE_INFINITY || dResult <= Double.NEGATIVE_INFINITY) {
-			throw new FormulaException("Provided value is too large to use in functions.");
-		}
-		
-		// Execute the function specified.
-		IFunctionPlugin plugin = null;
-		Class<?> clazz = Functions.SUPPORTED_FUNCTIONS.get(funcName);
+		// Retrieve the constant specified.
+		IConstantPlugin plugin = null;
+		Class<?> clazz = Constants.SUPPORTED_CONSTANTS.get(constant);
 		try {
-			plugin = (IFunctionPlugin)clazz.newInstance();
+			plugin = (IConstantPlugin)clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		plugin.setInput(input);
 		BigDecimal result = null;
-		
+				
 		try {
 			if (executor == null || executor.isShutdown())
 				executor = Executors.newScheduledThreadPool(2);
 			
-			// Run the IFormulaPlugin in a seperate thread.
+			// Run the IConstantPlugin in a separate thread.
 			final Future<BigDecimal> output = executor.submit(plugin);
 			// Schedule another thread to kill the plugin if it runs too long.
 			executor.schedule(new Runnable(){
 			     public void run(){
 			         output.cancel(true);
 			     }      
-			 }, IFunctionPlugin.RUN_TIME_SECONDS, TimeUnit.SECONDS);
+			 }, IConstantPlugin.RUN_TIME_SECONDS, TimeUnit.SECONDS);
 			result = output.get();
 		} catch (CancellationException cEx) { 
 			String msg = String.format(
-					"Function '%s' stopped processing. Exceeded allowed run time.",
+					"Constant '%s' stopped processing. Exceeded allowed run time.",
 					plugin.getName());
 			throw new FormulaException(msg);
 		} catch (InterruptedException | ExecutionException exEx) {			
@@ -180,7 +171,7 @@ public final class Functions {
 	 */
 	public static final void reset()
 	{
-		if (!executor.isTerminated())
+		if (executor != null && !executor.isTerminated())
 			executor.shutdownNow();
 	}
 }

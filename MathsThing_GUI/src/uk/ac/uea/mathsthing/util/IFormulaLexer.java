@@ -1,23 +1,31 @@
-package uk.ac.uea.mathsthing;
+package uk.ac.uea.mathsthing.util;
 
 import java.util.HashMap;
+
+import uk.ac.uea.mathsthing.Token;
 
 
 /**
  * Provides methods that will allow a lexer to accept and tokenise a provided 
- * mathematical formula. Calling {@link IFormulaLexer#tokenize(String)} will 
+ * mathematical formula. Calling {@link IFormulaLexer#tokenize()} will 
  * create a String array containing the tokens found in a formula.
  * 
+<<<<<<< HEAD:MathsThing_GUI/src/uk/ac/uea/mathsthing/IFormulaLexer.java
  * @author Jordan Woerner & Laura Goold
  * @version 0.1
+=======
+ * @author Jordan Woerner
+ * @version 1.0
+>>>>>>> master:MathsThing_GUI/src/uk/ac/uea/mathsthing/util/IFormulaLexer.java
  */
-public interface IFormulaLexer {
+public interface IFormulaLexer extends IObservable {
 
 	/**
 	 * Get the formula the user provided to this instance, as written before 
 	 * any processing was performed.
 	 * 
 	 * @return The formula provided by the user as a String.
+	 * @since 1.0
 	 */
 	public String getUserFormula();
 	
@@ -27,17 +35,26 @@ public interface IFormulaLexer {
 	 * multiplications).
 	 * 
 	 * @return A String containing the processed formula.
+	 * @since 1.0
 	 */
 	public String getProccessedFormula();
+	
+	/**
+	 * Sets the formula to be tokenised.
+	 * 
+	 * @param formula A String representation of the formula.
+	 * @since 1.0
+	 */
+	public void setFormula(String formula);
 	
 	/**
 	 * Analyse and tokenise a provided formula. The tokens will contain 
 	 * constants, paramters, functions and operators.
 	 * 
-	 * @param formula The formula to tokenise.
 	 * @return A String array containing all the tokens found in the formula.
+	 * @since 1.0
 	 */
-	public Token[] tokenize(String formula);
+	public Token[] tokenize();
 	
 	/**
 	 * Returns the tokens created by this lexer if they exist. The tokens will 
@@ -45,13 +62,23 @@ public interface IFormulaLexer {
 	 * 
 	 * @return Returns a {@link String} array containing the tokens of a 
 	 * processed formula.
+	 * @since 1.0
 	 */
 	public Token[] getTokens();
 	
 	/**
+<<<<<<< HEAD:MathsThing_GUI/src/uk/ac/uea/mathsthing/IFormulaLexer.java
 	 * Returns the parameters provided by the user in the initial input
 	 * Each one is a letter assigned a numerical value
 	 * @return Returns a Hashmap containing all the parameters
+=======
+	 * Returns a mapping of parameters found in a formula. Mapping contains a 
+	 * mapping of a operand to a constant to replace it with.
+	 * 
+	 * @return A {@link HashMap} of {@link String} to {@link Double} for each 
+	 * parameter found in the formula being parsed.
+	 * @since 1.0
+>>>>>>> master:MathsThing_GUI/src/uk/ac/uea/mathsthing/util/IFormulaLexer.java
 	 */
 	public HashMap<String, Double> getParameters();
 }

@@ -13,6 +13,13 @@ import org.junit.Test;
 
 import uk.ac.uea.mathsthing.Functions;
 
+/**
+ * Tests the {@link Functions} class to ensure it works as intended. It
+ * checks to ensure it correctly identifies supported functions and throw
+ * correct error messages for inputs such as log(-1).
+ * 
+ * @author Jordan Woerner, Jake Ruston
+ */
 public class FunctionsTests {
 
 	private static final HashMap<String, Double> params;
@@ -41,36 +48,28 @@ public class FunctionsTests {
 	public final void testProcessFunction() {
 		
 		boolean param = false;
-		boolean op = false;
 		BigDecimal expec = new BigDecimal(0.0);
 		
 		try {
 			Functions.processFunction("", new BigDecimal(0.0));
-			assertEquals(expec, Functions.processFunction("sin", new BigDecimal(0.0)));
-		} catch (InvalidParameterException parEx) {
-			param = true;
+			assertEquals(expec, Functions.processFunction("log", new BigDecimal(-1)));
 		} catch (Exception e) {
-			fail (e.getMessage());
-		} finally {
-			try {
-				Functions.processFunction("pow", new BigDecimal(0.0));
-			}
-			catch (UnsupportedOperationException opEx) {
-				op = true;
-			} catch (Exception e) {
-				fail (e.getMessage());
-			}
+			param = true;
 		}
 		
 		assertTrue(param);
-		assertTrue(op);
 	}
 
 	@Test
 	public final void testFact() {
 		
-		assertEquals(1.0, Functions.fact(1), 0.0);
-		assertEquals(120.0, Functions.fact(5), 0.0);
+		try {
+			assertEquals(new BigDecimal(1), Functions.processFunction("fact", new BigDecimal(1)));
+			assertEquals(new BigDecimal(120), Functions.processFunction("fact", new BigDecimal(5)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
 	}
 
 }

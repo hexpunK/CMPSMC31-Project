@@ -1,8 +1,11 @@
 package uk.ac.uea.mathsthing.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.HashMap;
 
+import uk.ac.uea.mathsthing.Constants;
 import uk.ac.uea.mathsthing.Functions;
 import uk.ac.uea.mathsthing.Token;
 
@@ -21,7 +24,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * 
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree() {
+	public BinaryEvaluationTree()
+	{
 		super();
 	}
 	
@@ -32,7 +36,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * @param item The item to store in the root node as a {@link String}.
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree(Token item) {
+	public BinaryEvaluationTree(final Token item)
+	{
 		super(item);
 	}
 	
@@ -47,7 +52,10 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * child.
 	 * @since 1.0
 	 */
-	public BinaryEvaluationTree(Token item, BinaryEvaluationTree leftTree, BinaryEvaluationTree rightTree) {
+	public BinaryEvaluationTree(final Token item, 
+			final BinaryEvaluationTree leftTree, 
+			final BinaryEvaluationTree rightTree)
+	{
 		super(item, leftTree, rightTree);
 	}
 	
@@ -55,17 +63,18 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 	 * Evaluates this {@link BinaryEvaluationTree}.
 	 * 
 	 * @param values A {@link HashMap} of parameters and their values.
-	 * @return The result of the formula with the specified paramters as a 
+	 * @return The result of the formula with the specified parameters as a 
 	 * double.
-	 * @throws Exception Thrown if there is an error in the formula such as 
-	 * incorrect formatting.
+	 * @throws FormulaException Thrown if there is an error in the formula 
+	 * such as incorrect formatting.
 	 * @since 1.0
 	 */
-	public BigDecimal eval(HashMap<String, Double> values) 
-		throws Exception {
-		
-		BigDecimal leftVal = new BigDecimal(0);
-		BigDecimal rightVal = new BigDecimal(0);
+	public BigDecimal eval(final HashMap<String, Double> values) 
+		throws FormulaException
+	{		
+		MathContext mc=new MathContext(64, RoundingMode.HALF_EVEN);
+		BigDecimal leftVal = new BigDecimal(0, mc);
+		BigDecimal rightVal = new BigDecimal(0, mc);
 		
 		if (leftNode != null)
 			leftVal = ((BinaryEvaluationTree)leftNode).eval(values);
@@ -75,49 +84,71 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 		String msg; // Exception message for use later.
 		
 		switch(item.type) {
+		// Constants just need converting to BigDecimal. Invalid tokens will
+		// throw an exception.
 		case CONSTANT:
 			try {
 				return new BigDecimal(item.getToken());
 			} catch (NumberFormatException ex) {
 				msg = String.format("Constant '%s' is not a number", 
 						item.getToken());
-				throw new Exception(msg);
+				throw new FormulaException(msg);
 			}
+		// Operands will be replaced at evaluation time.
 		case OPERAND:
 			if (values.containsKey(item.getToken())) {
 				return new BigDecimal(values.get(item.getToken()));
 			}
-			msg = String.format(
-					"Could not find matching parameter for operand '%s'", 
+			msg = String.format("Could not find matching parameter for operand '%s'", 
 					item.getToken());
-			throw new Exception(msg);
+			throw new FormulaException(msg);
+		// Operators work on the left and right child results. As these are 0.0
+		// by default, null children aren't really a problem.
 		case OPERATOR:
 			switch(item.getToken()) {
 			case "*":
-				return leftVal.multiply(rightVal);
+				return leftVal.multiply(rightVal, mc);
 			case "+":
-				return leftVal.add(rightVal);
+				return leftVal.add(rightVal, mc);
 			case "-":
-				return leftVal.subtract(rightVal);
+				return leftVal.subtract(rightVal, mc);
 			case "/":
-				return leftVal.divide(rightVal);
-			case "^":
-				return leftVal.pow(rightVal.intValue());
+				return leftVal.divide(rightVal, mc);
+			case "^":				
+				return new BigDecimal(Math.pow(leftVal.doubleValue(), rightVal.doubleValue()));
 			default:
-				msg = String.format(
-						"Unknown operator found '%s'", item.getToken());
-				throw new Exception();
+				msg = String.format("Unknown operator found '%s'", item.getToken());
+				throw new FormulaException();
 			}
+		// Functions will be called as needed, if something goes wrong inside 
+		// the function call an exception will be thrown.
 		case FUNCTION:
 			if (Functions.isSupported(item.getToken())) {
-				return Functions.processFunction(item.getToken(), rightVal);
+				try {
+					return Functions.processFunction(item.getToken(), rightVal);
+				} catch (FormulaException e) {
+					throw e;
+				}
 			}
 			msg = String.format("Unsupported function '%s' found.", 
 					item.getToken());
-			throw new Exception(msg);
-		default:
-			msg = String.format("Unknown token found '%s'", item);
-			throw new Exception(msg);
+			throw new FormulaException(msg);
+		// Mathematical constants such as pi will be evaluated here if they are
+		// supported. If not, an exception will be thrown.
+		case MAGICNUM:
+			if (Constants.isSupported(item.getToken())) {
+				try {
+					return Constants.processConstant(item.getToken());
+				} catch (FormulaException e) {
+					throw e;
+				}
+			}
+			msg = String.format("Unsupported constant '%s' found.", 
+					item.getToken());
+			throw new FormulaException(msg);
 		}
+		// If an unknown token type is encountered, throw this.
+		msg = String.format("Unknown token found '%s'", item);
+		throw new FormulaException(msg);
 	}
 }

@@ -1,11 +1,15 @@
 package uk.ac.uea.mathsthing;
 
-import java.math.BigDecimal;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Stack;
 
+import uk.ac.uea.mathsthing.gui.Graph;
 import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
+import uk.ac.uea.mathsthing.util.IFormula;
+import uk.ac.uea.mathsthing.util.IFormulaParser;
+import uk.ac.uea.mathsthing.util.IObservable;
+import uk.ac.uea.mathsthing.util.IObserver;
 
 /**
  * A simplistic parser that converts a formula from infix notation to postfix.
@@ -15,43 +19,59 @@ import uk.ac.uea.mathsthing.util.BinaryEvaluationTree;
  * Generates a evaluation tree of the postfix notation, which can be evaluated.
  * Evaluation can take a mapping of variables to values.
  * 
- * @author Jordan Woerner
+ * @author Jordan Woerner, Jake Ruston
  * @version 1.0
  */
-public class SimpleParser implements IFormulaParser {
+public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 
+	/** The {@link Token} objects of the formula being parsed. */
+	private Token[] tokens;
+	private HashMap<String, Double> params;
 	/** The infix and postfix notations. */
 	private Stack<Token> inFix, postFix;
 	/** The formula that has been processed. */
-	protected Formula formula;
+	protected IFormula formula;
+	/** The {@link Graph} to notify. */
+	protected IObserver observed;
 
 	/**
 	 * Sets up a new {@link SimpleParser} with empty infix and postfix stacks.
+	 * 
+	 * @since 1.0
 	 */
-	public SimpleParser() {
-
+	public SimpleParser() 
+	{
 		inFix = new Stack<>();
 		postFix = new Stack<>();
 	}
 
-	/**
-	 * Sets the formula this {@link SimpleParser} works on to the specified
-	 * {@link Token} array of tokens.
-	 * 
-	 * @param tokenised The {@link Token} array containing the formula tokens.
-	 */
 	@Override
-	public void setFormula(Token[] tokenised) {
-
+	public void setFormula(Token[] tokenised) 
+	{
+		this.tokens = tokenised;
+	}
+	
+	@Override
+	public void setParameters(HashMap<String, Double> params)
+	{
+		if (params == null)
+			this.params = new HashMap<>();
+		else				
+			this.params = params;
+	}
+	
+	@Override
+	public IFormula parse() 
+	{
 		Stack<Token> opStack = new Stack<>();
 		Token tmpOp = null;
 		Token funcOp = null;
-		String yAxis = null;
-		String xAxis = null;
+		String yAxis = "y";
+		String xAxis = "x";
 		HashMap<String, Integer> valCount = new HashMap<>();
 		boolean negation = false;
 		
-		for (Token token : tokenised) {
+		for (Token token : tokens) {
 
 			if (!inFix.empty() 
 					&& inFix.peek().type != TokenType.OPERATOR
@@ -159,7 +179,14 @@ public class SimpleParser implements IFormulaParser {
 					int oldVal = valCount.get(token.val);
 					valCount.put(token.val, ++oldVal);
 				}
-				postFix.push(token);
+				if (!negation) {
+					postFix.push(token);
+				} else {
+					postFix.push(new Token("0", TokenType.CONSTANT));
+					postFix.push(token);
+					postFix.push(new Token("-", TokenType.OPERATOR));
+					negation = false;
+				}
 				break;
 			case FUNCTION:
 				if (funcOp != null) {
@@ -176,6 +203,9 @@ public class SimpleParser implements IFormulaParser {
 					postFix.push(new Token("-", TokenType.OPERATOR));
 					negation = false;
 				}
+				break;
+			case MAGICNUM:
+				postFix.push(token);
 				break;
 			}
 
@@ -216,8 +246,11 @@ public class SimpleParser implements IFormulaParser {
 			}
 		}
 
+		// Work out the most used operand, that's probably the x value.
 		int lastMax = 0;
 		for (String operand : valCount.keySet()) {
+			if (operand.equals(yAxis)) continue;
+			if (params != null && params.containsKey(operand)) continue;
 			int curVal = valCount.get(operand);
 			if (curVal > lastMax) {
 				xAxis = operand;
@@ -225,52 +258,55 @@ public class SimpleParser implements IFormulaParser {
 			}
 		}
 		
-		this.formula = new Formula(yAxis, xAxis, tokenised, tmpStack.pop());
-	}
-
-	/**
-	 * Process the formula stored in the evaluation tree.
-	 * 
-	 * @param params
-	 *            The mapping of variables to values as a {@link HashMap}.
-	 */
-	@Override
-	public BigDecimal getResult(HashMap<String, Double> params)
-			throws Exception {
-		try {
-			return formula.getResult(params);
-		} catch (Exception e) {
-			String err = String.format(
-					"The provided function is not properly formed:\n%s",
-					e.getMessage());
-			throw new Exception(err);
-		}
-	}
-
-	@Override
-	public String getFirstDerivative() {		
-		return formula.getDerivative().toString();
-	}
-
-	@Override
-	public String getSecondDerivative() {		
-		return formula.getDerivative().getDerivative().toString();
+		if (!tmpStack.empty())			
+			this.formula = new Formula(yAxis, xAxis, tokens, tmpStack.pop());
+		
+		return this.formula;
 	}
 
 	// These are only here for testing purposes.
-	protected final String getAssignTo() {
+	protected final String getAssignTo() 
+	{
 		return this.formula.getYAxis();
 	}
 
-	protected final Stack<Token> getInFix() {
+	protected final Stack<Token> getInFix() 
+	{
 		return this.inFix;
 	}
 
-	protected final Stack<Token> getPostFix() {
+	protected final Stack<Token> getPostFix() 
+	{
 		return this.postFix;
 	}
 
-	protected final BinaryEvaluationTree getEvalTree() {
-		return this.formula.getEvalTree();
+	protected final BinaryEvaluationTree getEvalTree() 
+	{
+		return ((Formula)this.formula).getEvalTree();
+	}
+
+	@Override
+	public void attach(IObserver observable) 
+	{
+		this.observed = observable;
+	}
+
+	@Override
+	public void detach(IObserver observable) 
+	{
+		this.observed = null;
+	}
+
+	@Override
+	public void update() 
+	{
+		observed.update(this.formula);
+	}
+
+	@Override
+	public void run() 
+	{
+		parse();
+		update();
 	}
 }
