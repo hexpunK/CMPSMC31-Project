@@ -274,8 +274,8 @@ public class GUI extends JFrame implements IObserver {
 				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 				// Tokenize the input from the user.
-				IFormulaLexer lexer = new Lexer(inputField.getText());
-				lexer.setFormula(lexer.getUserFormula());
+				IFormulaLexer lexer = new Lexer();
+				lexer.setFormula(inputField.getText());
 				lexer.attach(GUI.this);
 				new Thread((Runnable) lexer).start();
 				enterButton.setEnabled(false);
@@ -310,6 +310,7 @@ public class GUI extends JFrame implements IObserver {
 		// Attempt to parse the formula from the tokens.
 		try {
 			parser.setFormula(lexer.getTokens());
+			parser.setParameters(lexer.getParameters());
 			new Thread((Runnable) parser).start();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -335,7 +336,6 @@ public class GUI extends JFrame implements IObserver {
 					"Invalid Formula", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		formula.setParameters(lexer.getParameters());
 
 		// Attempt to parse the from and to values as numbers. Exception is
 		// thrown if they aren't valid numbers.
@@ -379,6 +379,7 @@ public class GUI extends JFrame implements IObserver {
 
 		for (; i <= toValue; i += incr) {
 			vals.put(formula.getXAxis(), i);
+			formula.setParameters(vals);
 			// Get the result and add it to the hash map.
 			try {
 				BigDecimal result = formula.getResult();

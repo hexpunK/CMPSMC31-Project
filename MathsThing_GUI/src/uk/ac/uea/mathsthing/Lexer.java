@@ -1,4 +1,5 @@
 package uk.ac.uea.mathsthing;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -7,6 +8,12 @@ import java.util.regex.Pattern;
 import uk.ac.uea.mathsthing.util.IFormulaLexer;
 import uk.ac.uea.mathsthing.util.IObserver;
 
+/**
+ * Provides implementation of the Lexer Interface. This includes
+ * tokenising a given formula including parameters
+ * @author Laura Goold
+ *
+ */
 public class Lexer implements IFormulaLexer, Runnable {
 	
 	private String input;
@@ -17,32 +24,39 @@ public class Lexer implements IFormulaLexer, Runnable {
 	private HashMap<String, Double> parameters;
 	private IObserver observed;
 	
+	/**
+	 * Constructor for Lexer class, intialises all class variables
+	 */
 	public Lexer()
 	{
 		input="";
 		userEquation = "";
 		tokens = new Token[0];
 		equation = new ArrayList<>();
-		parameters = new HashMap<>();
+		parameters = null;
 	}
 	
+	/**
+	 * Constructor for Lexer class
+	 * @param in String representing user input
+	 */
 	public Lexer(String in)
 	{
 		input = in;
 		userEquation = "";
 		tokens = new Token[0];
 		equation = new ArrayList<>();
-		parameters = new HashMap<>();
+		parameters = null;
 	}
 
 	@Override
 	public String getUserFormula() {
 		
-		int i = input.indexOf(",");
+		int i = input.indexOf(":");
 		if (i >= 0)
-			userEquation = input.substring(0, i);
+			userEquation = input.substring(0, i); //get equation from original input
 		else
-			userEquation = input;
+			userEquation = input; //no parameters so input just contains equation
 		return userEquation;
 	}
 
@@ -53,6 +67,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 		
 		for(Token token : tokens) {
 			output.append(token);
+			//loop through all tokens adding to final string representation
 		}
 		
 		return output.toString();
@@ -68,7 +83,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 
 		String orig = getUserFormula();
 		orig.trim();
-		orig = orig.replaceAll("\\s+", "");
+		orig = orig.replaceAll("\\s+", ""); //remove all whitespace from formula
 		
 		// Build up a regex pattern.
 		StringBuilder pattern = new StringBuilder();
@@ -93,6 +108,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 		//set up the matcher using the pattern created
 		Matcher mat = p1.matcher(orig);
 		
+		//loop through all matches, convert them to tokens and add to the tokenised equation
 		while(mat.find())
 		{
 			//function
@@ -139,6 +155,23 @@ public class Lexer implements IFormulaLexer, Runnable {
 
 	@Override
 	public HashMap<String, Double> getParameters() {
+		
+		if (this.parameters == null) {
+			this.parameters = new HashMap<>();
+			int index = input.indexOf(":"); 
+			if (index != -1) {
+				String allP = input.substring(index+1, input.length()); //get list of parameters from original input
+				allP = allP.replaceAll("\\s+", "");
+				String[] params = allP.split(","); //separate the parameters1
+			
+				for(int i=0; i< params.length; i++)
+				{
+					String[] p = params[i].split("="); //split into letter and assigned value
+					parameters.put(p[0], Double.valueOf(p[1]));
+				}
+			}
+		}
+		
 		return this.parameters;
 	}
 
@@ -160,6 +193,7 @@ public class Lexer implements IFormulaLexer, Runnable {
 	@Override
 	public void run() {
 		tokenize();
+		getParameters();
 		update();
 	}
 }

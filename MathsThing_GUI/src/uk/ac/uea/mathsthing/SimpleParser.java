@@ -26,6 +26,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 
 	/** The {@link Token} objects of the formula being parsed. */
 	private Token[] tokens;
+	private HashMap<String, Double> params;
 	/** The infix and postfix notations. */
 	private Stack<Token> inFix, postFix;
 	/** The formula that has been processed. */
@@ -48,6 +49,15 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 	public void setFormula(Token[] tokenised) 
 	{
 		this.tokens = tokenised;
+	}
+	
+	@Override
+	public void setParameters(HashMap<String, Double> params)
+	{
+		if (params == null)
+			this.params = new HashMap<>();
+		else				
+			this.params = params;
 	}
 	
 	@Override
@@ -240,6 +250,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 		int lastMax = 0;
 		for (String operand : valCount.keySet()) {
 			if (operand.equals(yAxis)) continue;
+			if (params != null && params.containsKey(operand)) continue;
 			int curVal = valCount.get(operand);
 			if (curVal > lastMax) {
 				xAxis = operand;

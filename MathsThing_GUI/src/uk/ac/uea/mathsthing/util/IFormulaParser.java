@@ -1,5 +1,7 @@
 package uk.ac.uea.mathsthing.util;
 
+import java.util.HashMap;
+
 import uk.ac.uea.mathsthing.Token;
 
 /**
@@ -8,7 +10,7 @@ import uk.ac.uea.mathsthing.Token;
  * results from working on the tokens.
  * 
  * @author Jordan Woerner
- * @version 1.0
+ * @version 1.1
  */
 public interface IFormulaParser extends IObservable {
 
@@ -20,6 +22,16 @@ public interface IFormulaParser extends IObservable {
 	 * @since 1.0
 	 */
 	public void setFormula(Token[] tokenised);
+	
+	/**
+	 * Sets the parameter {@link HashMap} that this {@link IFormulaParser} can 
+	 * use to work out the axis labels for the current formula being parsed.
+	 * 
+	 * @param params A {@link HashMap} of {@link String} to {@link Double} for 
+	 * each parametrised value in the function.
+	 * @since 1.1
+	 */
+	public void setParameters(HashMap<String, Double> params);
 	
 	/**
 	 * Parses the formula provided.
