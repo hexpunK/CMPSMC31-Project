@@ -104,8 +104,6 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 			case OPERATOR:
 				switch (token.val) {
 				case "(":
-					//if (!postFix.isEmpty() && postFix.peek().getToken().matches("[a-z0-9\\(\\*\\+/\\^\\-=]"))
-//						opStack.push(new Token("*", TokenType.OPERATOR));
 					opStack.push(token);
 					break;
 				case ")":
@@ -116,8 +114,8 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 							postFix.push(tmpOp);
 						}
 					} catch (EmptyStackException e) {
-						break; // Nothing needs to be done if the stack is
-							   // empty.
+						// Nothing needs to be done if the stack is empty.
+						break;
 					}
 					break;
 				case "^":
@@ -136,7 +134,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					break;
 				case "/":
 					try {
-						while (opStack.peek().val.matches("[\\^/=]")) {
+						while (opStack.peek().val.matches("[\\^/\\*=]")) {
 							postFix.push(opStack.pop());
 						}
 						opStack.push(token);
@@ -158,7 +156,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					break;
 				case "+":
 					try {
-						while (opStack.peek().val.matches("[\\^\\*/\\+=]")) {
+						while (opStack.peek().val.matches("[\\*\\+/\\^\\-=]")) {
 							postFix.push(opStack.pop());
 						}
 						opStack.push(token);
@@ -168,12 +166,12 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					}
 					break;
 				case "-":
-					if (inFix.isEmpty() || inFix.peek().val.matches("[\\(\\*\\+/\\^\\-=]")) {
+					if (inFix.isEmpty() || inFix.peek().val.matches("[\\*\\+/\\^\\-=]")) {
 						negation = !negation;
 						break;
 					}
 					try {
-						while (opStack.peek().val.matches("[\\^\\*/\\+\\-=]")) {
+						while (opStack.peek().val.matches("[\\*/\\+\\-=\\^]")) {
 							postFix.push(opStack.pop());
 						}
 						opStack.push(token);
@@ -249,9 +247,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 				if (!tmpStack.empty() && token.type != TokenType.FUNCTION)
 					leftNode = tmpStack.pop();
 
-				BinaryEvaluationTree newTree = new BinaryEvaluationTree(token,
-						leftNode, rightNode);
-				tmpStack.push(newTree);
+				tmpStack.push(new BinaryEvaluationTree(token, leftNode, rightNode));
 			} else {
 				tmpStack.push(new BinaryEvaluationTree(token));
 			}

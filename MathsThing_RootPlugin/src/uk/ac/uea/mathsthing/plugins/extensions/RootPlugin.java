@@ -13,6 +13,9 @@ import javax.swing.JOptionPane;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.solvers.AllowedSolution;
 import org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver;
+import org.apache.commons.math3.exception.NoBracketingException;
+import org.apache.commons.math3.exception.NumberIsTooLargeException;
+import org.apache.commons.math3.exception.TooManyEvaluationsException;
 
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
 import uk.ac.uea.mathsthing.util.FormulaException;
@@ -59,16 +62,22 @@ public class RootPlugin extends IExtensionPlugin {
 				
 		roots = new ArrayList<Double>();
 		double lowestValue = -1000;
+		final double highestValue = 1000;
 				
 		// Loop through attempting to find all root solutions
-		while (true) {		
+		while (lowestValue <= highestValue) {
+			System.out.println(lowestValue);
 			// When a root has been found, increment slightly and move on to find more roots.
 			try {
-				double a = solver.solve(40000, f, lowestValue, 1000, AllowedSolution.ANY_SIDE);
+				double a = solver.solve(40000, f, lowestValue, highestValue, AllowedSolution.ANY_SIDE);
 				lowestValue = a+0.00000001;
 				roots.add(Double.valueOf(a));
-			} catch (Exception e) {
+			} catch (TooManyEvaluationsException | NumberIsTooLargeException e) {
+				System.err.println(e.getMessage());
 				break;
+			} catch (NoBracketingException bEx) {
+				lowestValue += 1.0;
+				continue;
 			}
 		}
 				

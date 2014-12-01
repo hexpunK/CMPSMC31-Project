@@ -89,63 +89,72 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 		// throw an exception.
 		case CONSTANT:
 			try {
-				return new BigDecimal(item.getToken());
+				return new BigDecimal(item.val);
 			} catch (NumberFormatException ex) {
 				msg = String.format("Constant '%s' is not a number", 
-						item.getToken());
+						item.val);
 				throw new FormulaException(msg);
 			}
 		// Operands will be replaced at evaluation time.
 		case OPERAND:
-			if (values.containsKey(item.getToken())) {
-				return new BigDecimal(values.get(item.getToken()));
+			if (values.containsKey(item.val)) {
+				return new BigDecimal(values.get(item.val));
 			}
 			msg = String.format("Could not find matching parameter for operand '%s'", 
-					item.getToken());
+					item.val);
 			throw new FormulaException(msg);
 		// Operators work on the left and right child results. As these are 0.0
 		// by default, null children aren't really a problem.
 		case OPERATOR:
-			switch(item.getToken()) {
+			switch(item.val) {
 			case "*":
 				return leftVal.multiply(rightVal, mc);
+				//return rightVal.multiply(leftVal, mc);
 			case "+":
 				return leftVal.add(rightVal, mc);
+				//return rightVal.add(leftVal, mc);
 			case "-":
 				return leftVal.subtract(rightVal, mc);
+				//return rightVal.subtract(leftVal, mc);
 			case "/":
-				return leftVal.divide(rightVal, mc);
+				try {
+					return leftVal.divide(rightVal, mc);
+					//return rightVal.divide(leftVal, mc);
+				} catch (ArithmeticException ex) {
+					throw new FormulaException(ex.getMessage());
+				}
 			case "^":				
 				return new BigDecimal(Math.pow(leftVal.doubleValue(), rightVal.doubleValue()));
+				//return new BigDecimal(Math.pow(rightVal.doubleValue(), leftVal.doubleValue()));
 			default:
-				msg = String.format("Unknown operator found '%s'", item.getToken());
-				throw new FormulaException();
+				msg = String.format("Unknown operator found '%s'", item.val);
+				throw new FormulaException(msg);
 			}
 		// Functions will be called as needed, if something goes wrong inside 
 		// the function call an exception will be thrown.
 		case FUNCTION:
-			if (Functions.isSupported(item.getToken())) {
+			if (Functions.isSupported(item.val)) {
 				try {
-					return Functions.processFunction(item.getToken(), rightVal);
+					return Functions.processFunction(item.val, rightVal);
 				} catch (FormulaException e) {
 					throw e;
 				}
 			}
 			msg = String.format("Unsupported function '%s' found.", 
-					item.getToken());
+					item.val);
 			throw new FormulaException(msg);
 		// Mathematical constants such as pi will be evaluated here if they are
 		// supported. If not, an exception will be thrown.
 		case MAGICNUM:
-			if (Constants.isSupported(item.getToken())) {
+			if (Constants.isSupported(item.val)) {
 				try {
-					return Constants.processConstant(item.getToken());
+					return Constants.processConstant(item.val);
 				} catch (FormulaException e) {
 					throw e;
 				}
 			}
 			msg = String.format("Unsupported constant '%s' found.", 
-					item.getToken());
+					item.val);
 			throw new FormulaException(msg);
 		}
 		// If an unknown token type is encountered, throw this.
