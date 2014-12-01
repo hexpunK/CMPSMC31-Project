@@ -11,6 +11,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.math3.analysis.UnivariateFunction;
+import org.apache.commons.math3.analysis.solvers.AllowedSolution;
 import org.apache.commons.math3.analysis.solvers.BracketingNthOrderBrentSolver;
 
 import uk.ac.uea.mathsthing.IPlugin.IExtensionPlugin;
@@ -63,7 +64,7 @@ public class RootPlugin extends IExtensionPlugin {
 		while (true) {		
 			// When a root has been found, increment slightly and move on to find more roots.
 			try {
-				double a = solver.solve(4000, f, lowestValue, 1000);
+				double a = solver.solve(40000, f, lowestValue, 1000, AllowedSolution.ANY_SIDE);
 				lowestValue = a+0.00000001;
 				roots.add(Double.valueOf(a));
 			} catch (Exception e) {
@@ -102,7 +103,7 @@ public class RootPlugin extends IExtensionPlugin {
 		if (roots.isEmpty()) {
 			JOptionPane.showMessageDialog(window, "Unable to find any roots between -1000 and 1000 for this formula.",
 					"Root Finder", JOptionPane.ERROR_MESSAGE);
-		} if (roots.size() > 12) {
+		} else if (roots.size() > 12) {
 			JOptionPane.showMessageDialog(window, "There are too many roots for this solution to display.",
 					"Root Finder", JOptionPane.ERROR_MESSAGE);
 		} else {

@@ -73,10 +73,28 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 		
 		for (Token token : tokens) {
 
-			if (!inFix.empty() 
+			// Handle implicit multiplication. 
+			if (!inFix.empty() && 
+				// If we have an opening bracket, multiply if the last
+				// token was anything other than an operator or function.
+				((token.val.matches("[\\(]")
+					&& !inFix.peek().val.matches("[\\(\\*\\+/\\^\\-=]")
+					&& inFix.peek().type != TokenType.FUNCTION
+					)
+				// If the current token isn't an operator and the last 
+				// token was a closing bracket.
+				|| (token.type != TokenType.OPERATOR
+					&& inFix.peek().val.matches("[\\)]")
+					)
+				// If the current token isn't an operator, and the last 
+				// token wasn't another operator or function.
+				|| (token.type != TokenType.OPERATOR
 					&& inFix.peek().type != TokenType.OPERATOR
 					&& inFix.peek().type != TokenType.FUNCTION
-					&& token.type != TokenType.OPERATOR) {
+					)
+				)
+			) {
+				// Perform an implicit multiplication.
 				Token implied = new Token("*", TokenType.OPERATOR);
 				inFix.push(implied);
 				opStack.push(implied);
@@ -85,7 +103,9 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 			switch (token.type) {
 			case OPERATOR:
 				switch (token.val) {
-				case "(":					
+				case "(":
+					//if (!postFix.isEmpty() && postFix.peek().getToken().matches("[a-z0-9\\(\\*\\+/\\^\\-=]"))
+//						opStack.push(new Token("*", TokenType.OPERATOR));
 					opStack.push(token);
 					break;
 				case ")":
@@ -148,7 +168,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					}
 					break;
 				case "-":
-					if (inFix.isEmpty() || inFix.peek().val.matches("[(\\*\\+/\\^\\-=]")) {
+					if (inFix.isEmpty() || inFix.peek().val.matches("[\\(\\*\\+/\\^\\-=]")) {
 						negation = !negation;
 						break;
 					}

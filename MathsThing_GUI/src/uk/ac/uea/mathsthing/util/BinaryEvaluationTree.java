@@ -75,7 +75,8 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 		MathContext mc=new MathContext(64, RoundingMode.HALF_EVEN);
 		BigDecimal leftVal = new BigDecimal(0, mc);
 		BigDecimal rightVal = new BigDecimal(0, mc);
-		
+		if (values.get("x") == Double.valueOf(1.0) || values.get("x") == Double.valueOf(2.0))
+			System.out.printf("X: %3.2f,\tItem: %s,\tLeft: %3.2f,\tRight: %3.2f\n", values.get("x"), item.val, leftVal, rightVal);
 		if (leftNode != null)
 			leftVal = ((BinaryEvaluationTree)leftNode).eval(values);
 		if (rightNode != null) 
