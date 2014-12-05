@@ -65,8 +65,7 @@ public class RootPlugin extends IExtensionPlugin {
 		final double highestValue = 1000;
 				
 		// Loop through attempting to find all root solutions
-		while (lowestValue <= highestValue) {
-			System.out.println(lowestValue);
+		while (lowestValue < highestValue) {
 			// When a root has been found, increment slightly and move on to find more roots.
 			try {
 				double a = solver.solve(40000, f, lowestValue, highestValue, AllowedSolution.ANY_SIDE);

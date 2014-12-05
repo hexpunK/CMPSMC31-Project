@@ -15,7 +15,7 @@ public enum TokenType {
 	/** Mathematical constants such as pi, e, etc. */
 	MAGICNUM(Constants.constantRegex),
 	/** Mathematical operators such as addition, subtraction, etc. */
-	OPERATOR("([\\*|/|\\+|\\-|\\(|\\)|=|\\^])"),
+	OPERATOR("([\\*|/|\\+|\\-|\\(|\\)|=|\\^|%])"),
 	/** Replaceable values such as x, y, s, t, etc. */
 	OPERAND("([a-z])"),
 	/** Numeric values. */

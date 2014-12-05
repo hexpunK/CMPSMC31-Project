@@ -78,7 +78,7 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 				// If we have an opening bracket, multiply if the last
 				// token was anything other than an operator or function.
 				((token.val.matches("[\\(]")
-					&& !inFix.peek().val.matches("[\\(\\*\\+/\\^\\-=]")
+					&& !inFix.peek().val.matches("[\\(\\*\\+/\\^\\-%=]")
 					&& inFix.peek().type != TokenType.FUNCTION
 					)
 				// If the current token isn't an operator and the last 
@@ -133,19 +133,10 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					}
 					break;
 				case "/":
-					try {
-						while (opStack.peek().val.matches("[\\^/\\*=]")) {
-							postFix.push(opStack.pop());
-						}
-						opStack.push(token);
-					} catch (EmptyStackException e) {
-						opStack.push(token);
-						break;
-					}
-					break;
 				case "*":
+				case "%": // Division, multiplication and modulo are equal.
 					try {
-						while (opStack.peek().val.matches("[\\^/\\*=]")) {
+						while (opStack.peek().val.matches("[\\^/\\*%=]")) {
 							postFix.push(opStack.pop());
 						}
 						opStack.push(token);
@@ -155,23 +146,13 @@ public class SimpleParser implements IFormulaParser, IObservable, Runnable {
 					}
 					break;
 				case "+":
-					try {
-						while (opStack.peek().val.matches("[\\*\\+/\\^\\-=]")) {
-							postFix.push(opStack.pop());
-						}
-						opStack.push(token);
-					} catch (EmptyStackException e) {
-						opStack.push(token);
-						break;
-					}
-					break;
-				case "-":
-					if (inFix.isEmpty() || inFix.peek().val.matches("[\\*\\+/\\^\\-=]")) {
+				case "-": // Addition and subtraction are equal. 
+					if (inFix.isEmpty() || inFix.peek().val.matches("[\\*\\+/\\^\\-%=]")) {
 						negation = !negation;
 						break;
 					}
 					try {
-						while (opStack.peek().val.matches("[\\*/\\+\\-=\\^]")) {
+						while (opStack.peek().val.matches("[\\*/\\+\\-%=\\^]")) {
 							postFix.push(opStack.pop());
 						}
 						opStack.push(token);

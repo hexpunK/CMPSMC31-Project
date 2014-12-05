@@ -109,23 +109,24 @@ public class BinaryEvaluationTree extends BinaryTree<Token> {
 			switch(item.val) {
 			case "*":
 				return leftVal.multiply(rightVal, mc);
-				//return rightVal.multiply(leftVal, mc);
 			case "+":
 				return leftVal.add(rightVal, mc);
-				//return rightVal.add(leftVal, mc);
 			case "-":
 				return leftVal.subtract(rightVal, mc);
-				//return rightVal.subtract(leftVal, mc);
 			case "/":
 				try {
 					return leftVal.divide(rightVal, mc);
-					//return rightVal.divide(leftVal, mc);
+				} catch (ArithmeticException ex) {
+					throw new FormulaException(ex.getMessage());
+				}
+			case "%":
+				try {
+					return leftVal.remainder(rightVal, mc);
 				} catch (ArithmeticException ex) {
 					throw new FormulaException(ex.getMessage());
 				}
 			case "^":				
 				return new BigDecimal(Math.pow(leftVal.doubleValue(), rightVal.doubleValue()));
-				//return new BigDecimal(Math.pow(rightVal.doubleValue(), leftVal.doubleValue()));
 			default:
 				msg = String.format("Unknown operator found '%s'", item.val);
 				throw new FormulaException(msg);
