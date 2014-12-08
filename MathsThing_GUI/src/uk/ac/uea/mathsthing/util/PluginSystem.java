@@ -62,6 +62,10 @@ public final class PluginSystem {
 			throw new IOException("Plugin system could not find current directory.", e);
 		}
 		workingDir = workingDir.substring(0, workingDir.lastIndexOf('/')+1);
+		if (workingDir.contains("file:/")) {
+			workingDir = workingDir.substring(workingDir.indexOf(":")+2);
+		}
+		workingDir = workingDir.replaceAll("%20", " ");
 		
 		// Find the plugins folder.
 		String path = String.format("%splugins", workingDir);
